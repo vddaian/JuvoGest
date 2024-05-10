@@ -1,0 +1,2 @@
+10/05/2024
+    -   Hay que cambiar el 'NombreUsuario' en la tabla 'Users' base de datos.

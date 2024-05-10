@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Services\Auth\LoginService as LoginService;
+use App\Http\Controllers\Services\Auth\RegisterService as RegisterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/login', [LoginService::class, 'verify']);
+Route::post('/register', [RegisterService::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+

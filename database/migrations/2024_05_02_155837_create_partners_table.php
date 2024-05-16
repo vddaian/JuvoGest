@@ -12,23 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partners', function (Blueprint $table) {
-            $table->integer('idSocio',true);
-            $table->boolean('expulsado')->default(false);
-            $table->string('dni',9)->unique();
+            $table->string('dni',9)->primary();
             $table->string('prNombre', 20);
             $table->string('sgNombre', 20)->nullable();
             $table->string('prApellido');
             $table->string('sgApellido')->nullable();
             $table->date('fechaNacimiento');
-            $table->tinyInteger('edad');
             $table->string('direccion', 50);
             $table->string('localidad');
             $table->integer('cp');
-            $table->integer('relefono')->nullable();
+            $table->integer('telefono')->nullable();
             $table->integer('prTelefonoResp');
             $table->integer('sgTelefonoResp')->nullable();
             $table->string('email');
-            $table->mediumText('alergias');
+            $table->mediumText('alergias')->nullable();
             $table->text('foto');
             $table->timestamps();
         });

@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class PartnerUser extends Model
 {
     use HasFactory;
+    protected $table = 'partners_users';
+    protected $fillable = [
+        'dni',
+        'idUsuario'
+    ];
+
+    protected $hidden = [
+        'dni',
+        'idUsuario'
+    ];
 }

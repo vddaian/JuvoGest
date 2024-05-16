@@ -1,0 +1,10 @@
+.nav{
+    min-width: fit-content;
+}
+.nav-list{
+    list-style-type: none;  
+}
+.nav-list a  {
+    padding-left: 0;
+    color: white;
+}

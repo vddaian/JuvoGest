@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('records_partners', function (Blueprint $table) {
             $table->integer('idRegistro');
-            $table->integer('idSocio');
-            $table->foreign('idSocio')->references('idSocio')->on('partners');
+            $table->string('dni');
+            $table->foreign('dni')->references('dni')->on('partners');
             $table->foreign('idRegistro')->references('idRegistro')->on('records');
-            $table->primary(['idSocio','idRegistro']);
+            $table->primary(['dni','idRegistro']);
             $table->timestamps();
         });
     }

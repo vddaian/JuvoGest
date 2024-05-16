@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
@@ -17,19 +18,24 @@ class LoginController extends Controller
     /* Funcion que realiza la comprobación de credenciales */
     public function verify(Request $req)
     {
-        /* echo url('').'/api/login'; */
-        $opciones = array(
-            'http' =>
-            array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/json',
-                'content' => ''
-            )
-        );
+        $val = $req->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
 
-        $contexto = stream_context_create($opciones);
+        $data = [
+            'username' => $req->username,
+            'password'=> $req->password
+        ];
 
-        $resultado = file_get_contents('http://127.0.0.1:8002/api/login', false, $contexto);
-        return $resultado;
+        if (Auth::attempt($data)) {
+            session('user', Auth::user()->username);
+            session('rol', Auth::user()->rol);
+            echo 'Logueado';
+            return redirect()->route('app.index');
+        } else {
+            echo 'No Logueado';
+            return redirect()->back()->with('message', 'Credenciales incorrectas!');
+        }
     }
 }

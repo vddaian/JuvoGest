@@ -10,9 +10,13 @@ class AppController extends Controller
     /* Función que redirije al usuario al home o al login */
     public function index(){
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('app.show');
         }else {
             return redirect()->route('login.index');
         }
+    }
+
+    public function show(){
+        return view('index');
     }
 }

@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partners_users', function (Blueprint $table) {
-            $table->integer('idSocio');
+            $table->string('dni');
             $table->string('idUsuario');
-            $table->foreign('idSocio')->references('idSocio')->on('partners');
+            $table->boolean('expulsado')->default(false);
+            $table->foreign('dni')->references('dni')->on('partners');
             $table->foreign('idUsuario')->references('id')->on('users');
-            $table->primary(['idSocio','idUsuario']);
+            $table->primary(['dni','idUsuario']);
             $table->timestamps();
         });
     }

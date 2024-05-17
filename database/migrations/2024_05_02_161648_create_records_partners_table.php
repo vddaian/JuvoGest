@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('records_partners', function (Blueprint $table) {
             $table->integer('idRegistro');
             $table->string('dni');
+            $table->boolean('deshabilitado')->default(false);
             $table->foreign('dni')->references('dni')->on('partners');
             $table->foreign('idRegistro')->references('idRegistro')->on('records');
             $table->primary(['dni','idRegistro']);

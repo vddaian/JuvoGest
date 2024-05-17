@@ -5,9 +5,20 @@
 @endsection
 @section('content')
     <div class="mt-5 d-flex align-items-center justify-content-center">
-        <div class="w-75 mt-5">
-            @if (isset($data))
-                {{$data}}
+
+        <div class="mt-3  p-5" style="width:80%">
+            @if (Session::has('info'))
+                @isset(Session::get('info')['message'])
+                    @isset(Session::get('info')['error'])
+                        <div class="w-100 mb-1 p-2 error">
+                            <p>{{ Session::get('info')['message'] }}</p>
+                        </div>
+                    @else
+                        <div class="w-100 mb-1 p-2 success">
+                            <p>{{ Session::get('info')['message'] }}</p>
+                        </div>
+                    @endisset
+                @endisset
             @endif
             <form action="{{ route('partner.store') }}" class="w-100" method="POST" enctype="multipart/form-data">
                 @csrf

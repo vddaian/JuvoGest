@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email', 50);
             $table->text('foto')->nullable();
             $table->enum('rol', ['Admin', 'User'])->default('User');
+            $table->boolean('deshabilitado')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

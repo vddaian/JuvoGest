@@ -11,11 +11,7 @@ class PartnerUser extends Model
     protected $table = 'partners_users';
     protected $fillable = [
         'dni',
-        'idUsuario'
-    ];
-
-    protected $hidden = [
-        'dni',
-        'idUsuario'
+        'idUsuario',
+        'fechaAlta',
     ];
 }

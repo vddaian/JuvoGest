@@ -58,15 +58,12 @@ class RegisterController extends Controller
                 /* Creación del usuario */
                 try {
                     User::create($data);
-                    echo 'Creado';
-                    return redirect()->back()->with('message', 'Cuenta creada con exito!');
+                    return redirect()->back()->with('data', 'Cuenta creada con exito!');
                 } catch (Exception $err) {
                     echo $err;
-                    return redirect()->back()->with([
-                        'error',
-                        $err,
-                        'message',
-                        'Algo no ha ido bien!'
+                    return redirect()->back()->with('data',[
+                        'error' => $err,
+                        'message' => 'Algo no ha ido bien!',
                     ]);
                 }
             }

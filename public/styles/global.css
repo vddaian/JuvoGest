@@ -1,4 +1,16 @@
+:root{
+    --pr-bg-color: #349e97;
+    --sg-bg-color: white;
+    --br-color: #c8ce13;
+    --font-color: white;
+}
 body{
     width: 100vw;
     height: 100vh;
+}
+.error{
+    background-color: #df978a;
+}
+.success{
+    background-color: #82cf8d;
 }

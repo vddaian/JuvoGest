@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('entidadOrg');
             $table->integer('numeroAsistentes');
             $table->dateTime('fechaEvento');
+            $table->boolean('deshabilitado')->default(false);
             $table->foreign('idSala')->references('idSala')->on('rooms');
             $table->timestamps();
         });

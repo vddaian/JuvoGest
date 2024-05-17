@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('fechaInc');
             $table->date('fechaFinExp');
             $table->text('informacion');
+            $table->boolean('deshabilitado')->default(false);
             $table->foreign('dni')->references('dni')->on('partners');
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->timestamps();

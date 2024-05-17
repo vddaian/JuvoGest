@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('dni');
             $table->string('idUsuario');
             $table->boolean('expulsado')->default(false);
+            $table->boolean('deshabilitado')->default(false);
+            $table->date('fechaAlta');
             $table->foreign('dni')->references('dni')->on('partners');
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->primary(['dni','idUsuario']);

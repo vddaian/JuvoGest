@@ -26,15 +26,15 @@
     </script>
 </head>
 
-<body class="d-flex flex-column">
+<body class="d-flex flex-column" style="background-color: #f2f6f7">
     @auth
         <header class="w-100 position-fixed">
-            <div class=" w-100 d-flex justify-content-end p-2" style="flex:1; background-color:red;">
+            <div class=" w-100 d-flex justify-content-end p-2 nav-block">
                 <strong>NombreUsuario</strong>
                 <span class="rounded-circle" style="background-color: white; height:25px; width:25px;"></span>
                 <button onclick="changeNavState()">Nav</button>
             </div>
-            <nav class="nav h-100 position-fixed" id='nav' hidden style="background-color:blue; ">
+            <nav class="nav h-100 position-fixed" id='nav' hidden>
                 <ul class="nav-list p-5">
                     <li>
                         <a class="nav-link" href="{{route('partner.index')}}">Socios</a>

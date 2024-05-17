@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('idSala');
             $table->string('nombre', 30);
             $table->enum('tipo', ['JUEGOS', 'OFICINA', 'OTROS']);
+            $table->boolean('deshabilitado')->default(false);
             $table->foreign('idSala')->references('idSala')->on('rooms');
             $table->timestamps();
         });

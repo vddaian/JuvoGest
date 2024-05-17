@@ -1,3 +1,64 @@
-.list-container{
-    width: 80%;
+.listTable,
+.listPanels {
+    /* background-color: var(--sg-bg-color); */
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.listTable {
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.listPanels {
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.listHead,
+.listRow {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.listHead {
+    background-color: var(--pr-bg-color);
+    color: var(--font-color);
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.listHead th {
+    border-right: 1px solid white;
+}
+
+.listHead th,
+.listRow td {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.listRow {
+    background-color: white;
+}
+
+.listRow td {
+    
+}
+.listRow td:first-child {
+    justify-content: center;
+}
+
+.listRow img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
 }

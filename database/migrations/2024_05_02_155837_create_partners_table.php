@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('email');
             $table->mediumText('alergias')->nullable();
             $table->text('foto');
+            $table->boolean('deshabilitado')->default(false);
             $table->timestamps();
         });
     }

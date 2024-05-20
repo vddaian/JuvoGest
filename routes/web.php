@@ -30,6 +30,7 @@ Route::controller(PartnerController::class)->group(function () {
     Route::post('/partners', 'filter')->name('partner.filter');
     Route::get('/partner/create','createIndex')->name('partner.create.index');
     Route::post('/partner/create', 'store')->name('partner.store');
+    Route::delete('/partner/delete/{dni}', 'disable')->name('partner.disable');
 });
 
 /* Rutas principales */

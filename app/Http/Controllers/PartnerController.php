@@ -185,6 +185,22 @@ class PartnerController extends Controller
         }
     }
 
+    /* Función que deshabilita el socio */
+    public function disable(Request $req){
+
+        /* Deshabilita la relación del centro con el socio */
+        $this->disableUserRelation($req->dni);
+
+        /* Comprueba si no existe alguna relacion con el socio */
+        if (!$this->usersRelationsExists($req->dni)) {
+
+            /* Deshabilita el socio */
+            $this->disablePartner($req->dni);
+        }
+        return redirect()->back()->with('info', ['message' => 'Socio eliminado con exito!']);
+
+    }
+
     /* Función que devuelve si el socio ya ha sido creado anteriormente */
     public function partnerExists($dni)
     {
@@ -202,6 +218,20 @@ class PartnerController extends Controller
             PartnerUser::where([
                 ['dni', $dni],
                 ['idUsuario', Auth::user()->id],
+            ])->exists()
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Función que devuelve si hay alguna relación existente entre un centro y un socio */
+    public function usersRelationsExists($dni){
+        if (
+            PartnerUser::where([
+                ['dni', $dni],
+                ['deshabilitado', false],
             ])->exists()
         ) {
             return true;
@@ -253,7 +283,7 @@ class PartnerController extends Controller
             Partner::where([
                 ['dni', $dni],
                 ['deshabilitado', true]
-            ])->update(['deshabilitado', false]);
+            ])->update(['deshabilitado'=> false]);
         }
     }
 
@@ -271,9 +301,30 @@ class PartnerController extends Controller
                 ['dni', $dni],
                 ['idUsuario', Auth::user()->id],
                 ['deshabilitado', true]
-            ])->update(['deshabilitado', false]);
+            ])->update(['deshabilitado'=> false]);
         }
     }
+
+
+    /* Funcion que realiza la deshabilitación del socio */
+    public function disablePartner($dni)
+    {
+        Partner::where([
+            ['dni', $dni],
+            ['deshabilitado', false]
+        ])->update(['deshabilitado'=> true]);
+    }
+
+    /* Funcion que realiza la deshabilitación del socio */
+    public function disableUserRelation($dni)
+    {
+        PartnerUser::where([
+            ['dni', $dni],
+            ['idUsuario', Auth::user()->id],
+            ['deshabilitado', false]
+        ])->update(['deshabilitado'=> true]);
+    }
+
 
 
     /* Funcion que comprueba los atributos numericos */

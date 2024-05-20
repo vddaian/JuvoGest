@@ -87,14 +87,16 @@
                         <td class="col-2">{{ $elem->email }}</td>
                         <td class="col-2">{{ $elem->fechaNacimiento }}</td>
                         <td class="col-1 p-0">
-                            <form class="w-100 h-100 m-0 d-flex justify-content-between">
-                                <button class="listFormButton col-4">
+                            <form method="POST" class="w-100 h-100 m-0 d-flex justify-content-between">
+                                @csrf
+                                {{-- <button class="listFormButton col-4">
                                     <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
                                 </button>
                                 <button class="listFormButton col-4">
                                     <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
-                                </button>
-                                <button class="listFormButton col-4">
+                                </button> --}}
+                                @method('DELETE')
+                                <button formaction="{{route('partner.disable', $elem->dni)}}" class="listFormButton col-4">
                                     <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
                                 </button>
                             </form>

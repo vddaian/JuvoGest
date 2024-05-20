@@ -37,7 +37,7 @@
 <body class="d-flex flex-column" style="background-color: #f2f6f7">
     @auth
         <header class="w-100 position-fixed">
-            <div class=" w-100 d-flex justify-content-between p-2 navBlock">
+            <div class=" w-100 d-flex justify-content-between p-2 navBlock" style="background-image:url({{asset('media/img/nav.png')}});">
                 <div class="navHam">
                     <div class="ham d-flex flex-column align-items-center justify-content-center h-100"  onclick="changeNavState()">
                         <span></span>
@@ -49,13 +49,13 @@
                     @if (session()->get('user'))
                         <strong class="mr-2">{{ session()->get('user') }}</strong>
                         <img src="data:image/png;base64,{{ session()->get('foto') }}" class="rounded-circle ml-4" style="cursor:pointer;"
-                            height="40px" width="40px" alt="userPhoto" onclick="changeUserNavState()">
+                            height="35px" width="35px" alt="userPhoto" onclick="changeUserNavState()">
                     @endif
                 </div>
             </div>
             <nav class="position-fixed navUserBlock" id="userNav" hidden>
-                <ul class="navList p-4">
-                    <li>
+                <ul class="navList p-3">
+                    <li class="mb-2">
                         <a class="nav-link" href="#">Ver Perfil</a>
                     </li>
                     <li>

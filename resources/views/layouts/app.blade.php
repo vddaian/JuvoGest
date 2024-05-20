@@ -16,11 +16,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @yield('head')
     <script>
-        function changeNavState(){
-            if($('#nav').attr('hidden')){
+        function changeNavState() {
+            if ($('#nav').attr('hidden')) {
                 $('#nav').prop("hidden", false);
-            } else{
+            } else {
                 $('#nav').prop("hidden", true);
+            }
+        }
+
+        function changeUserNavState() {
+            if ($('#userNav').attr('hidden')) {
+                $('#userNav').prop("hidden", false);
+            } else {
+                $('#userNav').prop("hidden", true);
             }
         }
     </script>
@@ -29,15 +37,39 @@
 <body class="d-flex flex-column" style="background-color: #f2f6f7">
     @auth
         <header class="w-100 position-fixed">
-            <div class=" w-100 d-flex justify-content-end p-2 nav-block">
-                <strong>NombreUsuario</strong>
-                <span class="rounded-circle" style="background-color: white; height:25px; width:25px;"></span>
-                <button onclick="changeNavState()">Nav</button>
+            <div class=" w-100 d-flex justify-content-between p-2 navBlock">
+                <div class="navHam">
+                    <div class="ham d-flex flex-column align-items-center justify-content-center h-100"  onclick="changeNavState()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="userInfo">
+                    @if (session()->get('user'))
+                        <strong class="mr-2">{{ session()->get('user') }}</strong>
+                        <img src="data:image/png;base64,{{ session()->get('foto') }}" class="rounded-circle ml-4" style="cursor:pointer;"
+                            height="40px" width="40px" alt="userPhoto" onclick="changeUserNavState()">
+                    @endif
+                </div>
             </div>
-            <nav class="nav h-100 position-fixed" id='nav' hidden>
-                <ul class="nav-list p-5">
+            <nav class="position-fixed navUserBlock" id="userNav" hidden>
+                <ul class="navList p-4">
                     <li>
-                        <a class="nav-link" href="{{route('partner.index')}}">Socios</a>
+                        <a class="nav-link" href="#">Ver Perfil</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('user.logout') }}">Desconectarse</a>
+                    </li>
+                </ul>
+            </nav>
+            <nav class="nav h-100 position-fixed" id='nav' hidden>
+                <ul class="navList p-5">
+                    <li>
+                        <a class="nav-link" href="{{ route('app.show') }}">Inicio</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('partner.index') }}">Socios</a>
                     </li>
                     <li>
                         <a class="nav-link" href="#">Salas</a>

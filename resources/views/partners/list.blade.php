@@ -24,65 +24,84 @@
                 @endisset
             @endif
 
-            <div class="d-flex justify-content-between w-100">
-                {{-- Bloque de filtros --}}
-                <div class="w-75 listPanels">
-                    <form action="" method="post" class="row">
+            <div class="d-flex justify-content-between w-100 px-2">
+                <div class="w-100 pb-0 listPanels">
+
+                    {{-- Bloque de filtros --}}
+                    <form action="" method="post" class="d-flex">
                         @csrf
-                        <div class="form-group col-3">
+                        <div class="form-group col-2 p-1">
                             <input type="text" class="form-control" name="dni" id="dni" placeholder="DNI">
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-2 p-1">
                             <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-2 p-1">
                             <input type="text" class="form-control" name="apellido" id="apellido"
                                 placeholder="Apellido">
                         </div>
-                        <div class="col-2">
-                            <button type="submit" class="btn border">
-                                <img src="{{asset('media/ico/search.ico')}}" width="20px" height="20px" alt="searchICO">
+
+                        {{-- Bloque accionadores --}}
+                        <div class="col-4 p-1">
+                            <button type="submit" class="btn border" formaction="{{ route('partner.filter') }}">
+                                <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
+                                    alt="searchICO">
                             </button>
                             <button type="reset" class="btn border">
-                                <img src="{{asset('media/ico/clean.ico')}}" width="20px" height="20px" alt="cleanICO">
+                                <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px" alt="cleanICO">
                             </button>
-                        </div>
-                    </form>
-                </div>
 
-                {{-- Bloque de accionadores --}}
-                <div class="listPanels">
+                        </div>
+
+                        {{-- Bloque paginador --}}
+
+                    </form>
                     <button onclick="window.location='{{ url('partner/create') }}'"
                         class="btn border rounded-circle">+</button>
+                    <div class="col-2 p-1 d-flex align-items-center">
+                        {{ $data->links('other.paginator') }}
+                    </div>
                 </div>
             </div>
             {{-- Tabla --}}
             <table class="w-100 listTable">
                 <tr class="row mt-3 mx-3 listHead">
                     <th class="col-1"></th>
-                    <th class="col-2">DNI</th>
+                    <th class="col-1">DNI</th>
                     <th class="col-3">Nombre</th>
                     <th class="col-1">Localidad</th>
                     <th class="col-1">Teléfono</th>
                     <th class="col-2">Email</th>
-                    <th class="col-1">F.Nacimiento</th>
+                    <th class="col-2">F.Nacimiento</th>
                     <th class="col-1"></th>
                 </tr>
                 @foreach ($data as $elem)
                     <tr class="row mx-3 listRow">
-                        <td class="col-1"><img src="data:image/png;base64,{{$elem->foto}}" alt=""></td>
-                        <td class="col-2">{{$elem->dni}}</td>
-                        <td class="col-3">{{$elem->prNombre.' '.$elem->sgNombre.' '.$elem->prApellido.' '.$elem->sgApellido}}</td>
-                        <td class="col-1">{{$elem->localidad}}</td>
-                        <td class="col-1">{{$elem->telefono}}</td>
-                        <td class="col-2">{{$elem->email}}</td>
-                        <td class="col-1">{{$elem->fechaNacimiento}}</td>
-                        <td class="col-1">
-                            <button></button>
+                        <td class="col-1"><img src="data:image/png;base64,{{ $elem->foto }}" alt=""></td>
+                        <td class="col-1">{{ $elem->dni }}</td>
+                        <td class="col-3">
+                            {{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}
+                        </td>
+                        <td class="col-1">{{ $elem->localidad }}</td>
+                        <td class="col-1">{{ $elem->telefono }}</td>
+                        <td class="col-2">{{ $elem->email }}</td>
+                        <td class="col-2">{{ $elem->fechaNacimiento }}</td>
+                        <td class="col-1 p-0">
+                            <form class="w-100 h-100 m-0 d-flex justify-content-between">
+                                <button class="listFormButton col-4">
+                                    <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                </button>
+                                <button class="listFormButton col-4">
+                                    <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                </button>
+                                <button class="listFormButton col-4">
+                                    <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                </button>
+                            </form>
+
                         </td>
                     </tr>
                 @endforeach
-
             </table>
         </div>
     </div>

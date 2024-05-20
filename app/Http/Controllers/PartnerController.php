@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Partner;
 use App\Models\PartnerUser;
 use Exception;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -18,10 +19,11 @@ class PartnerController extends Controller
             /* Recoge todas las relaciones de los socios con el centro */
             $ids = PartnerUser::where([
                 ['idUsuario', Auth::user()->id],
-                ['deshabilitado', false]])->get(['dni']);
+                ['deshabilitado', false]
+            ])->get(['dni']);
 
             /* Recoge todos los socios relacionados con el centro */
-            $objs = Partner::whereIn('dni', $ids)->get();
+            $objs = Partner::whereIn('dni', $ids)->paginate(25);
 
             return view('partners.list')->with('data', $objs);
         } catch (Exception $err) {
@@ -30,6 +32,52 @@ class PartnerController extends Controller
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
             ]);
+        }
+    }
+
+    /* Función que envia a la lista de socios filtrada */
+    public function filter(Request $req)
+    {
+        /* Comprueba si alguno de los campos ha sido rellenado */
+        if (!$req->filled('dni') && !$req->filled('nombre') && !$req->filled('apellido')) {
+            return redirect()->route('partner.index');
+        } else {
+            try {
+                $query = Partner::query();
+
+                /* Recoge todas las relaciones de los socios con el centro */
+                $ids = PartnerUser::where([
+                    ['idUsuario', Auth::user()->id],
+                    ['deshabilitado', false]
+                ])->get(['dni']);
+
+                /* Comprueba si los campos se han rellenado y añade las condiciones */
+                if ($req->filled('dni')) {
+                    $query->where('dni', $req->dni);
+                }
+
+                if ($req->filled('nombre')) {
+                    $query->where('prNombre', 'like', '%' . $req->nombre . '%');
+                    $query->where('SgNombre', 'like', '%' . $req->nombre . '%');
+                }
+
+                if ($req->filled('apellido')) {
+                    $query->where('prApellido', 'like', '%' . $req->apellido . '%');
+                    $query->where('sgApellido', 'like', '%' . $req->apellido . '%');
+                }
+
+                /* Recoge los socios del centro */
+                $query->whereIn('dni', $ids);
+
+                $objs = $query->paginate(25);
+                return view('partners.list')->with('data', $objs);
+            } catch (Exception $err) {
+                echo $err;
+                return redirect()->route('app.show')->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]);
+            }
         }
     }
 
@@ -46,28 +94,22 @@ class PartnerController extends Controller
         /* Comprueba si el socio ya se ha creado anteriormente */
         if ($this->partnerExists($req->dni)) {
 
+            /* Comprueba si el socio esta deshabilitado */
+            if ($this->partnerIsDisabled($req->dni)) {
+
+                /* Habilita el socio */
+                $this->activePartner($req->dni);
+            }
+
             /* Comprueba si hay una relación entre el centro y el socio y si esta deshabilitado */
-            if (
-                PartnerUser::where([
-                    ['dni', $req->dni],
-                    ['idUsuario', Auth::user()->id],
-                    ['deshabilitado', true]
-                ])->exists()
-            ) {
-                PartnerUser::where([
-                    ['dni', $req->dni],
-                    ['idUsuario', Auth::user()->id],
-                    ['deshabilitado', true]
-                ])->update(['deshabilitado' => 'false']);
+            if ($this->userRelationIsDisabled($req->dni)) {
+                $this->activeUserRelation($req->dni);
                 return redirect()->back()->with('info', [
                     'message' => 'Socio creado con exito!'
                 ]);
 
                 /* Comprueba si hay una relación entre el centro y el socio*/
-            } else if (PartnerUser::where([
-                ['dni', $req->dni],
-                ['idUsuario', Auth::user()->id],
-            ])->exists()) {
+            } else if ($this->userRelationExists($req->dni)) {
                 return redirect()->back()->with('info', [
                     'error' => true,
                     'message' => 'El usuario ya esta relacionado!'
@@ -86,7 +128,7 @@ class PartnerController extends Controller
 
             /* Validacion de los atributos numericos */
             if ($this->checkNumeric($req->cp, $req->tel, $req->prTelResp, $req->sgTelResp)) {
-                echo 'Los numeros estan bien';
+
                 /* Validación de los atributos restantes */
                 $val = $req->validate([
                     'dni' => 'required|unique:partners|max:9',
@@ -98,9 +140,13 @@ class PartnerController extends Controller
                     'direccion' => 'required|max:50',
                     'localidad' => 'required|max:20',
                     'email' => 'required|email|max:50',
-                    'foto' => 'required|image|dimensions:max_width=400,max_height=400'
+                    'foto' => 'image|dimensions:max_width=400,max_height=400'
                 ]);
-
+                if ($req->file('foto')) {
+                    $photo = file_get_contents($req->file('foto'));
+                } else {
+                    $photo = File::get(public_path('media/img/user-default.png'));
+                }
                 /* Almacenamos toda la información del socio */
                 $data = [
                     'dni' => $req->dni,
@@ -117,7 +163,7 @@ class PartnerController extends Controller
                     'sgTelefonoResp' => $req->sgTelResp,
                     'email' => $req->email,
                     'alergias' => $req->alergias,
-                    'foto' => base64_encode(file_get_contents($req->file('foto')))
+                    'foto' => base64_encode($photo)
                 ];
 
                 /* Creación del socio */
@@ -149,6 +195,87 @@ class PartnerController extends Controller
         }
     }
 
+    /* Función que devuelve si el socio ya ha sido relacionado anteriormente */
+    public function userRelationExists($dni)
+    {
+        if (
+            PartnerUser::where([
+                ['dni', $dni],
+                ['idUsuario', Auth::user()->id],
+            ])->exists()
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Función que devuelve si el socio ya ha sido creado anteriormente */
+    public function partnerIsDisabled($dni)
+    {
+        if (
+            Partner::where(
+                ['dni', $dni],
+                ['deshabilitado', true]
+            )->exists()
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Función que devuelve si la relación con el usuario esta deshabilitada*/
+    public function userRelationIsDisabled($dni)
+    {
+        if (
+            PartnerUser::where([
+                ['dni', $dni],
+                ['idUsuario', Auth::user()->id],
+                ['deshabilitado', true]
+            ])->exists()
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Metodo que activa un socio */
+    public function activePartner($dni)
+    {
+        if (
+            Partner::where([
+                ['dni', $dni],
+                ['deshabilitado', true]
+            ])->exists()
+        ) {
+            Partner::where([
+                ['dni', $dni],
+                ['deshabilitado', true]
+            ])->update(['deshabilitado', false]);
+        }
+    }
+
+    /* Metodo que activa la relacion con el usuario */
+    public function activeUserRelation($dni)
+    {
+        if (
+            PartnerUser::where([
+                ['dni', $dni],
+                ['idUsuario', Auth::user()->id],
+                ['deshabilitado', true]
+            ])->exists()
+        ) {
+            PartnerUser::where([
+                ['dni', $dni],
+                ['idUsuario', Auth::user()->id],
+                ['deshabilitado', true]
+            ])->update(['deshabilitado', false]);
+        }
+    }
+
+
     /* Funcion que comprueba los atributos numericos */
     public function checkNumeric($cp, $tel, $prTelResp, $sgTelResp)
     {
@@ -158,7 +285,7 @@ class PartnerController extends Controller
                 if (strlen($sgTelResp) != 9) {
                     $val = false;
                 }
-            } else{
+            } else {
                 $val = false;
             }
         }
@@ -178,8 +305,4 @@ class PartnerController extends Controller
 
         return $val;
     }
-
-    /*  public function indexWFilter(Request $req)
-    {
-    } */
 }

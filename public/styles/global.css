@@ -1,16 +1,31 @@
 :root{
     --pr-bg-color: #349e97;
-    --sg-bg-color: white;
-    --br-color: #c8ce13;
+    --sg-bg-color: #c8ce13;
+    --br-color: #cb6ce6; /*c8ce13*/
+    --hov-color:#43b299;
     --font-color: white;
 }
 body{
     width: 100vw;
     height: 100vh;
 }
+
+.error, .success{
+    border-radius: 5px;
+    animation: slideOut 1s ease 1;
+}
 .error{
     background-color: #df978a;
 }
 .success{
     background-color: #82cf8d;
+}
+
+@keyframes slideOut {
+    from{
+        height: 0;
+    }
+    to{
+        height: fit-content;
+    }
 }

@@ -94,7 +94,7 @@
                     <label for="foto">Foto(Max 400px x 400px):</label>
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Crear</button>
+                <button type="submit" class="btn btn-success mt-3">Crear</button>
             </form>
         </div>
     </div>

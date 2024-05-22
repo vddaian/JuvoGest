@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partners', function (Blueprint $table) {
-            $table->string('dni',9)->primary();
+            $table->integer('idSocio', true);
+            $table->string('dni',9);
             $table->string('prNombre', 20);
             $table->string('sgNombre', 20)->nullable();
             $table->string('prApellido');

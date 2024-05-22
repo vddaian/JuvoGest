@@ -10,7 +10,7 @@ class PartnerUser extends Model
     use HasFactory;
     protected $table = 'partners_users';
     protected $fillable = [
-        'dni',
+        'idSocio',
         'idUsuario',
         'fechaAlta',
     ];

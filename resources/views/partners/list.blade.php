@@ -48,24 +48,21 @@
                         </div>
 
                         <div class="form-group col-2 p-1">
-                            <input type="date" class="form-control" name="fecha" id="fecha"
-                                placeholder="Fecha">
+                            <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
                         </div>
 
                         {{-- Bloque accionadores --}}
-                        <div class="col-2 p-1">
-                            <button type="submit" class="btn border" onclick="charge()" formaction="{{ route('partner.filter') }}">
+                        <div class="col-3 p-1">
+                            <button type="submit" class="btn border" onclick="charge()"
+                                formaction="{{ route('partner.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
                                     alt="searchICO">
                             </button>
                             <button type="reset" class="btn border">
                                 <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px" alt="cleanICO">
                             </button>
-                                <a href="{{ url('partner/create') }}"
-                                    class="btn border">+</a>
+                            <a href="{{ url('partner/create') }}" class="btn border">+</a>
                         </div>
-
-                        
 
                     </form>
 
@@ -99,21 +96,30 @@
                         <td class="col-2">{{ $elem->email }}</td>
                         <td class="col-2">{{ $elem->fechaNacimiento }}</td>
                         <td class="col-1 p-0">
-                            <form method="POST" class="w-100 h-100 m-0 d-flex justify-content-between">
-                                @csrf
-                                <button class="listFormButton col-4">
-                                    <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
-                                </button>
-                                <button class="listFormButton col-4">
-                                    <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
-                                </button>
-                                @method('DELETE')
-                                <button formaction="{{ route('partner.disable', $elem->dni) }}"
-                                    class="listFormButton col-4">
-                                    <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
-                                </button>
-                            </form>
+                            <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                    action="{{ route('partner.view', $elem->idSocio) }}" method="get">
+                                    @csrf
+                                    <button class="listFormButton">
+                                        <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                    </button>
+                                </form>
+                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                    action="{{ route('partner.edit', $elem->idSocio) }}" method="get">
+                                    @csrf
+                                    <button class="listFormButton">
+                                        <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                    </button>
+                                </form>
+                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                    action="{{ route('partner.disable', $elem->idSocio) }}" method="post">
+                                    @csrf
+                                    <button class="listFormButton">
+                                        <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                    </button>
+                                </form>
 
+                            </div>
                         </td>
                     </tr>
                 @endforeach

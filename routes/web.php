@@ -29,8 +29,11 @@ Route::controller(PartnerController::class)->group(function () {
     Route::get('/partners', 'index')->name('partner.index');
     Route::post('/partners', 'filter')->name('partner.filter');
     Route::get('/partner/create','createIndex')->name('partner.create.index');
+    Route::get('/partner/edit/{id}', 'editIndex')->name('partner.edit');
+    Route::get('/partner/view/{id}', 'viewIndex')->name('partner.view');
+    Route::post('/partner/disable/{id}', 'disable')->name('partner.disable');
     Route::post('/partner/create', 'store')->name('partner.store');
-    Route::delete('/partner/delete/{dni}', 'disable')->name('partner.disable');
+    Route::put('/partner/update', 'update')->name('partner.update');
 });
 
 /* Rutas principales */

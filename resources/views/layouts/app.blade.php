@@ -58,36 +58,36 @@
             <nav class="nav h-100 position-fixed" id='nav' hidden>
                 <ul class="navList p-5">
                     <li>
-                        <a class="nav-link" href="{{ route('app.show') }}">Inicio</a>
+                        <a onclick="charge" class="nav-link" href="{{ route('app.show') }}">Inicio</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{{ route('partner.index') }}">Socios</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('partner.index') }}">Socios</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Salas</a>
+                        <a onclick="charge()" class="nav-link" href="#">Salas</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Incidencias</a>
+                        <a onclick="charge()" class="nav-link" href="#">Incidencias</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Registros</a>
+                        <a onclick="charge()" class="nav-link" href="#">Registros</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Reportes</a>
+                        <a onclick="charge()" class="nav-link" href="#">Reportes</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Eventos</a>
+                        <a onclick="charge()" class="nav-link" href="#">Eventos</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Estadisticas</a>
-                    </li>
-                    <hr class="del">
-                    <li>
-                        <a class="nav-link" href="#">Info App / Soporte</a>
+                        <a onclick="charge()" class="nav-link" href="#">Estadisticas</a>
                     </li>
                     <hr class="del">
                     <li>
-                        <a class="nav-link" href="#">Crear usuario</a>
+                        <a onclick="charge()" class="nav-link" href="#">Info App / Soporte</a>
+                    </li>
+                    <hr class="del">
+                    <li>
+                        <a onclick="charge()" class="nav-link" href="#">Crear usuario</a>
                     </li>
                 </ul>
             </nav>

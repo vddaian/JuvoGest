@@ -15,6 +15,6 @@ function changeUserNavState() {
 }
 
 function charge() {
-    $('#bar1').prop("hidden", true);
-    $('#bar2').prop("hidden", true);
+    $('#bar1').prop("hidden", false);
+    $('#bar2').prop("hidden", false);
 }

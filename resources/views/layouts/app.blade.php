@@ -14,32 +14,19 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{asset('js/global.js')}}"></script>
     @yield('head')
-    <script>
-        function changeNavState() {
-            if ($('#nav').attr('hidden')) {
-                $('#nav').prop("hidden", false);
-            } else {
-                $('#nav').prop("hidden", true);
-            }
-        }
-
-        function changeUserNavState() {
-            if ($('#userNav').attr('hidden')) {
-                $('#userNav').prop("hidden", false);
-            } else {
-                $('#userNav').prop("hidden", true);
-            }
-        }
-    </script>
+    
 </head>
 
 <body class="d-flex flex-column" style="background-color: #f2f6f7">
     @auth
         <header class="w-100 position-fixed">
-            <div class=" w-100 d-flex justify-content-between p-2 navBlock" style="background-image:url({{asset('media/img/nav.png')}});">
+            <div class=" w-100 d-flex justify-content-between p-2 navBlock"
+                style="background-image:url({{ asset('media/img/nav.png') }});">
                 <div class="navHam">
-                    <div class="ham d-flex flex-column align-items-center justify-content-center h-100"  onclick="changeNavState()">
+                    <div class="ham d-flex flex-column align-items-center justify-content-center h-100"
+                        onclick="changeNavState()">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -48,10 +35,15 @@
                 <div class="userInfo">
                     @if (session()->get('user'))
                         <strong class="mr-2">{{ session()->get('user') }}</strong>
-                        <img src="data:image/png;base64,{{ session()->get('foto') }}" class="rounded-circle ml-4" style="cursor:pointer;"
-                            height="35px" width="35px" alt="userPhoto" onclick="changeUserNavState()">
+                        <img src="data:image/png;base64,{{ session()->get('foto') }}" class="rounded-circle ml-4"
+                            style="cursor:pointer;" height="35px" width="35px" alt="userPhoto"
+                            onclick="changeUserNavState()">
                     @endif
                 </div>
+            </div>
+            <div class="w-100 position-fixed chargeBar">
+                <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar1"></span>
+                <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar2"></span>
             </div>
             <nav class="position-fixed navUserBlock" id="userNav" hidden>
                 <ul class="navList p-3">
@@ -89,11 +81,11 @@
                     <li>
                         <a class="nav-link" href="#">Estadisticas</a>
                     </li>
-                    <hr>
+                    <hr class="del">
                     <li>
                         <a class="nav-link" href="#">Info App / Soporte</a>
                     </li>
-                    <hr>
+                    <hr class="del">
                     <li>
                         <a class="nav-link" href="#">Crear usuario</a>
                     </li>

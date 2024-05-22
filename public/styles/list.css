@@ -24,7 +24,7 @@
 }
 
 .listHead {
-    background-color: var(--pr-bg-color);
+    background-color: var(--sg-bg-color);
     color: var(--font-color);
     border-radius: 5px;
     border-bottom-left-radius: 0;
@@ -50,9 +50,8 @@
     background-color: white;
 }
 
-.listRow td {
-    
-}
+.listRow td {}
+
 .listRow td:first-child {
     justify-content: center;
 }
@@ -63,25 +62,34 @@
     border-radius: 50%;
 }
 
-.listFormButton{
+.listFormButton {
     margin: 0;
     border: none;
     background-color: white;
 }
 
-.listFormButton img{
+.listFormButton img {
     width: 25px;
     height: 25px;
 }
 
-.listFormButton:hover{
+.listFormButton:hover {
     background-color: var(--hov-color);
 }
 
-.paginatorElement{
+.titleBlock {
+    height: fit-content;
+    background-color: var(--sg-bg-color);
+}
+
+.titleBlock h2{
+    color: var(--font-color);
+}
+.paginatorElement {
     padding: 5px;
 }
-.paginatorElement img{
+
+.paginatorElement img {
     height: 40px;
     width: 40px;
 }

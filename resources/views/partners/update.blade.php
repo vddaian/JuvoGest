@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="titleBlock">
-        <h2 class="mt-5 p-4">CREAR NUEVO SOCIO</h2>
+        <h2 class="mt-5 p-4">ACTUALIZAR SOCIO </h2>
     </div>
 
     <div class="d-flex align-items-center justify-content-center">

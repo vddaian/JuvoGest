@@ -1,8 +1,8 @@
 :root{
     --pr-bg-color: #349e97;
-    --sg-bg-color: #c8ce13;
+    --sg-bg-color: #38918b;
     --br-color: #cb6ce6; /*c8ce13*/
-    --hov-color:#cb6ce6;
+    --hov-color:#D4DA1E;
     --font-color: white;
 }
 body{
@@ -10,22 +10,29 @@ body{
     height: 100vh;
 }
 
+.del{
+    height: 2px;
+    background-color: var(--hov-color);
+    border: 1px solid var(--hov-color);
+    border-radius: 5px;
+    opacity: 1;
+}
 .error, .success{
     border-radius: 5px;
-    animation: slideOut 1s ease 1;
+    animation: slideOut 1s cubic-bezier(0, 0, 1, 1) 1;
 }
 .error{
-    background-color: #df978a;
+    background-color: #f6c6be;
 }
 .success{
-    background-color: #82cf8d;
+    background-color: #d0f8d6;
 }
 
 @keyframes slideOut {
     from{
-        height: 0;
+        opacity: 0;
     }
     to{
-        height: fit-content;
+        opacity: 1;
     }
 }

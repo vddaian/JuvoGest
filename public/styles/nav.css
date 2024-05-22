@@ -12,7 +12,7 @@
 
 .navList a:hover  {
     padding-left: 0;
-    color: pink ;
+    color: var(--hov-color) ;
 }
 .navBlock{
     color:white;
@@ -44,4 +44,34 @@
 
 .userInfo strong{
     margin-right: 5px;
+}
+
+.chargeBar{
+    display: flex;
+    height:4.5px;
+    background-color: var(--hov-color);
+}
+
+.chargeSubBar{
+    position: relative;
+    display: block;
+    background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgb(0, 213, 255) 50%, rgba(0,212,255,0) 100%);
+}
+
+#bar1{
+    animation: charge 2s infinite cubic-bezier(0,1,1,.05);
+}
+
+#bar2{
+    animation: charge 2s infinite reverse cubic-bezier(0,1,1,.05);
+}
+
+
+@keyframes charge {
+    to{
+        transform: translate(-200%);
+    }
+    from{
+        transform: translate(400%);
+    }
 }

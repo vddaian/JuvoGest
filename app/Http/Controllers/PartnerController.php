@@ -39,7 +39,7 @@ class PartnerController extends Controller
     public function filter(Request $req)
     {
         /* Comprueba si alguno de los campos ha sido rellenado */
-        if (!$req->filled('dni') && !$req->filled('nombre') && !$req->filled('apellido')) {
+        if (!$req->filled('dni') && !$req->filled('nombre') && !$req->filled('apellido') && !$req->filled('fecha')) {
             return redirect()->route('partner.index');
         } else {
             try {
@@ -64,6 +64,10 @@ class PartnerController extends Controller
                 if ($req->filled('apellido')) {
                     $query->where('prApellido', 'like', '%' . $req->apellido . '%');
                     $query->where('sgApellido', 'like', '%' . $req->apellido . '%');
+                }
+
+                if ($req->filled('fecha')) {
+                    $query->where('fechaNacimiento', $req->fecha);
                 }
 
                 /* Recoge los socios del centro */
@@ -186,7 +190,8 @@ class PartnerController extends Controller
     }
 
     /* Función que deshabilita el socio */
-    public function disable(Request $req){
+    public function disable(Request $req)
+    {
 
         /* Deshabilita la relación del centro con el socio */
         $this->disableUserRelation($req->dni);
@@ -227,7 +232,8 @@ class PartnerController extends Controller
     }
 
     /* Función que devuelve si hay alguna relación existente entre un centro y un socio */
-    public function usersRelationsExists($dni){
+    public function usersRelationsExists($dni)
+    {
         if (
             PartnerUser::where([
                 ['dni', $dni],
@@ -244,10 +250,10 @@ class PartnerController extends Controller
     public function partnerIsDisabled($dni)
     {
         if (
-            Partner::where(
+            Partner::where([
                 ['dni', $dni],
                 ['deshabilitado', true]
-            )->exists()
+            ])->exists()
         ) {
             return true;
         } else {
@@ -283,7 +289,7 @@ class PartnerController extends Controller
             Partner::where([
                 ['dni', $dni],
                 ['deshabilitado', true]
-            ])->update(['deshabilitado'=> false]);
+            ])->update(['deshabilitado' => false]);
         }
     }
 
@@ -301,7 +307,7 @@ class PartnerController extends Controller
                 ['dni', $dni],
                 ['idUsuario', Auth::user()->id],
                 ['deshabilitado', true]
-            ])->update(['deshabilitado'=> false]);
+            ])->update(['deshabilitado' => false]);
         }
     }
 
@@ -312,7 +318,7 @@ class PartnerController extends Controller
         Partner::where([
             ['dni', $dni],
             ['deshabilitado', false]
-        ])->update(['deshabilitado'=> true]);
+        ])->update(['deshabilitado' => true]);
     }
 
     /* Funcion que realiza la deshabilitación del socio */
@@ -322,7 +328,7 @@ class PartnerController extends Controller
             ['dni', $dni],
             ['idUsuario', Auth::user()->id],
             ['deshabilitado', false]
-        ])->update(['deshabilitado'=> true]);
+        ])->update(['deshabilitado' => true]);
     }
 
 

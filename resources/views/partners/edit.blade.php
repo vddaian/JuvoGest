@@ -28,9 +28,10 @@
             <form action="{{ route('partner.update') }}" method="POST" enctype="multipart/form-data">
                 @method('put')
                 @csrf
+                <input type="hidden" name="id" id="id" value="{{$data[0]['idSocio']}}">
                 <div class="form-groupd">
                     <label for="dni">DNI:</label>
-                    <input type="text" class="form-control" name="dni" id="dni" value="{{$data[0]['dni']}}">
+                    <input type="text" class="form-control" name="dni" id="dni" value="{{$data[0]['dni']}}" readonly>
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
@@ -55,7 +56,7 @@
 
                 <div class="form-group">
                     <label for="fechaNacimiento">Fecha nacimiento:</label>
-                    <input type="date" class="form-control" name="fechaNacimiento" id="{{$data[0]['fechaNacimiento']}}">
+                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" value="{{$data[0]['fechaNacimiento']}}">
                 </div>
                 <div class="form-group">
                     <label for="direccion">Direccion:</label>
@@ -100,7 +101,7 @@
                     <label for="foto">Foto(Max 400px x 400px):</label>
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-success mt-3">Actualizar</button>
+                <button type="submit" onclick="charge()" class="btn btn-success mt-3">Actualizar</button>
             </form>
         </div>
     </div>

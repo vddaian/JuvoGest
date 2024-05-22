@@ -29,7 +29,7 @@
                 @csrf
                 <div class="form-groupd">
                     <label for="dni">DNI:</label>
-                    <input type="text" class="form-control" name="dni" id="dni" value="1234568D">
+                    <input type="text" class="form-control" name="dni" id="dni" value="12345678D">
                 </div>
                 <div class="row">
                     <div class="form-group col-6">

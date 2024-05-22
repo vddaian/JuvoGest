@@ -147,10 +147,9 @@ class PartnerController extends Controller
             if ($this->checkNumeric($req->cp, $req->tel, $req->prTelResp, $req->sgTelResp)) {
 
                 // Validación de los atributos restantes .-
+                $val = $req->validate(['dni' => 'required|unique:partners|max:9']);
                 $val = $this->validateOthers($req);
-                $req->validate([
-                    'dni' => 'required|unique:partners|max:9',
-                ]);
+
                 // Comprueba si el campo de la imagen se ha rellenado .-
                 if ($req->file('foto')) {
                     $photo = file_get_contents($req->file('foto'));
@@ -202,26 +201,59 @@ class PartnerController extends Controller
     }
 
     /* Función que realiza la actualización del socio */
-    public function update()
+    public function update(Request $req)
     {
-    }
 
-    /* Función que devuelve el id del usuario */
-    public function getPartnerId($dni)
-    {
-        return Partner::where('dni', $dni)->get(['idSocio'])[0]['idSocio'];
-    }
+        // Valida los datos numericos .-
+        if ($this->checkNumeric($req->cp, $req->tel, $req->prTelResp, $req->sgTelResp)) {
+            try {
+                // Valida los demas campos .-
+                $val = $this->validateOthers($req);
 
-    /* Función que devuelve toda la información del socio */
-    public function getPartnerInfo($id)
-    {
-        return Partner::where('idSocio', $id)->get();
+                // Comprueba si el campo de la imagen ha sido rellenada .-
+                if ($req->file('foto')) {
+                    $photo = base64_encode(file_get_contents($req->file('foto')));
+                } else {
+                    $photo = $this->getPartnerPhoto($req->id);
+                }
+
+                // Almacenamos toda la información del socio .-
+                $data = [
+                    'prNombre' => $req->prNombre,
+                    'sgNombre' => $req->sgNombre,
+                    'prApellido' => $req->prApellido,
+                    'sgApellido' => $req->sgApellido,
+                    'fechaNacimiento' => $req->fechaNacimiento,
+                    'direccion' => $req->direccion,
+                    'localidad' => $req->localidad,
+                    'cp' => $req->cp,
+                    'telefono' => $req->tel,
+                    'prTelefonoResp' => $req->prTelResp,
+                    'sgTelefonoResp' => $req->sgTelResp,
+                    'email' => $req->email,
+                    'alergias' => $req->alergias,
+                    'foto' => $photo
+                ];
+
+
+
+                // Realiza la actualización del socio .-
+                Partner::where('idSocio', $req->id)->update($data);
+
+                return redirect()->back()->with('info', ['message' => 'Socio actualizado con exito!']);
+            } catch (Exception $err) {
+
+                return redirect()->back()->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]);
+            }
+        }
     }
 
     /* Función que deshabilita el socio */
     public function disable(Request $req)
     {
-
         // Deshabilita la relación del centro con el socio .-
         $this->disableUserRelation($req->id);
 
@@ -234,13 +266,33 @@ class PartnerController extends Controller
         return redirect()->back()->with('info', ['message' => 'Socio eliminado con exito!']);
     }
 
+    /* Función que devuelve el id del usuario */
+    public function getPartnerId($dni)
+    {
+        return Partner::where('dni', $dni)->get(['idSocio'])[0]['idSocio'];
+    }
+
+    /* Función que devuelve el id del usuario */
+    public function getPartnerPhoto($id)
+    {
+        return Partner::where('idSocio', $id)->get(['foto'])[0]['foto'];
+    }
+
+    /* Función que devuelve toda la información del socio */
+    public function getPartnerInfo($id)
+    {
+        return Partner::where('idSocio', $id)->get();
+    }
+
     /* Función que devuelve si el socio ya ha sido creado anteriormente */
     public function partnerExists($dni, $fecha)
     {
-        if (Partner::where([
-            ['dni', $dni],
-            ['fechaNacimiento', $fecha]
-        ])->exists()) {
+        if (
+            Partner::where([
+                ['dni', $dni],
+                ['fechaNacimiento', $fecha]
+            ])->exists()
+        ) {
             return $this->getPartnerId($dni);
         } else {
             return null;
@@ -363,11 +415,10 @@ class PartnerController extends Controller
     }
 
 
-    /* Función que realiza la validación de los campos que no son numericos */
+    /* Metodo que realiza la validación de los campos que no son numericos */
     public function validateOthers($req)
     {
         $val = $req->validate([
-            'dni' => 'required|max:9',
             'prNombre' => 'required|max:20',
             'sgNombre' => 'max:20',
             'prApellido' => 'required|max:20',
@@ -395,10 +446,17 @@ class PartnerController extends Controller
             }
         }
 
-        if (is_numeric($cp) && is_numeric($tel) && is_numeric($prTelResp)) {
-            if (strlen($tel) != 9) {
+        if ($tel) {
+            if (is_numeric($tel)) {
+                if (strlen($tel) != 9) {
+                    $val = false;
+                }
+            } else {
                 $val = false;
             }
+        }
+
+        if (is_numeric($cp) && is_numeric($prTelResp)) {
             if (strlen($prTelResp) != 9) {
                 $val = false;
             }

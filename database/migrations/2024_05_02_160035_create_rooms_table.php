@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('idSala', true);
             $table->string('idUsuario');
             $table->string('nombre', 30);
-            $table->text('informacion');
+            $table->text('informacion')->nullable();
             $table->boolean('deshabilitado')->default(false);
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->timestamps();

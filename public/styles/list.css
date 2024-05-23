@@ -50,12 +50,6 @@
     background-color: white;
 }
 
-.listRow td {}
-
-.listRow td:first-child {
-    justify-content: center;
-}
-
 .listRow img {
     width: 45px;
     height: 45px;

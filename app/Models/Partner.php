@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Partner extends Model
 {
     use HasFactory;
-        /**
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -41,5 +42,4 @@ class Partner extends Model
     protected $hidden = [
         'dni',
     ];
-
 }

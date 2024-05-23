@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,15 +26,27 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/logout', 'logout')->name('user.logout');
 });
 
+/* Rutas del socio */
 Route::controller(PartnerController::class)->group(function () {
     Route::get('/partners', 'index')->name('partner.index');
-    Route::post('/partners', 'filter')->name('partner.filter');
-    Route::get('/partner/create','createIndex')->name('partner.create.index');
+    Route::get('/partner/create','createIndex')->name('partner.create');
     Route::get('/partner/edit/{id}', 'editIndex')->name('partner.edit');
     Route::get('/partner/view/{id}', 'viewIndex')->name('partner.view');
-    Route::post('/partner/disable/{id}', 'disable')->name('partner.disable');
+    Route::post('/partners', 'filter')->name('partner.filter');
     Route::post('/partner/create', 'store')->name('partner.store');
+    Route::post('/partner/disable/{id}', 'disable')->name('partner.disable');
     Route::put('/partner/update', 'update')->name('partner.update');
+});
+
+/* Rutas de la sala */
+Route::controller(RoomController::class)->group(function () {
+    Route::get('/rooms', 'index')->name('room.index');
+    Route::get('/room/create', 'createIndex')->name('room.create');
+    Route::get('/room/edit/{id}', 'editIndex')->name('room.edit');
+    Route::get('/room/view/{id}', 'viewIndex')->name('room.view');
+    Route::post('/rooms', 'filter')->name('room.filter');
+    Route::post('/room/create', 'store')->name('room.store');
+    Route::post('/room/disable/{id}', 'disable')->name('room.disable');
 });
 
 /* Rutas principales */

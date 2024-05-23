@@ -58,13 +58,13 @@
             <nav class="nav h-100 position-fixed" id='nav' hidden>
                 <ul class="navList p-5">
                     <li>
-                        <a onclick="charge" class="nav-link" href="{{ route('app.show') }}">Inicio</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('app.show') }}">Inicio</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('partner.index') }}">Socios</a>
                     </li>
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Salas</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('room.index') }}">Salas</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="#">Incidencias</a>

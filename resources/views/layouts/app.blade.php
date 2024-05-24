@@ -14,9 +14,9 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="{{asset('js/global.js')}}"></script>
+    <script src="{{ asset('js/global.js') }}"></script>
     @yield('head')
-    
+
 </head>
 
 <body class="d-flex flex-column" style="background-color: #f2f6f7">
@@ -65,6 +65,9 @@
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('room.index') }}">Salas</a>
+                    </li>
+                    <li>
+                        <a onclick="charge()" class="nav-link" href="{{ route('resource.index') }}">Recursos</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="#">Incidencias</a>

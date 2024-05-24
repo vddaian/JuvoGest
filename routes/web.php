@@ -40,23 +40,27 @@ Route::controller(PartnerController::class)->group(function () {
 });
 
 /* Rutas de la sala */
-Route::controller(RoomController::class)->group(function () {
+Route::controller(RoomController::class)->group(function () { // Estado, Tipo [ P = 15, M =50 , G = 120, MG = 250]
     Route::get('/rooms', 'index')->name('room.index');
     Route::get('/room/create', 'createIndex')->name('room.create');
     Route::get('/room/edit/{id}', 'editIndex')->name('room.edit');
     Route::get('/room/view/{id}', 'viewIndex')->name('room.view');
     Route::post('/rooms', 'filter')->name('room.filter');
     Route::post('/room/create', 'store')->name('room.store');
-    Route::post('/room/disable/{id}', 'disable')->name('room.disable');
+    Route::post('/room/disable/{id}', 'disable')->name('room.disable'); // No se pueden borrar las salas solo cuando das de bara el centro.
     Route::put('/room/update/{id}', 'update')->name('room.update');
 });
 
 /* Rutas del recurso */
 Route::controller(ResourceController::class)->group(function () {
-    Route::post('/rooms/view/{idSala}', 'filter')->name('resource.filter');
-    Route::post('/room/{idSala}/create', 'store')->name('resource.store');
-    Route::post('/room/{idSala}/disable/{idRecurso}', 'disable')->name('resource.disable');
-    Route::put('/room/{idSala}/update/{idRecurso}', 'update')->name('resource.update');
+    Route::get('/resources', 'index')->name('resource.index');
+    Route::post('/resources/create', 'store')->name('resource.store');
+    Route::post('/resources', 'filter')->name('resource.filter');
+    Route::post('/room/view/{idSala}', 'filterFromRoom')->name('resource.room.filter');
+    Route::post('/resource/disable', 'disable')->name('resource.disable');
+    Route::put('/resource/update', 'update')->name('resource.update');
+    Route::put('/resource/add', 'add')->name('resource.add');
+    Route::put('/resource/storage', 'storage')->name('resource.storage');
 });
 
 /* Rutas principales */

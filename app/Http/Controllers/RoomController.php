@@ -79,17 +79,22 @@ class RoomController extends Controller
     }
 
     /* Función que devuelve la página de visualización de la sala */
-    public function viewIndex($id)
+    public function viewIndex($idSala)
     {
+        // Recoge todas las salas del centro .-
+        $ids = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);
+
         // Recoge toda la información de recursos que tiene la sala .-
-        $objs = Resource::where([
-            ['idSala', $id],
-            ['deshabilitado', false]])->paginate(25);
+        $resources = Resource::where([
+            ['idSala', $idSala],
+            ['deshabilitado', false]
+        ])->paginate(25);
 
         // Añadimos toda la información en una variable        
         $data = [
-            'room' => $this->getRoomInfo($id),
-            'resources' => $objs
+            'room' => $this->getRoomInfo($idSala),
+            'resources' => $resources,
+            'storage' => $this->isStorage($idSala)
         ];
 
         return view('rooms.view')->with('data', $data);
@@ -148,20 +153,16 @@ class RoomController extends Controller
     /* Función que deshabilita la sala */
     public function disable(Request $req)
     {
-        Room::where('idSala', $req->id)->update(['deshabilitado' => true]);
-        return redirect()->back()->with('info', ['message' => 'Sala eliminada con exito!']);
-    }
-
-    /* Función que devuelve el id del usuario */
-    public function getPartnerId($dni)
-    {
-        return Partner::where('dni', $dni)->get(['idSocio'])[0]['idSocio'];
-    }
-
-    /* Función que devuelve el id del usuario */
-    public function getPartnerPhoto($id)
-    {
-        return Partner::where('idSocio', $id)->get(['foto'])[0]['foto'];
+        // Comprueba si hay alguna relación de la sala con algun recurso .-
+        if ($this->resourceRelationExists($req->id)) {
+            return redirect()->back()->with('info', [
+                'error' => true,
+                'message' => 'La sala no se ha podido eliminar, !'
+            ]);
+        } else {
+            Room::where('idSala', $req->id)->update(['deshabilitado' => true]);
+            return redirect()->back()->with('info', ['message' => 'Sala eliminada con exito!']);
+        }
     }
 
     /* Función que devuelve toda la información de la sala */
@@ -170,42 +171,27 @@ class RoomController extends Controller
         return Room::where('idSala', $id)->get();
     }
 
-    /* Función que devuelve si el socio ya ha sido creado anteriormente */
-    public function partnerExists($dni, $fecha)
-    {
-        if (
-            Partner::where([
-                ['dni', $dni],
-                ['fechaNacimiento', $fecha]
-            ])->exists()
-        ) {
-            return $this->getPartnerId($dni);
-        } else {
-            return null;
-        }
-    }
+     /* Función que devuelve el id del alamacen principal del centro */
+     public function getStorageId()
+     {
+         return Room::where([['idUsuario', Auth::user()->id], ['nombre', 'Almacen']])->get(['idSala']);
+     }
 
-    /* Función que devuelve si el socio ya ha sido relacionado anteriormente */
-    public function userRelationExists($id)
-    {
-        if (
-            PartnerUser::where([
-                ['idSocio', $id],
-                ['idUsuario', Auth::user()->id],
-            ])->exists()
-        ) {
+    /* Función que devuelve si la sala es el almacen del centro o no */
+    public function isStorage($id){
+        if ($id == $this->getStorageId()[0]['idSala']) {
             return true;
-        } else {
+        }else{
             return false;
         }
     }
 
     /* Función que devuelve si hay alguna relación existente entre un centro y un socio */
-    public function usersRelationsExists($id)
+    public function resourcesRelationsExists($id)
     {
         if (
-            PartnerUser::where([
-                ['idSocio', $id],
+            Resource::where([
+                ['idSala', $id],
                 ['deshabilitado', false],
             ])->exists()
         ) {
@@ -214,134 +200,11 @@ class RoomController extends Controller
             return false;
         }
     }
-
-    /* Función que devuelve si el socio ya ha sido creado anteriormente */
-    public function partnerIsDisabled($id)
-    {
-        if (
-            Partner::where([
-                ['idSocio', $id],
-                ['deshabilitado', true]
-            ])->exists()
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /* Función que devuelve si la relación con el usuario esta deshabilitada*/
-    public function userRelationIsDisabled($id)
-    {
-        if (
-            PartnerUser::where([
-                ['idSocio', $id],
-                ['idUsuario', Auth::user()->id],
-                ['deshabilitado', true]
-            ])->exists()
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /* Metodo que activa un socio */
-    public function activePartner($id)
-    {
-        if (
-            Partner::where([
-                ['idSocio', $id],
-                ['deshabilitado', true]
-            ])->exists()
-        ) {
-            Partner::where([
-                ['idSocio', $id],
-                ['deshabilitado', true]
-            ])->update(['deshabilitado' => false]);
-        }
-    }
-
-    /* Metodo que activa la relacion con el usuario */
-    public function activeUserRelation($id)
-    {
-        if (
-            PartnerUser::where([
-                ['idSocio', $id],
-                ['idUsuario', Auth::user()->id],
-                ['deshabilitado', true]
-            ])->exists()
-        ) {
-            PartnerUser::where([
-                ['idSocio', $id],
-                ['idUsuario', Auth::user()->id],
-                ['deshabilitado', true]
-            ])->update(['deshabilitado' => false]);
-        }
-    }
-
-
-    /* Funcion que realiza la deshabilitación del socio */
-    public function disablePartner($id)
-    {
-        Partner::where([
-            ['idSocio', $id],
-            ['deshabilitado', false]
-        ])->update(['deshabilitado' => true]);
-    }
-
-    /* Funcion que realiza la deshabilitación del socio */
-    public function disableUserRelation($id)
-    {
-        PartnerUser::where([
-            ['idSocio', $id],
-            ['idUsuario', Auth::user()->id],
-            ['deshabilitado', false]
-        ])->update(['deshabilitado' => true]);
-    }
-
-
     /* Metodo que realiza la validación de los campos que no son numericos */
     public function validateOthers($req)
     {
         $val = $req->validate([
             'nombre' => 'required|max:30',
         ]);
-    }
-
-    /* Funcion que comprueba los atributos numericos */
-    public function checkNumeric($cp, $tel, $prTelResp, $sgTelResp)
-    {
-        $val = true;
-
-        if ($sgTelResp) {
-            if (is_numeric($sgTelResp)) {
-                if (strlen($sgTelResp) != 9) {
-                    $val = false;
-                }
-            } else {
-                $val = false;
-            }
-        }
-
-        if ($tel) {
-            if (is_numeric($tel)) {
-                if (strlen($tel) != 9) {
-                    $val = false;
-                }
-            } else {
-                $val = false;
-            }
-        }
-
-        if (is_numeric($cp) && is_numeric($prTelResp)) {
-            if (strlen($prTelResp) != 9) {
-                $val = false;
-            }
-        } else {
-            $val = false;
-        }
-
-        return $val;
     }
 }

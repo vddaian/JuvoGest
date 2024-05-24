@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
 use App\Models\User;
 use Exception;
 use Hash;
@@ -65,6 +66,11 @@ class UserController extends Controller
                 /* Creación del usuario */
                 try {
                     User::create($data);
+                    Room::create([
+                        'idUsuario' => $data['id'],
+                        'nombre' => 'Almacen',
+                        'informacion' => 'Sala donde se almacenan todos los recursos que se den de alta o se eliminen de una sala.'
+                    ]);
                     return redirect()->back()->with('data', 'Cuenta creada con exito!');
                 } catch (Exception $err) {
                     echo $err;

@@ -3,6 +3,7 @@
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/view.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
+    <script src="{{ asset('js/list.js') }}"></script>
 @endsection
 @section('content')
 
@@ -60,22 +61,20 @@
                 <hr class="del">
                 <div class="row p-3">
 
-                    {{-- BLOQUE DE CREACIÓN --}}
-                    <div class="col-3">
-                        <h4>Crear</h4>
+                    {{-- BLOQUE DE AÑADIR --}}
+                    <div class="col-3" id="addForm">
+                        <h4>Añadir</h4>
                         <hr class="del">
-                        <form method="post" action="{{ route('resource.store', $data['room'][0]['idSala']) }}">
+                        <form method="post" action="{{ route('resource.add') }}">
+                            @method('put')
                             @csrf
+                            <input type="hidden" name="idSala" id="idSala" value="{{ $data['room'][0]['idSala'] }}">
                             <div class="form-group mb-2">
-                                <label for="">Nombre:</label>
-                                <input type="text" class="form-control" name="nombre" id="nombre">
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="tipo">Tipo:</label>
-                                <select name="tipo" id="tipo" class="form-select">
-                                    <option value="JUEGOS">JUEGOS</option>
-                                    <option value="OFICINA">OFICINA</option>
-                                    <option value="OTROS">OTROS</option>
+                                <label for="recurso">Recurso:</label>
+                                <select name="recurso" id="recurso" class="form-select">
+                                    @foreach ($data['resources'] as $elem)
+                                        <option value="{{ $elem->idRecurso }}">{{ $elem->nombre }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class=" p-1">
@@ -84,85 +83,98 @@
                         </form>
                     </div>
 
-
                     {{-- BLOQUE DE LISTA DE RECURSOS --}}
                     <div class="col-9">
+                        <div class="d-flex justify-content-between w-100 px-2">
+                            <div class="w-100 pb-0 listPanels row">
+                                {{-- Bloque de filtros --}}
+                                <form action="" method="post" class="d-flex col-9">
+                                    @csrf
+                                    <div class="form-group col-2 p-1">
+                                        <input type="text" class="form-control" name="id" id="id"
+                                            placeholder="Id">
+                                    </div>
+
+                                    <div class="form-group col-3 p-1">
+                                        <input type="text" class="form-control" name="nombre" id="nombre"
+                                            placeholder="Nombre">
+                                    </div>
+
+                                    <div class="form-group col-2 p-1">
+                                        <select name="tipo" id="tipo" class="form-select">
+                                            <option value="TODOS">TODOS</option>
+                                            <option value="JUEGOS">JUEGOS</option>
+                                            <option value="DEPORTE">DEPORTE</option>
+                                            <option value="OFICINA">OFICINA</option>
+                                            <option value="OTROS">OTROS</option>
+                                        </select>
+                                    </div>
+                                    {{-- Bloque accionadores --}}
+                                    <div class="col-3 p-1">
+                                        <button type="submit" class="btn border" onclick="charge()"
+                                            formaction="{{ route('resource.room.filter', $data['room'][0]['idSala']) }}">
+                                            <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
+                                                alt="searchICO">
+                                        </button>
+                                        <button type="reset" class="btn border">
+                                            <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px"
+                                                alt="cleanICO">
+                                        </button>
+                                    </div>
+                                </form>
+
+                                {{-- Bloque paginador --}}
+                                <div class="col-2 p-1 d-flex align-items-center">
+                                    {{ $data['resources']->links('other.paginator') }}
+                                </div>
+                            </div>
+                        </div>
+
                         @if (!isset($data['resources'][0]))
                             <div class="w-100 mb-1 p-2 info">
                                 <p>No hay recursos en esta sala, añade uno!</p>
                             </div>
                         @else
-                            <div class="d-flex justify-content-between w-100 px-2">
-                                <div class="w-100 pb-0 listPanels row">
-
-                                    {{-- Bloque de filtros --}}
-                                    <form action="" method="post" class="d-flex col-9">
-                                        @csrf
-                                        <div class="form-group col-2 p-1">
-                                            <input type="text" class="form-control" name="id" id="id"
-                                                placeholder="Id">
-                                        </div>
-
-                                        <div class="form-group col-3 p-1">
-                                            <input type="text" class="form-control" name="nombre" id="nombre"
-                                                placeholder="Nombre">
-                                        </div>
-
-                                        {{-- Bloque accionadores --}}
-                                        <div class="col-3 p-1">
-                                            <button type="submit" class="btn border" onclick="charge()"
-                                                formaction="{{ route('resource.filter', $data['room'][0]['idSala']) }}">
-                                                <img src="{{ asset('media/ico/search.ico') }}" width="20px"
-                                                    height="20px" alt="searchICO">
-                                            </button>
-                                            <button type="reset" class="btn border">
-                                                <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px"
-                                                    alt="cleanICO">
-                                            </button>
-                                            <a href="{{ route('room.create') }}" class="btn border">+</a>
-                                        </div>
-
-                                    </form>
-
-                                    {{-- Bloque paginador --}}
-                                    <div class="col-2 p-1 d-flex align-items-center">
-                                        {{ $data['resources']->links('other.paginator') }}
-                                    </div>
-                                </div>
-                            </div>
                             <table class="w-100 listTable">
                                 <tr class="row mt-3 mx-3 listHead">
                                     <th class="col-1">Id</th>
-                                    <th class="col-9">Nombre</th>
+                                    @if (!$data['storage'])
+                                        <th class="col-10">Nombre</th>
+                                    @else
+                                        <th class="col-9">Nombre</th>
+                                    @endif
                                     <th class="col-1">Tipo</th>
-                                    <th class="col-1"></th>
+                                    @if (!$data['storage'])
+                                        <th class="col-1"></th>
+                                    @endif
+
                                 </tr>
                                 @foreach ($data['resources'] as $elem)
                                     <tr class="row mx-3 listRow">
                                         <td class="col-1 text-right">{{ $elem->idRecurso }}</td>
-                                        <td class="col-9">{{ $elem->nombre }}</td>
+                                        @if (!$data['storage'])
+                                            <td class="col-10">{{ $elem->nombre }}</td>
+                                        @else
+                                            <td class="col-9">{{ $elem->nombre }}</td>
+                                        @endif
                                         <td class="col-1">{{ $elem->tipo }}</td>
-                                        <td class="col-1 p-0">
-                                            <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                                    action="{{ route('room.edit', $elem->idRecurso) }}" method="get">
-                                                    @csrf
-                                                    <button class="listFormButton">
-                                                        <img src="{{ asset('media/ico/edit.ico') }}"
-                                                            alt="Edit user button">
-                                                    </button>
-                                                </form>
-                                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                                    action="{{ route('resource.disable',[$data['room'][0]['idSala'], $elem->idRecurso]) }}" method="post">
-                                                    @csrf
-                                                    <button class="listFormButton">
-                                                        <img src="{{ asset('media/ico/delete.ico') }}"
-                                                            alt="Delete user button">
-                                                    </button>
-                                                </form>
-
-                                            </div>
-                                        </td>
+                                        @if (!$data['storage'])
+                                            <td class="col-1 p-0">
+                                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                                        action="{{ route('resource.storage') }}" method="post">
+                                                        @method('put')
+                                                        @csrf
+                                                        <input type="hidden" id="idRecurso" name="idRecurso"
+                                                            value="{{ $elem->idRecurso }}">
+                                                        <button class="listFormButton">
+                                                            <img src="{{ asset('media/ico/arrow.ico') }}"
+                                                                alt="Send to storage button">
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </table>

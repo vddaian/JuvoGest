@@ -20,17 +20,18 @@ body{
     opacity: 1;
 }
 .error, .success, .info{
+    color:white;
     border-radius: 5px;
     animation: slideOut 1s cubic-bezier(0, 0, 1, 1) 1;
 }
 .error{
-    background-color: #f6c6be;
+    background-color: #be5656;
 }
 .success{
-    background-color: #d0f8d6;
+    background-color: #56beb8;
 }
 .info{
-    background-color: #d0daf8;
+    background-color: #568fbe;
 }
 
 .titleBlock {

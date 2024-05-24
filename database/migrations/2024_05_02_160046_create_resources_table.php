@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('idRecurso', true);
             $table->integer('idSala');
             $table->string('nombre', 30);
-            $table->enum('tipo', ['JUEGOS', 'OFICINA', 'OTROS']);
+            $table->enum('tipo', ['JUEGOS', 'DEPORTE', 'OFICINA', 'OTROS']);
             $table->boolean('deshabilitado')->default(false);
             $table->foreign('idSala')->references('idSala')->on('rooms');
             $table->timestamps();

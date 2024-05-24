@@ -10,16 +10,16 @@
                 @endforeach
             @endif
         @endforeach
-        <ul class="pagination">
+        <ul class="pagination m-0">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="paginatorElement disabled" aria-disabled="true" style="filter: grayscale(100%);">
-                    <img class="" src="{{ asset('media/ico/left.ico') }}" alt="prevButton">
+                    <img style="width:30px; height:30px;" src="{{ asset('media/ico/left.ico') }}" alt="prevButton">
                 </li>
             @else
                 <li class="paginatorElement">
                     <a href="{{ $paginator->previousPageUrl() }}" rel="prev">
-                        <img src="{{ asset('media/ico/left.ico') }}" alt="prevButton">
+                        <img style="width:30px; height:30px;" src="{{ asset('media/ico/left.ico') }}" alt="prevButton">
                     </a>
                 </li>
             @endif
@@ -28,12 +28,12 @@
             @if ($paginator->hasMorePages())
                 <li class="paginatorElement">
                     <a href="{{ $paginator->nextPageUrl() }}" rel="next">
-                        <img src="{{ asset('media/ico/right.ico') }}" alt="nextButton">
+                        <img style="width:30px; height:30px;" src="{{ asset('media/ico/right.ico') }}" alt="nextButton">
                     </a>
                 </li>
             @else
                 <li class="paginatorElement disabled" aria-disabled="true" style="filter: grayscale(100%);">
-                    <img src="{{ asset('media/ico/right.ico') }}" alt="nextButton">
+                    <img style="width:30px; height:30px;" src="{{ asset('media/ico/right.ico') }}" alt="nextButton">
                 </li>
             @endif
         </ul>

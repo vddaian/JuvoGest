@@ -29,7 +29,7 @@
             @endif
 
             <div class="d-flex justify-content-between w-100 px-2">
-                <div class="w-100 pb-0 listPanels row">
+                <div class="w-100 pb-0 listPanels row bg-white rounded" style="border:1px solid #D4DA1E">
 
                     {{-- Bloque de filtros --}}
                     <form action="" method="post" class="d-flex col-9">

@@ -71,15 +71,6 @@
 .listFormButton:hover {
     background-color: var(--hov-color);
 }
-
-.titleBlock {
-    height: fit-content;
-    background-color: var(--sg-bg-color);
-}
-
-.titleBlock h2{
-    color: var(--font-color);
-}
 .paginatorElement {
     padding: 5px;
 }

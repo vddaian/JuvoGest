@@ -87,8 +87,9 @@
                 </div>
             </div>
 
-
+            {{-- SEGUNDA FILA --}}
             <div class="row">
+                
                 {{-- BLOQUE DIRECCIÓN --}}
                 <div class="col-6">
                     <h3>Dirección</h3>

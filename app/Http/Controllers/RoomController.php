@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Resource;
 use App\Models\Room;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,10 +38,10 @@ class RoomController extends Controller
     {
         // Comprueba si alguno de los campos ha sido rellenado .-
         if (!$req->filled('id') && !$req->filled('nombre')) {
-            return redirect()->route('partner.index');
+            return redirect()->route('room.index');
         } else {
             try {
-                $query = Partner::query();
+                $query = Room::query();
 
                 // Comprueba si los campos se han rellenado y añade las condiciones .-
                 if ($req->filled('id')) {
@@ -71,16 +72,27 @@ class RoomController extends Controller
         return view('rooms.create');
     }
 
-    /* Función que devuelve la página de edición del socio */
+    /* Función que devuelve la página de edición de la sala */
     public function editIndex($id)
     {
-        return view('partners.edit')->with('data', $this->getPartnerInfo($id));
+        return view('rooms.edit')->with('data', $this->getRoomInfo($id));
     }
 
-    /* Función que devuelve la página de visualización del socio */
+    /* Función que devuelve la página de visualización de la sala */
     public function viewIndex($id)
     {
-        return view('partners.view')->with('data', $this->getPartnerInfo($id));
+        // Recoge toda la información de recursos que tiene la sala .-
+        $objs = Resource::where([
+            ['idSala', $id],
+            ['deshabilitado', false]])->paginate(25);
+
+        // Añadimos toda la información en una variable        
+        $data = [
+            'room' => $this->getRoomInfo($id),
+            'resources' => $objs
+        ];
+
+        return view('rooms.view')->with('data', $data);
     }
 
     /* Función que crea una nueva sala */
@@ -108,54 +120,28 @@ class RoomController extends Controller
         }
     }
 
-    /* Función que realiza la actualización del socio */
+    /* Función que realiza la actualización de la sala */
     public function update(Request $req)
     {
 
-        // Valida los datos numericos .-
-        if ($this->checkNumeric($req->cp, $req->tel, $req->prTelResp, $req->sgTelResp)) {
-            try {
-                // Valida los demas campos .-
-                $val = $this->validateOthers($req);
+        // Realiza la validación de los datos .-
+        $this->validateOthers($req);
 
-                // Comprueba si el campo de la imagen ha sido rellenada .-
-                if ($req->file('foto')) {
-                    $photo = base64_encode(file_get_contents($req->file('foto')));
-                } else {
-                    $photo = $this->getPartnerPhoto($req->id);
-                }
+        // Se almacena los datos de la sala .-
+        $data = [
+            'nombre' => $req->nombre,
+            'informacion' => $req->info
+        ];
 
-                // Almacenamos toda la información del socio .-
-                $data = [
-                    'prNombre' => $req->prNombre,
-                    'sgNombre' => $req->sgNombre,
-                    'prApellido' => $req->prApellido,
-                    'sgApellido' => $req->sgApellido,
-                    'fechaNacimiento' => $req->fechaNacimiento,
-                    'direccion' => $req->direccion,
-                    'localidad' => $req->localidad,
-                    'cp' => $req->cp,
-                    'telefono' => $req->tel,
-                    'prTelefonoResp' => $req->prTelResp,
-                    'sgTelefonoResp' => $req->sgTelResp,
-                    'email' => $req->email,
-                    'alergias' => $req->alergias,
-                    'foto' => $photo
-                ];
-
-
-
-                // Realiza la actualización del socio .-
-                Partner::where('idSocio', $req->id)->update($data);
-
-                return redirect()->back()->with('info', ['message' => 'Sala actualizado con exito!']);
-            } catch (Exception $err) {
-
-                return redirect()->back()->with('info', [
-                    'error' => $err,
-                    'message' => 'Algo no ha ido bien!'
-                ]);
-            }
+        // Se realiza la inserción de los datos .-
+        try {
+            Room::where('idSala', $req->id)->update($data);
+            return redirect()->back()->with('info', ['message' => 'Sala actualizada con exito!']);
+        } catch (Exception $err) {
+            return redirect()->back()->with('info', [
+                'error' => $err,
+                'message' => 'Algo no ha ido bien!'
+            ]);
         }
     }
 
@@ -178,10 +164,10 @@ class RoomController extends Controller
         return Partner::where('idSocio', $id)->get(['foto'])[0]['foto'];
     }
 
-    /* Función que devuelve toda la información del socio */
-    public function getPartnerInfo($id)
+    /* Función que devuelve toda la información de la sala */
+    public function getRoomInfo($id)
     {
-        return Partner::where('idSocio', $id)->get();
+        return Room::where('idSala', $id)->get();
     }
 
     /* Función que devuelve si el socio ya ha sido creado anteriormente */

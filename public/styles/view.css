@@ -1,0 +1,8 @@
+.viewLabel{
+    font-size: 1rem;
+}
+.viewField{
+    padding: 15px;
+    border-radius: 5px;
+    background-color: white;
+}

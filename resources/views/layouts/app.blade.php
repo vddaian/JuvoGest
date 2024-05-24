@@ -70,7 +70,7 @@
                         <a onclick="charge()" class="nav-link" href="#">Incidencias</a>
                     </li>
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Reportes</a>
+                        <a onclick="charge()" class="nav-link" href="#">Registros</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="#">Eventos</a>

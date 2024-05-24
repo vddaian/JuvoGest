@@ -25,7 +25,7 @@
                 @endisset
             @endif
 
-            <form action="{{ route('room.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('room.store') }}" method="POST">
                 @csrf
                 <div class="form-groupd">
                     <label for="nombre">Nombre:</label>

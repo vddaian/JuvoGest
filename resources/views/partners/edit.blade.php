@@ -25,7 +25,7 @@
                 @endisset
             @endif
 
-            <form action="{{ route('partner.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('partner.update', $data[0]['idSocio']) }}" method="POST" enctype="multipart/form-data">
                 @method('put')
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{$data[0]['idSocio']}}">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="form-group">
                     <label for="alergias">Alergias:</label>
-                    <textarea class="form-control" name="alergias" id="alergias" value="{{$data[0]['alergias']}}"></textarea>
+                    <textarea class="form-control" name="alergias" id="alergias">{{$data[0]['alergias']}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="foto">Foto(Max 400px x 400px):</label>

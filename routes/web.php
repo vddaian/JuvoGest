@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,7 @@ Route::controller(PartnerController::class)->group(function () {
     Route::post('/partners', 'filter')->name('partner.filter');
     Route::post('/partner/create', 'store')->name('partner.store');
     Route::post('/partner/disable/{id}', 'disable')->name('partner.disable');
-    Route::put('/partner/update', 'update')->name('partner.update');
+    Route::put('/partner/update/{id}', 'update')->name('partner.update');
 });
 
 /* Rutas de la sala */
@@ -47,6 +48,15 @@ Route::controller(RoomController::class)->group(function () {
     Route::post('/rooms', 'filter')->name('room.filter');
     Route::post('/room/create', 'store')->name('room.store');
     Route::post('/room/disable/{id}', 'disable')->name('room.disable');
+    Route::put('/room/update/{id}', 'update')->name('room.update');
+});
+
+/* Rutas del recurso */
+Route::controller(ResourceController::class)->group(function () {
+    Route::post('/rooms/view/{idSala}', 'filter')->name('resource.filter');
+    Route::post('/room/{idSala}/create', 'store')->name('resource.store');
+    Route::post('/room/{idSala}/disable/{idRecurso}', 'disable')->name('resource.disable');
+    Route::put('/room/{idSala}/update/{idRecurso}', 'update')->name('resource.update');
 });
 
 /* Rutas principales */

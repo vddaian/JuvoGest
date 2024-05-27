@@ -84,10 +84,11 @@
                     <th class="col-1">Id</th>
                     <th class="col-2">Titulo</th>
                     <th class="col-1">Sala</th>
-                    <th class="col-3">Entidad Organizadora</th>
+                    <th class="col-2">Entidad Organizadora</th>
                     <th class="col-2">Informacion</th>
                     <th class="col-1">Asistentes Prev</th>
                     <th class="col-1">F.Evento</th>
+                    <th class="col-1">H.Evento</th>
                     <th class="col-1"></th>
                 </tr>
                 @foreach ($data['events'] as $elem)
@@ -95,28 +96,29 @@
                         <td class="col-1">{{ $elem->idEvento }}</td>
                         <td class="col-2">{{ $elem->titulo }}</td>
                         <td class="col-1">{{ $elem->sala }}</td>
-                        <td class="col-3">{{ $elem->entidadOrg }}</td>
+                        <td class="col-2">{{ $elem->entidadOrg }}</td>
                         <td class="col-2">{{ $elem->informacion }}</td>
                         <td class="col-1">{{ $elem->numeroAsistentes }}</td>
                         <td class="col-1">{{ $elem->fechaEvento }}</td>
+                        <td class="col-1">{{ $elem->horaEvento }}</td>
                         <td class="col-1 p-0">
                             <div class="w-100 h-100 m-0 d-flex justify-content-between">
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
+                                    action="{{ route('incident.view', $elem->idEvento) }}" method="get">
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
                                     </button>
                                 </form>
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.edit', $elem->idIncidencia) }}" method="get">
+                                    action="{{ route('incident.edit', $elem->idEvento) }}" method="get">
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
                                     </button>
                                 </form>
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.disable', $elem->idIncidencia) }}" method="post">
+                                    action="{{ route('incident.disable', $elem->idEvento) }}" method="post">
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">

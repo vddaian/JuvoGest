@@ -15,6 +15,7 @@ class Event extends Model
         'entidadOrg',
         'numeroAsistentes',
         'fechaEvento',
+        'horaEvento',
         'informacion',
         'deshabilitado'
     ];

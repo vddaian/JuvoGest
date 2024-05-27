@@ -25,7 +25,7 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('incident.store') }}" method="POST">
+                <form action="{{ route('event.store') }}" method="POST">
                     @csrf
                     <h3>Datos generales</h3>
                     <hr class="del">
@@ -53,11 +53,15 @@
                         </div>
                         <div class="form-group col-2">
                             <label for="asistentes">Numero asistentes:</label>
-                            <input type="text" id="asistentes" class="form-control" name="asistentes">
+                            <input type="number" id="asistentes" class="form-control" name="asistentes">
                         </div>
                         <div class="form-group col-2">
                             <label for="fecha">Fecha evento:</label>
                             <input type="date" id="fecha" class="form-control" name="fecha">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="hora">Hora evento:</label>
+                            <input type="time" id="hora" class="form-control" name="hora">
                         </div>
                     </div>
 
@@ -70,7 +74,7 @@
                             <textarea class="form-control" style="height: 350px;" name="info" id="info"></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success mt-3">Crear</button>
+                    <button type="submit" onclick="charge()" class="btn btn-success mt-3">Crear</button>
                 </form>
             </div>
         </div>

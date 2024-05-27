@@ -35,11 +35,10 @@
                     <div class="form-group col-2">
                         <label for="tipo">Tipo:</label>
                         <select name="tipo" id="tipo" class="form-select">
-                            <option value="-">-</option>
                             <option value="PEQUEÑA">PEQUEÑA</option>
                             <option value="MEDIANA">MEDIANA</option>
                             <option value="GRANDE">GRANDE</option>
-                            <option value="MUY GRAVE">MUY GRANDE</option>
+                            <option value="MUY GRANDE">MUY GRANDE</option>
                         </select>
                     </div>
                 </div>

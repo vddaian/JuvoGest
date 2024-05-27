@@ -81,6 +81,7 @@ Route::controller(IncidentController::class)->group(function () {
 Route::controller(EventController::class)->group(function () {
     Route::get('/events', 'index')->name('event.index');
     Route::get('/event/create', 'createIndex')->name('event.create');
+    Route::post('/event/store', 'store')->name('event.store');
 });
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {

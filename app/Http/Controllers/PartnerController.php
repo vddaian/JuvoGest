@@ -242,11 +242,11 @@ class PartnerController extends Controller
 
                 return redirect()->back()->with('info', ['message' => 'Socio actualizado con exito!']);
             } catch (Exception $err) {
-
-                return redirect()->back()->with('info', [
+                echo $err;
+                /* return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
-                ]);
+                ]); */
             }
         }
     }

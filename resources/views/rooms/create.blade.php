@@ -27,10 +27,23 @@
 
             <form action="{{ route('room.store') }}" method="POST">
                 @csrf
-                <div class="form-groupd">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" value="Sala 1">
+                <div class="row">
+                    <div class="form-group col-10">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" value="Sala 1">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="tipo">Tipo:</label>
+                        <select name="tipo" id="tipo" class="form-select">
+                            <option value="-">-</option>
+                            <option value="PEQUEÑA">PEQUEÑA</option>
+                            <option value="MEDIANA">MEDIANA</option>
+                            <option value="GRANDE">GRANDE</option>
+                            <option value="MUY GRAVE">MUY GRANDE</option>
+                        </select>
+                    </div>
                 </div>
+                
                 <div class="form-group">
                     <label for="info">Información:</label>
                     <textarea class="form-control" style="height: 350px;" name="info" id="info"></textarea>

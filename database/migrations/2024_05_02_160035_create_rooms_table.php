@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('idUsuario');
             $table->string('nombre', 30);
             $table->text('informacion')->nullable();
+            $table->enum('tipo', ['PEQUEÑA', 'MEDIANA', 'GRANDE', 'MUY GRANDE']);
             $table->boolean('deshabilitado')->default(false);
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->timestamps();

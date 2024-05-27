@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Incident extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'idSocio',
+        'idUsuario',
+        'fechaInc',
+        'fechaFinExp',
+        'tipo',
+        'informacion',
+        'deshabilitado'
+    ];
 }

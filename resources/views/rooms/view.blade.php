@@ -102,7 +102,7 @@
 
                                     <div class="form-group col-2 p-1">
                                         <select name="tipo" id="tipo" class="form-select">
-                                            <option value="TODOS">TODOS</option>
+                                            <option value="-">-</option>
                                             <option value="JUEGOS">JUEGOS</option>
                                             <option value="DEPORTE">DEPORTE</option>
                                             <option value="OFICINA">OFICINA</option>
@@ -125,12 +125,12 @@
 
                                 {{-- Bloque paginador --}}
                                 <div class="col-2 p-1 d-flex align-items-center">
-                                    {{ $data['resources']->links('other.paginator') }}
+                                    {{ $data['rmResources']->links('other.paginator') }}
                                 </div>
                             </div>
                         </div>
 
-                        @if (!isset($data['resources'][0]))
+                        @if (!isset($data['rmResources'][0]))
                             <div class="w-100 mb-1 p-2 info">
                                 <p>No hay recursos en esta sala, añade uno!</p>
                             </div>
@@ -138,7 +138,7 @@
                             <table class="w-100 listTable">
                                 <tr class="row mt-3 mx-3 listHead">
                                     <th class="col-1">Id</th>
-                                    @if (!$data['storage'])
+                                    @if ($data['storage'])
                                         <th class="col-10">Nombre</th>
                                     @else
                                         <th class="col-9">Nombre</th>
@@ -149,10 +149,10 @@
                                     @endif
 
                                 </tr>
-                                @foreach ($data['resources'] as $elem)
+                                @foreach ($data['rmResources'] as $elem)
                                     <tr class="row mx-3 listRow">
                                         <td class="col-1 text-right">{{ $elem->idRecurso }}</td>
-                                        @if (!$data['storage'])
+                                        @if ($data['storage'])
                                             <td class="col-10">{{ $elem->nombre }}</td>
                                         @else
                                             <td class="col-9">{{ $elem->nombre }}</td>

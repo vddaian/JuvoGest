@@ -46,6 +46,7 @@
                             <select name="tipo" id="tipo" class="form-select">
                                 <option value="JUEGOS">JUEGOS</option>
                                 <option value="OFICINA">OFICINA</option>
+                                <option value="DEPORTE">DEPORTE</option>
                                 <option value="OTROS">OTROS</option>
                             </select>
                         </div>
@@ -80,6 +81,7 @@
                             <select name="tipo" id="upTipo" class="form-select">
                                 <option value="JUEGOS">JUEGOS</option>
                                 <option value="OFICINA">OFICINA</option>
+                                <option value="OFICINA">DEPORTE</option>
                                 <option value="OTROS">OTROS</option>
                             </select>
                         </div>
@@ -107,7 +109,7 @@
                                 </div>
                                 <div class="form-group col-2 p-1">
                                     <select name="tipo" id="tipo" class="form-select">
-                                        <option value="TODOS">TODOS</option>
+                                        <option value="-">-</option>
                                         <option value="JUEGOS">JUEGOS</option>
                                         <option value="DEPORTE">DEPORTE</option>
                                         <option value="OFICINA">OFICINA</option>

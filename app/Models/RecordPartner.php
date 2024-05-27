@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RecordPartner extends Model
 {
     use HasFactory;
+
+    protected $table = 'partners_records';
+
+    protected $fillable = [
+        'idRegistro',
+        'idSocio'
+    ];
 }

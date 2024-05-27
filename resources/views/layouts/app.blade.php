@@ -70,13 +70,13 @@
                         <a onclick="charge()" class="nav-link" href="{{ route('resource.index') }}">Recursos</a>
                     </li>
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Incidencias</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('incident.index') }}">Incidencias</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="#">Registros</a>
                     </li>
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Eventos</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('event.index') }}">Eventos</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="#">Estadisticas</a>

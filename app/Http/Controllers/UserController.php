@@ -69,6 +69,7 @@ class UserController extends Controller
                     Room::create([
                         'idUsuario' => $data['id'],
                         'nombre' => 'Almacen',
+                        'tipo'=>'MEDIANA',
                         'informacion' => 'Sala donde se almacenan todos los recursos que se den de alta o se eliminen de una sala.'
                     ]);
                     return redirect()->back()->with('data', 'Cuenta creada con exito!');

@@ -34,7 +34,7 @@ class ResourceController extends Controller
     /* Función que realiza la inserción de un recurso */
     public function store(Request $req, $idSala = null)
     {
-        $rm = new Room();
+        $rm = new RoomController();
 
         // Realiza la validación de los datos .-
         $this->validateOthers($req);
@@ -97,7 +97,8 @@ class ResourceController extends Controller
     /* Función que añadira el recurso a una sala */
     public function storage(Request $req)
     {
-        Resource::where('idRecurso', $req->idRecurso)->update(['idSala' => $this->getStorageId()[0]['idSala']]);
+        $rm = new RoomController();
+        Resource::where('idRecurso', $req->idRecurso)->update(['idSala' => $rm->getStorageId()[0]['idSala']]);
         return redirect()->back()->with('info', ['message' => 'Recurso añadido con exito!']);
     }
 
@@ -105,7 +106,7 @@ class ResourceController extends Controller
     public function filter(Request $req)
     {
         // Comprueba si alguno de los campos ha sido rellenado .-
-        if (!$req->filled('id') && !$req->filled('nombre') && $req->tipo == 'TODOS') {
+        if (!$req->filled('id') && !$req->filled('nombre') && $req->tipo == '-') {
             return redirect()->route('resource.index');
         } else {
             try {
@@ -120,7 +121,7 @@ class ResourceController extends Controller
                     $query->where('nombre', 'like', '%' . $req->nombre . '%');
                 }
 
-                if ($req->tipo != 'TODOS') {
+                if ($req->tipo != '-') {
                     $query->where('tipo', $req->tipo);
                 }
 
@@ -151,10 +152,11 @@ class ResourceController extends Controller
     public function filterFromRoom(Request $req)
     {
         // Comprueba si alguno de los campos ha sido rellenado .-
-        if (!$req->filled('id') && !$req->filled('nombre') && !$req->filled('tipo')) {
+        if (!$req->filled('id') && !$req->filled('nombre') && $req->tipo == '-') {
             return redirect()->route('room.view', $req->idSala);
         } else {
             try {
+                $rm = new RoomController();
                 $query = Resource::query();
 
                 // Comprueba si los campos se han rellenado y añade las condiciones .-
@@ -166,7 +168,7 @@ class ResourceController extends Controller
                     $query->where('nombre', 'like', '%' . $req->nombre . '%');
                 }
 
-                if ($req->tipo != 'TODOS') {
+                if ($req->tipo != '-') {
                     $query->where('tipo', $req->tipo);
                 }
 
@@ -176,16 +178,23 @@ class ResourceController extends Controller
                     ['deshabilitado', false]
                 ]);
 
-                $objs = $query->paginate(25);
+                $rmResources = $query->paginate(25);
 
-                // Recoge la información de la sala .-
-                $room = new RoomController();
-                $room = $room->getRoomInfo($req->idSala);
+                // Recoge todas salas del centro .-
+                $rms = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);
+
+                // Recoge todos los recursos del centro .-
+                $resources = Resource::whereIn('idSala', $rms)->where([
+                    ['idSala','!=', $req->idSala],
+                    ['deshabilitado', false]
+                ]);
 
                 // Añadimos toda la información en una variable .-  
                 $data = [
-                    'room' => $room,
-                    'resources' => $objs
+                    'room' => $rm->getRoomInfo($req->idSala),
+                    'resources' => $resources,
+                    'rmResources' => $rmResources,
+                    'storage' => $rm->isStorage($req->idSala)
                 ];
 
                 return view('rooms.view')->with('data', $data);

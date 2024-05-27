@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->integer('idEvento', true);
             $table->integer('idSala');
-            $table->string('entidadOrg');
+            $table->string('titulo', 30);
+            $table->string('entidadOrg', 30);
             $table->integer('numeroAsistentes');
             $table->dateTime('fechaEvento');
+            $table->text('informacion');
             $table->boolean('deshabilitado')->default(false);
             $table->foreign('idSala')->references('idSala')->on('rooms');
             $table->timestamps();

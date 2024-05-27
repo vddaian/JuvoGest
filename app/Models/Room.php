@@ -18,6 +18,7 @@ class Room extends Model
         'idUsuario',
         'nombre',
         'informacion',
+        'tipo',
         'deshabilitado'
     ];
 }

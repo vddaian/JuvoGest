@@ -37,7 +37,7 @@ class RoomController extends Controller
     public function filter(Request $req)
     {
         // Comprueba si alguno de los campos ha sido rellenado .-
-        if (!$req->filled('id') && !$req->filled('nombre')) {
+        if (!$req->filled('id') && !$req->filled('nombre') && $req->tipo == '-') {
             return redirect()->route('room.index');
         } else {
             try {
@@ -50,6 +50,10 @@ class RoomController extends Controller
 
                 if ($req->filled('nombre')) {
                     $query->where('nombre', 'like', '%' . $req->nombre . '%');
+                }
+
+                if ($req->tipo != '-') {
+                    $query->where('tipo', $req->tipo);
                 }
 
                 // Recoge las salas del centro .-
@@ -82,18 +86,25 @@ class RoomController extends Controller
     public function viewIndex($idSala)
     {
         // Recoge todas las salas del centro .-
-        $ids = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);
+        $rms = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);
 
         // Recoge toda la información de recursos que tiene la sala .-
-        $resources = Resource::where([
+        $rmResources = Resource::where([
             ['idSala', $idSala],
             ['deshabilitado', false]
         ])->paginate(25);
 
-        // Añadimos toda la información en una variable        
+        // Recoge toda la información de los recursos del centro .-
+        $resources = Resource::whereIn('idSala', $rms)->where([
+            ['idSala', '!=', $idSala],
+            ['deshabilitado', false]
+        ])->get();
+
+        // Añadimos toda la información en una variable .-     
         $data = [
             'room' => $this->getRoomInfo($idSala),
             'resources' => $resources,
+            'rmResources' => $rmResources,
             'storage' => $this->isStorage($idSala)
         ];
 
@@ -110,7 +121,8 @@ class RoomController extends Controller
         $data = [
             'idUsuario' => Auth::user()->id,
             'nombre' => $req->nombre,
-            'informacion' => $req->info
+            'informacion' => $req->info,
+            'tipo' => $req->tipo
         ];
 
         // Se realiza la inserción de los datos .-
@@ -128,14 +140,14 @@ class RoomController extends Controller
     /* Función que realiza la actualización de la sala */
     public function update(Request $req)
     {
-
         // Realiza la validación de los datos .-
         $this->validateOthers($req);
 
         // Se almacena los datos de la sala .-
         $data = [
             'nombre' => $req->nombre,
-            'informacion' => $req->info
+            'informacion' => $req->info,
+            'tipo' => $req->tipo
         ];
 
         // Se realiza la inserción de los datos .-
@@ -153,16 +165,24 @@ class RoomController extends Controller
     /* Función que deshabilita la sala */
     public function disable(Request $req)
     {
-        // Comprueba si hay alguna relación de la sala con algun recurso .-
-        if ($this->resourceRelationExists($req->id)) {
+        try {
+            // Comprueba si hay alguna relación de la sala con algun recurso .-
+            if ($this->resourceRelationExists($req->id)) {
+                return redirect()->back()->with('info', [
+                    'error' => true,
+                    'message' => 'La sala no se ha podido eliminar!'
+                ]);
+            } else {
+                Room::where('idSala', $req->id)->update(['deshabilitado' => true]);
+                return redirect()->back()->with('info', ['message' => 'Sala eliminada con exito!']);
+            }
+        } catch (Exception $err) {
             return redirect()->back()->with('info', [
-                'error' => true,
+                'error' => $err,
                 'message' => 'La sala no se ha podido eliminar, !'
             ]);
-        } else {
-            Room::where('idSala', $req->id)->update(['deshabilitado' => true]);
-            return redirect()->back()->with('info', ['message' => 'Sala eliminada con exito!']);
         }
+
     }
 
     /* Función que devuelve toda la información de la sala */
@@ -171,17 +191,18 @@ class RoomController extends Controller
         return Room::where('idSala', $id)->get();
     }
 
-     /* Función que devuelve el id del alamacen principal del centro */
-     public function getStorageId()
-     {
-         return Room::where([['idUsuario', Auth::user()->id], ['nombre', 'Almacen']])->get(['idSala']);
-     }
+    /* Función que devuelve el id del alamacen principal del centro */
+    public function getStorageId()
+    {
+        return Room::where([['idUsuario', Auth::user()->id], ['nombre', 'Almacen']])->get(['idSala']);
+    }
 
     /* Función que devuelve si la sala es el almacen del centro o no */
-    public function isStorage($id){
+    public function isStorage($id)
+    {
         if ($id == $this->getStorageId()[0]['idSala']) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

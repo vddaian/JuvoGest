@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('idSocio');
             $table->date('fechaInc');
             $table->date('fechaFinExp');
-            $table->text('informacion');
+            $table->text('informacion')->nullable();
+            $table->enum('tipo', ['LEVE', 'GRAVE', 'MUY GRAVE']);
             $table->boolean('deshabilitado')->default(false);
             $table->foreign('idSocio')->references('idSocio')->on('partners');
             $table->foreign('idUsuario')->references('id')->on('users');

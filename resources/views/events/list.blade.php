@@ -111,14 +111,15 @@
                                     </button>
                                 </form>
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.edit', $elem->idEvento) }}" method="get">
+                                    action="{{ route('event.edit', $elem->idEvento) }}" method="get">
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
                                     </button>
                                 </form>
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.disable', $elem->idEvento) }}" method="post">
+                                    action="{{ route('event.disable', $elem->idEvento) }}" method="post">
+                                    @method('put')
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">

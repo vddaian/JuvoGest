@@ -8,7 +8,7 @@ use Exception;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File as FacadesFile;
 use Str;
 
 class UserController extends Controller
@@ -47,8 +47,14 @@ class UserController extends Controller
                     'direccion' => 'required|max:50',
                     'localidad' => 'required|max:20',
                     'email' => 'required|email|max:50',
-                    'foto' => 'required|image|dimensions:max_width=400,max_height=400'
+                    'foto' => 'image|dimensions:max_width=400,max_height=400'
                 ]);
+
+                if ($req->file('foto')) {
+                    $photo = base64_encode(file_get_contents($req->file('foto')));
+                } else {
+                    $photo = base64_encode(FacadesFile::get(public_path('media/img/user-default.png')));
+                }
 
                 $data = [
                     'id' => Str::uuid(),
@@ -60,7 +66,7 @@ class UserController extends Controller
                     'cp' => $req->cp,
                     'telefono' => $req->telefono,
                     'email' => $req->email,
-                    'foto' => base64_encode(file_get_contents($req->file('foto')))
+                    'foto' => $photo
                 ];
 
                 /* Creación del usuario */

@@ -1,11 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Actualizar incidencia')
-@section('head')
-@endsection
+@section('title', 'Actualizar evento')
 @section('content')
 
     <div class="titleBlock">
-        <h2 class="mt-5 p-4">ACTUALIZAR INCIDENCIA</h2>
+        <h2 class="mt-5 p-4">ACTUALIZAR EVENTO</h2>
     </div>
 
     <div class="d-flex align-items-center justify-content-center">
@@ -27,59 +25,56 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('incident.update', $data['incident'][0]['idIncidencia']) }}" method="POST">
+                <form action="{{ route('event.update') }}" method="POST">
+                    @method('put')
                     @csrf
+                    <input type="hidden" name="idEvento" id="idEvento"  value="{{ $data['event'][0]['idEvento'] }}">
                     <h3>Datos generales</h3>
                     <hr class="del">
 
                     {{-- BLOQUE DE DATOS GENERALES --}}
+                    <div class="form-group p-3">
+                        <label for="titulo">Titulo:</label>
+                        <input type="text" id="titulo" class="form-control" name="titulo"
+                            value="{{ $data['event'][0]['titulo'] }}">
+                    </div>
+
                     <div class="row p-3">
-                        <div class="form-group col-4">
-                            <label for="socio">Socio:</label>
-                            <select name="socio" id="socio" class="form-select">
-                                @foreach ($data['partners'] as $elem)
-                                    @if ($data['incident'][0]['idSocio'] == $elem->idSocio)
-                                        <option value="{{ $elem->idSocio }}">
-                                            {{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}
+                        <div class="form-group col-3">
+                            <label for="sala">Sala:</label>
+                            <select name="sala" id="sala" class="form-select">
+                                @foreach ($data['rooms'] as $elem)
+                                    @if ($data['event'][0]['idSala'] == $elem->idSala)
+                                        <option selected value="{{ $elem->idSala }}">
+                                            {{ $elem->nombre }}
                                         </option>
                                     @else
-                                        <option value="{{ $elem->idSocio }}">
-                                            {{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}
+                                        <option value="{{ $elem->idSala }}">
+                                            {{ $elem->nombre }}
                                         </option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-2">
-                            <label for="tipo">Tipo:</label>
-                            <select name="tipo" id="tipo" class="form-select">
-                                @switch($data['incident'][0]['tipo'])
-                                    @case('LEVE')
-                                        <option value="LEVE" selected>LEVE</option>
-                                        <option value="GRAVE">GRAVE</option>
-                                        <option value="MUY GRAVE">MUY GRAVE</option>
-                                    @break
-
-                                    @case('GRAVE')
-                                        <option value="LEVE">LEVE</option>
-                                        <option value="GRAVE" selected>GRAVE</option>
-                                        <option value="MUY GRAVE">MUY GRAVE</option>
-                                    @break
-
-                                    @case('MUY GRAVE')
-                                        <option value="LEVE">LEVE</option>
-                                        <option value="GRAVE">GRAVE</option>
-                                        <option value="MUY GRAVE" selected>MUY GRAVE</option>
-                                    @break
-
-                                    @default
-                                @endswitch
-
-                            </select>
-                        </div>
                         <div class="form-group col-3">
-                            <label for="fechaFinExp">Fecha final expulsión:</label>
-                            <input type="date" id="fechaFinExp" class="form-control" name="fechaFinExp" value="{{$data['incident'][0]['fechaFinExp']}}">
+                            <label for="entidad">Entidad organizadora:</label>
+                            <input type="text" id="entidad" class="form-control" name="entidad"
+                                value="{{ $data['event'][0]['entidadOrg'] }}">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="asistentes">Numero asistentes:</label>
+                            <input type="number" id="asistentes" class="form-control" name="asistentes"
+                                value="{{ $data['event'][0]['numeroAsistentes'] }}">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="fecha">Fecha evento:</label>
+                            <input type="date" id="fecha" class="form-control" name="fecha"
+                                value="{{ $data['event'][0]['fechaEvento'] }}">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="hora">Hora evento:</label>
+                            <input type="time" id="hora" class="form-control" name="hora"
+                                value="{{ $data['event'][0]['horaEvento'] }}">
                         </div>
                     </div>
 
@@ -89,10 +84,10 @@
                     {{-- BLOQUE DE INFORMACIÓN --}}
                     <div class="p-3">
                         <div class="form-group">
-                            <textarea class="form-control" style="height: 350px;" name="info" id="info">{{ $data['incident'][0]['informacion'] }}</textarea>
+                            <textarea class="form-control" style="height: 350px;" name="info" id="info">{{ $data['event'][0]['informacion'] }}</textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success mt-3">Actualizar</button>
+                    <button type="submit" onclick="charge()" class="btn btn-success mt-3">Actualizar</button>
                 </form>
             </div>
         </div>

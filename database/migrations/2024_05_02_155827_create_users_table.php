@@ -21,12 +21,13 @@ return new class extends Migration
             $table->integer('cp');
             $table->integer('telefono');
             $table->string('email', 50);
-            $table->text('foto')->nullable();
             $table->enum('rol', ['Admin', 'User'])->default('User');
             $table->boolean('deshabilitado')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE users ADD foto LONGBLOB");
     }
 
     /**

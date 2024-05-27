@@ -81,7 +81,10 @@ Route::controller(IncidentController::class)->group(function () {
 Route::controller(EventController::class)->group(function () {
     Route::get('/events', 'index')->name('event.index');
     Route::get('/event/create', 'createIndex')->name('event.create');
+    Route::get('/event/edit/{id}', 'editIndex')->name('event.edit');
     Route::post('/event/store', 'store')->name('event.store');
+    Route::put('/event/disable/{id}', 'disable')->name('event.disable');
+    Route::put('/event/udpate', 'update')->name('event.update');
 });
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {

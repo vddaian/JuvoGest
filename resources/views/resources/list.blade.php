@@ -32,7 +32,7 @@
             <div class="row p-3">
 
                 {{-- BLOQUE DE CREACIÓN --}}
-                <div class="col-3" id="createForm">
+                <div class="col-2" id="createForm">
                     <h4>Crear</h4>
                     <hr class="del">
                     <form method="post" action="{{ route('resource.store') }}">
@@ -57,7 +57,7 @@
                 </div>
 
                 {{-- BLOQUE DE ACTUALIZACIÓN --}}
-                <div class="col-3" id="updateForm" hidden>
+                <div class="col-2" id="updateForm" hidden>
                     <h4>Actualizar</h4>
                     <hr class="del">
                     <form method="post" action="{{ route('resource.update') }}">
@@ -92,9 +92,10 @@
                 </div>
 
                 {{-- BLOQUE DE LISTA --}}
-                <div class="col-9">
+                <div class="col-10">
                     <div class="d-flex justify-content-between w-100 px-2">
-                        <div class="w-100 pb-0 listPanels row">
+                        <div class="w-100 listPanels col-12">
+
                             {{-- BLOQUE DE FILTROS --}}
                             <form action="" method="post" class="d-flex col-9">
                                 @csrf
@@ -134,7 +135,7 @@
                             </form>
 
                             {{-- BLOQUE PAGINADOR --}}
-                            <div class="col-2 p-1 d-flex align-items-center">
+                            <div class="col-2 d-flex align-items-center">
                                 {{ $data['resources']->links('other.paginator') }}
                             </div>
                         </div>

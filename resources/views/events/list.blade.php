@@ -29,7 +29,7 @@
             @endif
 
             <div class="d-flex justify-content-between w-100 px-2">
-                <div class="w-100 pb-0 listPanels row">
+                <div class="w-100 listPanels col-12">
 
                     {{-- BLOQUE FILTROS --}}
                     <form action="" method="post" class="d-flex col-9">
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group col-3 p-1">
-                            <select name="socio" id="socio" class="form-select">
+                            <select name="sala" id="sala" class="form-select">
                                 <option value="-">-</option>
                                 @foreach ($data['rooms'] as $elem)
                                     <option value="{{ $elem->idSala }}">
@@ -60,7 +60,7 @@
                         {{-- BLOQUE ACCIONADORES --}}
                         <div class="col-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
-                                formaction="{{ route('incident.filter') }}">
+                                formaction="{{ route('event.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
                                     alt="searchICO">
                             </button>
@@ -73,7 +73,7 @@
                     </form>
 
                     {{-- BLOQUE PAGINADOR --}}
-                    <div class="col-2 p-1 d-flex align-items-center">
+                    <div class="col-2 d-flex align-items-center">
                         {{ $data['events']->links('other.paginator') }}
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         <td class="col-1 p-0">
                             <div class="w-100 h-100 m-0 d-flex justify-content-between">
                                 <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.view', $elem->idEvento) }}" method="get">
+                                    action="{{ route('event.view', $elem->idEvento) }}" method="get">
                                     @csrf
                                     <button class="listFormButton">
                                         <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">

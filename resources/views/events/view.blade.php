@@ -1,12 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Actualizar incidencia')
+@section('title', 'Evento')
 @section('head')
     <link rel="stylesheet" href="{{asset('styles/view.css')}}">
 @endsection
 @section('content')
-
     <div class="titleBlock">
-        <h2 class="mt-5 p-4">INCIDENCIA {{$data[0]->idIncidencia}}</h2>
+        <h2 class="mt-5 p-4">EVENTO {{ $data[0]->idEvento }}</h2>
     </div>
 
     <div class="d-flex align-items-center justify-content-center">
@@ -32,22 +31,31 @@
                 <hr class="del">
 
                 {{-- BLOQUE DE DATOS GENERALES --}}
+                <div class="p-3">
+                    <p class="viewLabel">Titulo:</p>
+                    <p class="viewField">{{ $data[0]->titulo }}</p>
+                </div>
+
                 <div class="row p-3">
-                    <div class="form-group col-4">
-                        <p class="viewLabel">Socio:</p>
-                        <p class="viewField">{{$data[0]->socio}}</p>
+                    <div class="col-3">
+                        <p class="viewLabel">Sala:</p>
+                        <p class="viewField">{{ $data[0]->sala }}</p>
                     </div>
-                    <div class="form-group col-2">
-                        <p class="viewLabel">Tipo:</p>
-                        <p class="viewField">{{$data[0]->tipo}}</p>
+                    <div class="col-3">
+                        <p class="viewLabel">Entidad organizadora:</p>
+                        <p class="viewField">{{ $data[0]->entidadOrg }}</p>
                     </div>
-                    <div class="form-group col-3">
-                        <p class="viewLabel">Fecha fin expulsion:</p>
-                        <p class="viewField">{{$data[0]->fechaFinExp}}</p>
+                    <div class="col-2">
+                        <p class="viewLabel">Numero asistentes:</p>
+                        <p class="viewField">{{ $data[0]->numeroAsistentes }}</p>
                     </div>
-                    <div class="form-group col-3">
-                        <p class="viewLabel">Fecha expulsion:</p>
-                        <p class="viewField" >{{$data[0]->fechaInc}}</p>
+                    <div class="col-2">
+                        <p class="viewLabel">Fecha evento:</p>
+                        <p class="viewField">{{ $data[0]->fechaEvento }}</p>
+                    </div>
+                    <div class="col-2">
+                        <p class="viewLabel">Hora evento:</p>
+                        <p class="viewField">{{ $data[0]->horaEvento }}</p>
                     </div>
                 </div>
 
@@ -56,9 +64,7 @@
 
                 {{-- BLOQUE DE INFORMACIÓN --}}
                 <div class="p-3">
-                    <p class="viewField" style="height: 200px;">
-                        {{$data[0]->informacion}}
-                    </p>
+                    <p class="viewField" style="height: 200px;">{{ $data[0]->informacion }}</p>
                 </div>
             </div>
         </div>

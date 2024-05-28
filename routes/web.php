@@ -82,6 +82,8 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/events', 'index')->name('event.index');
     Route::get('/event/create', 'createIndex')->name('event.create');
     Route::get('/event/edit/{id}', 'editIndex')->name('event.edit');
+    Route::get('/event/view/{id}', 'viewIndex')->name('event.view');
+    Route::post('/event', 'filter')->name('event.filter');
     Route::post('/event/store', 'store')->name('event.store');
     Route::put('/event/disable/{id}', 'disable')->name('event.disable');
     Route::put('/event/udpate', 'update')->name('event.update');

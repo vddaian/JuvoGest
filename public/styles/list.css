@@ -1,6 +1,5 @@
 .listTable,
 .listPanels {
-    /* background-color: var(--sg-bg-color); */
     border-radius: 5px;
     padding: 10px;
 }
@@ -12,9 +11,8 @@
 }
 
 .listPanels {
-    border-bottom: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    background-color: white;
+    border:1px solid var(--hov-color);
 }
 
 .listHead,

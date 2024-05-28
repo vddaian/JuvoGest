@@ -15,20 +15,74 @@ class EventController extends Controller
     public function index()
     {
 
-        // Recoge todos los socios que tiene el centro .-
+        // Recoge todos las salas que tiene el centro .-
         $rmsIds = Room::where([['idUsuario', Auth::user()->id], ['deshabilitado', false]])->get(['idSala']);
         $rms = Room::where([['idUsuario', Auth::user()->id], ['deshabilitado', false]])->get();
 
         // Recoge todos los eventos que tiene el centro .-
         $evs = DB::table('V_RoomsEvents')->whereIn('idSala', $rmsIds)->where('deshabilitado', false)->paginate(25);
-        
-        
+
+
         // Se almacena todo en una variable .-
         $data = [
             'rooms' => $rms,
             'events' => $evs
         ];
         return view('events.list')->with('data', $data);
+    }
+
+    /* Función que envia a la lista de salas filtrada */
+    public function filter(Request $req)
+    {
+        // Comprueba si alguno de los campos ha sido rellenado .-
+        if (!$req->filled('id') && !$req->filled('entidad') && !$req->filled('fecha') && $req->sala == '-') {
+            return redirect()->route('event.index');
+        } else {
+            try {
+
+                // Recoge todas las salas que tiene el centro .-
+                $rmsIds = Room::where([['idUsuario', Auth::user()->id], ['deshabilitado', false]])->get(['idSala']);
+
+                $query = DB::table('V_RoomsEvents');
+
+                // Comprueba si los campos se han rellenado y añade las condiciones .-
+                if ($req->filled('id')) {
+                    $query->where('idEvento', $req->id);
+                }
+
+                if ($req->filled('entidad')) {
+                    $query->where('entidadOrg', 'like', '%' . $req->entidad . '%');
+                }
+
+                if ($req->sala != '-') {
+                    $query->where('idSala', $req->sala);
+                }
+
+                if ($req->filled('fecha')) {
+                    $query->where('fechaEvento', $req->fecha);
+                }
+
+                // Recoge las salas del centro .-
+                $query->whereIn('idSala', $rmsIds);
+
+                $objs = $query->paginate(25);
+
+                $rms = Room::where([['idUsuario', Auth::user()->id], ['deshabilitado', false]])->get();
+
+                // Se almacena todos los datos
+                $data = [
+                    'events' => $objs,
+                    'rooms' => $rms 
+                ];
+                return view('events.list')->with('data', $data);
+            } catch (Exception $err) {
+                echo $err;
+                /* return redirect()->route('app.show')->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]); */
+            }
+        }
     }
 
     /* Función que redirige a la creación del evento */
@@ -59,7 +113,16 @@ class EventController extends Controller
             'event' => $ev
         ];
         return view('events.edit')->with('data', $data);
+    }
 
+    /* Función que redirige a la página de visualización */
+    public function viewIndex($id)
+    {
+
+        // Recoge la información del evento .-
+        $ev = DB::table('V_RoomsEvents')->where('idEvento', $id)->get();
+
+        return view('events.view')->with('data', $ev);
     }
 
     /* Función que almacena la información del evento en la bbdd */
@@ -136,7 +199,8 @@ class EventController extends Controller
 
 
     /* Funcion que deshabilita un evento */
-    public function disable($id){
+    public function disable($id)
+    {
         try {
             Event::where('idEvento', $id)->update(['deshabilitado' => true]);
             return redirect()->back()->with('info', ['message' => 'Evento eliminado con exito!']);
@@ -149,8 +213,9 @@ class EventController extends Controller
     }
 
     /* Función que recoge toda la información del evento */
-    public function getEventInfo($id){
-        return Event::where('idEvento',$id )->get();
+    public function getEventInfo($id)
+    {
+        return Event::where('idEvento', $id)->get();
     }
 
     /* Metodo que valida los campos que no sean numericos */

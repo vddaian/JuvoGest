@@ -29,7 +29,7 @@
             @endif
 
             <div class="d-flex justify-content-between w-100 px-2">
-                <div class="w-100 pb-0 listPanels row">
+                <div class="w-100 listPanels col-12">
 
                     {{-- Bloque de filtros --}}
                     <form action="" method="post" class="d-flex col-9">
@@ -67,7 +67,7 @@
                     </form>
 
                     {{-- Bloque paginador --}}
-                    <div class="col-2 p-1 d-flex align-items-center">
+                    <div class="col-2 d-flex align-items-center">
                         {{ $data->links('other.paginator') }}
                     </div>
                 </div>

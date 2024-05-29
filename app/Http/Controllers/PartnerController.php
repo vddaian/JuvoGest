@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Incident;
 use App\Models\Partner;
 use App\Models\PartnerUser;
 use Exception;
@@ -98,7 +99,12 @@ class PartnerController extends Controller
     /* Función que devuelve la página de visualización del socio */
     public function viewIndex($id)
     {
-        return view('partners.view')->with('data', $this->getPartnerInfo($id));
+        $incs = Incident::where([['idSocio', $id], ['deshabilitado', false]])->paginate(25);
+        $data = [
+            'incidents' => $incs,
+            'partner' => $this->getPartnerInfo($id)
+        ];
+        return view('partners.view')->with('data', $data);
     }
 
     /* Función que crea un nuevo socio */

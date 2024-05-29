@@ -9,7 +9,7 @@
         <h2 class="mt-5 p-4">EVENTOS</h2>
     </div>
 
-    {{-- BLOQUES PRINCIPALES --}}
+    {{-- BLOQUE PRINCIPAL --}}
     <div class="d-flex align-items-center justify-content-center">
 
         <div class="p-3" style="width:90%">
@@ -47,7 +47,7 @@
                                 <option value="-">-</option>
                                 @foreach ($data['rooms'] as $elem)
                                     <option value="{{ $elem->idSala }}">
-                                        {{ $elem->nombre}}
+                                        {{ $elem->nombre }}
                                     </option>
                                 @endforeach
                             </select>
@@ -79,58 +79,64 @@
                 </div>
             </div>
             {{-- TABLA DE DATOS --}}
-            <table class="w-100 listTable">
-                <tr class="row mt-3 mx-3 listHead">
-                    <th class="col-1">Id</th>
-                    <th class="col-2">Titulo</th>
-                    <th class="col-1">Sala</th>
-                    <th class="col-2">Entidad Organizadora</th>
-                    <th class="col-2">Informacion</th>
-                    <th class="col-1">Asistentes Prev</th>
-                    <th class="col-1">F.Evento</th>
-                    <th class="col-1">H.Evento</th>
-                    <th class="col-1"></th>
-                </tr>
-                @foreach ($data['events'] as $elem)
-                    <tr class="row mx-3 listRow">
-                        <td class="col-1">{{ $elem->idEvento }}</td>
-                        <td class="col-2">{{ $elem->titulo }}</td>
-                        <td class="col-1">{{ $elem->sala }}</td>
-                        <td class="col-2">{{ $elem->entidadOrg }}</td>
-                        <td class="col-2">{{ $elem->informacion }}</td>
-                        <td class="col-1">{{ $elem->numeroAsistentes }}</td>
-                        <td class="col-1">{{ $elem->fechaEvento }}</td>
-                        <td class="col-1">{{ $elem->horaEvento }}</td>
-                        <td class="col-1 p-0">
-                            <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('event.view', $elem->idEvento) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
-                                    </button>
-                                </form>
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('event.edit', $elem->idEvento) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
-                                    </button>
-                                </form>
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('event.disable', $elem->idEvento) }}" method="post">
-                                    @method('put')
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
-                                    </button>
-                                </form>
-
-                            </div>
-                        </td>
+            @if (!isset($data['events'][0]))
+                <div class="m-2 p-3 info">
+                    <p>No hay recursos en esta sala, añade uno!</p>
+                </div>
+            @else
+                <table class="w-100 listTable">
+                    <tr class="row mt-3 mx-3 listHead">
+                        <th class="col-1">Id</th>
+                        <th class="col-2">Titulo</th>
+                        <th class="col-1">Sala</th>
+                        <th class="col-2">Entidad Organizadora</th>
+                        <th class="col-2">Informacion</th>
+                        <th class="col-1">Asistentes Prev</th>
+                        <th class="col-1">F.Evento</th>
+                        <th class="col-1">H.Evento</th>
+                        <th class="col-1"></th>
                     </tr>
-                @endforeach
-            </table>
+                    @foreach ($data['events'] as $elem)
+                        <tr class="row mx-3 listRow">
+                            <td class="col-1">{{ $elem->idEvento }}</td>
+                            <td class="col-2">{{ $elem->titulo }}</td>
+                            <td class="col-1">{{ $elem->sala }}</td>
+                            <td class="col-2">{{ $elem->entidadOrg }}</td>
+                            <td class="col-2">{{ $elem->informacion }}</td>
+                            <td class="col-1">{{ $elem->numeroAsistentes }}</td>
+                            <td class="col-1">{{ $elem->fechaEvento }}</td>
+                            <td class="col-1">{{ $elem->horaEvento }}</td>
+                            <td class="col-1 p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.view', $elem->idEvento) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.edit', $elem->idEvento) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.disable', $elem->idEvento) }}" method="post">
+                                        @method('put')
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endif
         </div>
     </div>
 

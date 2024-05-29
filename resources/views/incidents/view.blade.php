@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Actualizar incidencia')
+@section('title', 'Incidencia')
 @section('head')
     <link rel="stylesheet" href="{{asset('styles/view.css')}}">
 @endsection

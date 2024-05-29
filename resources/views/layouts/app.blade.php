@@ -19,7 +19,7 @@
 
 </head>
 
-<body class="d-flex flex-column" style="background-color: #f2f6f7">
+<body class="d-flex flex-column" style="background-color: #f9fafa">
     @auth
         <header class="w-100 position-fixed">
             <div class=" w-100 d-flex justify-content-between p-2 navBlock"
@@ -71,9 +71,6 @@
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('incident.index') }}">Incidencias</a>
-                    </li>
-                    <li>
-                        <a onclick="charge()" class="nav-link" href="#">Registros</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('event.index') }}">Eventos</a>

@@ -76,11 +76,55 @@ class IncidentController extends Controller
 
                 return view('incidents.list')->with('data', $data);
             } catch (Exception $err) {
-                echo $err;
-                /* return redirect()->back()->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
-                ]); */
+                ]);
+            }
+        }
+    }
+
+    /* Función que envia a la vista de la sala con la lista de incidencias filtrada */
+    public function partnerFilter(Request $req)
+    {
+        // Comprueba si alguno de los campos ha sido rellenado .-
+        if (!$req->filled('id') && !$req->filled('fecha') && $req->socio == '-' && $req->tipo == '-') {
+            return redirect()->route('incident.index');
+        } else {
+            try {
+                $query = DB::table('V_PartnersIncidents');
+                // Comprueba si los campos se han rellenado y añade las condiciones .-
+                if ($req->filled('id')) {
+                    $query->where('idIncidencia', $req->id);
+                }
+
+                if ($req->filled('fecha')) {
+                    $query->where('fechaInc', $req->fecha);
+                }
+
+                if ($req->tipo != '-') {
+                    $query->where('tipo', $req->tipo);
+                }
+
+                if ($req->socio != '-') {
+                    $query->where('idSocio', $req->socio);
+                }
+
+                // Recoge las incidencias .-
+                $query->where([['deshabilitado', false], ['idUsuario', Auth::user()->id]]);
+                $ins = $query->paginate(25);
+
+                // Se almacena todo en una variable .-
+                $data = [
+                    'incidents' => $ins,
+                ];
+
+                return view('room.view')->with('data', $data);
+            } catch (Exception $err) {
+                return redirect()->back()->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]);
             }
         }
     }
@@ -120,6 +164,7 @@ class IncidentController extends Controller
         $inc = $this->getIncidentInfo($id);
         return view('incidents.view')->with('data', $inc);
     }
+
     /* Función que realiza el almacenamiento de la incidencia */
     public function store(Request $req)
     {
@@ -136,6 +181,8 @@ class IncidentController extends Controller
             'informacion' => $req->info
         ];
         try {
+            // Cambia el estado del socio a expulsado .-
+            Partner::where('idSocio', $req->socio)->update(['expulsado' => true]);
             Incident::create($data);
             return redirect()->back()->with('info', ['message' => 'Incidencia creada con exito!']);
         } catch (Exception $err) {
@@ -182,7 +229,6 @@ class IncidentController extends Controller
                 'message' => 'Algo no ha ido bien!'
             ]);
         }
-
     }
 
     /* Función que devuelve toda la información de la incidencia */

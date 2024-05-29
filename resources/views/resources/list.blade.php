@@ -2,7 +2,7 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
-    <script src="{{asset('js/list.js')}}"></script>
+    <script src="{{ asset('js/list.js') }}"></script>
 @endsection
 @section('content')
 
@@ -10,11 +10,11 @@
         <h2 class="mt-5 p-4">RECURSOS</h2>
     </div>
 
-    {{-- Bloques principales --}}
+    {{-- BLOQUE PRINCIPAL --}}
     <div class="d-flex align-items-center justify-content-center">
 
         <div class="p-3" style="width:90%">
-            {{-- Bloque para información de acciones --}}
+            {{-- BLOQUE ACCIONADORES INFORMATIVOS --}}
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
@@ -68,7 +68,7 @@
                             <label for="sala">Sala:</label>
                             <select name="sala" id="upSala" class="form-select">
                                 @foreach ($data['rooms'] as $elem)
-                                    <option value="{{$elem->idSala}}">{{$elem->nombre}}</option>
+                                    <option value="{{ $elem->idSala }}">{{ $elem->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -142,7 +142,7 @@
                     </div>
 
                     @if (!isset($data['resources'][0]))
-                        <div class="w-100 mb-1 p-2 info">
+                        <div class="m-2 p-3 info">
                             <p>No hay recursos en esta sala, añade uno!</p>
                         </div>
                     @else
@@ -163,13 +163,14 @@
                                     <td class="col-1 p-0">
                                         <div class="w-100 h-100 m-0 d-flex justify-content-between">
                                             <button class="listFormButton"
-                                                onclick="changeToUpdateForm('{{$elem->idRecurso}}','{{$elem->idSala}}', '{{$elem->nombre}}' , '{{$elem->tipo}}')">
+                                                onclick="changeToUpdateForm('{{ $elem->idRecurso }}','{{ $elem->idSala }}', '{{ $elem->nombre }}' , '{{ $elem->tipo }}')">
                                                 <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
                                             </button>
-                                            <form class="w-100 h-100 m-0  d-flex justify-content-between" action="{{route('resource.disable')}}"
-                                                method="post">
+                                            <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                                action="{{ route('resource.disable') }}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="id" id="id" value="{{ $elem->idRecurso }}">
+                                                <input type="hidden" name="id" id="id"
+                                                    value="{{ $elem->idRecurso }}">
                                                 <button type="submit" class="listFormButton">
                                                     <img src="{{ asset('media/ico/delete.ico') }}"
                                                         alt="Delete user button">
@@ -182,7 +183,6 @@
                         </table>
                     @endif
                 </div>
-
             </div>
         </div>
     </div>

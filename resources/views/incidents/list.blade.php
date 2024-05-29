@@ -9,7 +9,7 @@
         <h2 class="mt-5 p-4">INCIDENCIAS</h2>
     </div>
 
-    {{-- BLOQUES PRINCIPALES --}}
+    {{-- BLOQUE PRINCIPAL --}}
     <div class="d-flex align-items-center justify-content-center">
 
         <div class="p-3" style="width:90%">
@@ -84,53 +84,59 @@
                 </div>
             </div>
             {{-- TABLA DE DATOS --}}
-            <table class="w-100 listTable">
-                <tr class="row mt-3 mx-3 listHead">
-                    <th class="col-1">Id</th>
-                    <th class="col-2">Nombre</th>
-                    <th class="col-1">Tipo</th>
-                    <th class="col-3">Info</th>
-                    <th class="col-2">F.Incidencia</th>
-                    <th class="col-2">Exp.Fin</th>
-                    <th class="col-1"></th>
-                </tr>
-                @foreach ($data['incidents'] as $elem)
-                    <tr class="row mx-3 listRow">
-                        <td class="col-1">{{ $elem->idIncidencia }}</td>
-                        <td class="col-2">{{ $elem->socio }}</td>
-                        <td class="col-1">{{ $elem->tipo }}</td>
-                        <td class="col-3">{{ $elem->informacion }}</td>
-                        <td class="col-2">{{ $elem->fechaInc }}</td>
-                        <td class="col-2">{{ $elem->fechaFinExp }}</td>
-                        <td class="col-1 p-0">
-                            <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
-                                    </button>
-                                </form>
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.edit', $elem->idIncidencia) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
-                                    </button>
-                                </form>
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('incident.disable', $elem->idIncidencia) }}" method="post">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
-                                    </button>
-                                </form>
-
-                            </div>
-                        </td>
+            @if (!isset($data['incidents'][0]))
+                <div class="m-2 p-3 info">
+                    <p>No hay recursos en el centro, añade uno!</p>
+                </div>
+            @else
+                <table class="w-100 listTable">
+                    <tr class="row mt-3 mx-3 listHead">
+                        <th class="col-1">Id</th>
+                        <th class="col-2">Nombre</th>
+                        <th class="col-1">Tipo</th>
+                        <th class="col-3">Info</th>
+                        <th class="col-2">F.Incidencia</th>
+                        <th class="col-2">Exp.Fin</th>
+                        <th class="col-1"></th>
                     </tr>
-                @endforeach
-            </table>
+                    @foreach ($data['incidents'] as $elem)
+                        <tr class="row mx-3 listRow">
+                            <td class="col-1">{{ $elem->idIncidencia }}</td>
+                            <td class="col-2">{{ $elem->socio }}</td>
+                            <td class="col-1">{{ $elem->tipo }}</td>
+                            <td class="col-3">{{ $elem->informacion }}</td>
+                            <td class="col-2">{{ $elem->fechaInc }}</td>
+                            <td class="col-2">{{ $elem->fechaFinExp }}</td>
+                            <td class="col-1 p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('incident.edit', $elem->idIncidencia) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('incident.disable', $elem->idIncidencia) }}" method="post">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endif
         </div>
     </div>
 

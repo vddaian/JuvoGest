@@ -62,7 +62,7 @@
                 <div class="row p-3">
 
                     {{-- BLOQUE DE AÑADIR --}}
-                    <div class="col-3" id="addForm">
+                    <div class="col-2" id="addForm">
                         <h4>Añadir</h4>
                         <hr class="del">
                         <form method="post" action="{{ route('resource.add') }}">
@@ -84,9 +84,9 @@
                     </div>
 
                     {{-- BLOQUE DE LISTA DE RECURSOS --}}
-                    <div class="col-9">
+                    <div class="col-10">
                         <div class="d-flex justify-content-between w-100 px-2">
-                            <div class="w-100 pb-0 listPanels row">
+                            <div class="w-100 listPanels col-12">
                                 {{-- Bloque de filtros --}}
                                 <form action="" method="post" class="d-flex col-9">
                                     @csrf
@@ -124,14 +124,14 @@
                                 </form>
 
                                 {{-- Bloque paginador --}}
-                                <div class="col-2 p-1 d-flex align-items-center">
+                                <div class="col-2 d-flex align-items-center">
                                     {{ $data['rmResources']->links('other.paginator') }}
                                 </div>
                             </div>
                         </div>
 
                         @if (!isset($data['rmResources'][0]))
-                            <div class="w-100 mb-1 p-2 info">
+                            <div class="m-2 p-3 info">
                                 <p>No hay recursos en esta sala, añade uno!</p>
                             </div>
                         @else

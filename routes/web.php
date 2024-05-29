@@ -71,6 +71,7 @@ Route::controller(IncidentController::class)->group(function () {
     Route::get('/incident/edit/{id}', 'editIndex')->name('incident.edit');
     Route::get('/incident/view/{id}', 'viewIndex')->name('incident.view');
     Route::get('/incidents', 'index')->name('incident.index');
+    Route::post('/partner/view/{idSocio}', 'filterFromPartner')->name('incident.partner.filter');
     Route::post('/incidents', 'filter')->name('incident.filter');
     Route::post('/incident/store', 'store')->name('incident.store');
     Route::post('/incident/disable/{id}', 'disable')->name('incident.disable');

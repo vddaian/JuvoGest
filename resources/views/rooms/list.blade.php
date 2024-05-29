@@ -9,11 +9,11 @@
         <h2 class="mt-5 p-4">SALAS</h2>
     </div>
 
-    {{-- Bloques principales --}}
+    {{-- BLOQUE PRINCIPAL --}}
     <div class="d-flex align-items-center justify-content-center">
 
         <div class="p-3" style="width:90%">
-            {{-- Bloque para información de acciones --}}
+            {{-- BLOQUE ACCIONADORES INFORMATIVOS --}}
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
@@ -31,7 +31,7 @@
             <div class="d-flex justify-content-between w-100 px-2">
                 <div class="w-100 listPanels col-12">
 
-                    {{-- Bloque de filtros --}}
+                    {{-- BLOQUE FILTROS --}}
                     <form action="" method="post" class="d-flex col-9">
                         @csrf
                         <div class="form-group col-2 p-1">
@@ -52,7 +52,7 @@
                             </select>
                         </div>
 
-                        {{-- Bloque accionadores --}}
+                        {{-- BLOQUE ACCIONADORES --}}
                         <div class="col-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
                                 formaction="{{ route('room.filter') }}">
@@ -67,48 +67,54 @@
 
                     </form>
 
-                    {{-- Bloque paginador --}}
+                    {{-- BLOQUE PAGINADOR --}}
                     <div class="col-3 d-flex align-items-center">
                         {{ $data->links('other.paginator') }}
                     </div>
                 </div>
             </div>
-            {{-- Tabla --}}
-            <table class="w-100 listTable">
-                <tr class="row mt-3 mx-3 listHead">
-                    <th class="col-2">Id</th>
-                    <th class="col-4">Nombre</th>
-                    <th class="col-4">Información</th>
-                    <th class="col-1">Tipo</th>
-                    <th class="col-1"></th>
-                </tr>
-                @foreach ($data as $elem)
-                    <tr class="row mx-3 listRow">
-                        <td class="col-2 text-right">{{ $elem->idSala }}</td>
-                        <td class="col-4">{{ $elem->nombre }}</td>
-                        <td class="col-4">{{ $elem->informacion }}</td>
-                        <td class="col-1">{{ $elem->tipo }}</td>
-                        <td class="col-1 p-0">
-                            <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('room.view', $elem->idSala) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
-                                    </button>
-                                </form>
-                                <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                    action="{{ route('room.edit', $elem->idSala) }}" method="get">
-                                    @csrf
-                                    <button class="listFormButton">
-                                        <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+            {{-- TABLA DE DATOS --}}
+            @if (!isset($data[0]))
+                <div class="m-2 p-3 info">
+                    <p>No hay salas en el centro, añade una!</p>
+                </div>
+            @else
+                <table class="w-100 listTable">
+                    <tr class="row mt-3 mx-3 listHead">
+                        <th class="col-2">Id</th>
+                        <th class="col-4">Nombre</th>
+                        <th class="col-4">Información</th>
+                        <th class="col-1">Tipo</th>
+                        <th class="col-1"></th>
                     </tr>
-                @endforeach
-            </table>
+                    @foreach ($data as $elem)
+                        <tr class="row mx-3 listRow">
+                            <td class="col-2 text-right">{{ $elem->idSala }}</td>
+                            <td class="col-4">{{ $elem->nombre }}</td>
+                            <td class="col-4">{{ $elem->informacion }}</td>
+                            <td class="col-1">{{ $elem->tipo }}</td>
+                            <td class="col-1 p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('room.view', $elem->idSala) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('room.edit', $elem->idSala) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endif
         </div>
     </div>
 

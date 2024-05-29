@@ -85,18 +85,15 @@ class IncidentController extends Controller
     }
 
     /* Función que envia a la vista de la sala con la lista de incidencias filtrada */
-    public function partnerFilter(Request $req)
+    public function filterFromPartner(Request $req, $idSocio)
     {
         // Comprueba si alguno de los campos ha sido rellenado .-
-        if (!$req->filled('id') && !$req->filled('fecha') && $req->socio == '-' && $req->tipo == '-') {
-            return redirect()->route('incident.index');
+        if (!$req->filled('fecha') && $req->tipo == '-') {
+            return redirect()->route('partner.view', $idSocio);
         } else {
             try {
-                $query = DB::table('V_PartnersIncidents');
+                $query = Incident::query();
                 // Comprueba si los campos se han rellenado y añade las condiciones .-
-                if ($req->filled('id')) {
-                    $query->where('idIncidencia', $req->id);
-                }
 
                 if ($req->filled('fecha')) {
                     $query->where('fechaInc', $req->fecha);
@@ -106,20 +103,21 @@ class IncidentController extends Controller
                     $query->where('tipo', $req->tipo);
                 }
 
-                if ($req->socio != '-') {
-                    $query->where('idSocio', $req->socio);
-                }
-
                 // Recoge las incidencias .-
-                $query->where([['deshabilitado', false], ['idUsuario', Auth::user()->id]]);
+                $query->where([['deshabilitado', false], ['idSocio', $idSocio]]);
                 $ins = $query->paginate(25);
+
+                // Recoge la información del socio .-
+                $prt = new PartnerController();
+                $prt = $prt->getPartnerInfo($idSocio);
 
                 // Se almacena todo en una variable .-
                 $data = [
                     'incidents' => $ins,
+                    'partner' => $prt
                 ];
 
-                return view('room.view')->with('data', $data);
+                return view('partners.view')->with('data', $data);
             } catch (Exception $err) {
                 return redirect()->back()->with('info', [
                     'error' => $err,
@@ -183,13 +181,15 @@ class IncidentController extends Controller
         try {
             // Cambia el estado del socio a expulsado .-
             Partner::where('idSocio', $req->socio)->update(['expulsado' => true]);
+
             Incident::create($data);
             return redirect()->back()->with('info', ['message' => 'Incidencia creada con exito!']);
         } catch (Exception $err) {
-            return redirect()->back()->with('info', [
+            echo $err;
+            /* return redirect()->back()->with('info', [
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
-            ]);
+            ]); */
         }
     }
 

@@ -27,7 +27,8 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('incident.update', $data['incident'][0]['idIncidencia']) }}" method="POST">
+                <form action="{{ route('incident.update', $data['incident'][0]->idIncidencia) }}" method="POST">
+                    @method('put')
                     @csrf
                     <h3>Datos generales</h3>
                     <hr class="del">
@@ -38,7 +39,7 @@
                             <label for="socio">Socio:</label>
                             <select name="socio" id="socio" class="form-select">
                                 @foreach ($data['partners'] as $elem)
-                                    @if ($data['incident'][0]['idSocio'] == $elem->idSocio)
+                                    @if ($data['incident'][0]->idSocio == $elem->idSocio)
                                         <option value="{{ $elem->idSocio }}">
                                             {{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}
                                         </option>
@@ -53,7 +54,7 @@
                         <div class="form-group col-2">
                             <label for="tipo">Tipo:</label>
                             <select name="tipo" id="tipo" class="form-select">
-                                @switch($data['incident'][0]['tipo'])
+                                @switch($data['incident'][0]->tipo)
                                     @case('LEVE')
                                         <option value="LEVE" selected>LEVE</option>
                                         <option value="GRAVE">GRAVE</option>
@@ -79,7 +80,7 @@
                         </div>
                         <div class="form-group col-3">
                             <label for="fechaFinExp">Fecha final expulsión:</label>
-                            <input type="date" id="fechaFinExp" class="form-control" name="fechaFinExp" value="{{$data['incident'][0]['fechaFinExp']}}">
+                            <input type="date" id="fechaFinExp" class="form-control" name="fechaFinExp" value="{{$data['incident'][0]->fechaFinExp}}">
                         </div>
                     </div>
 
@@ -89,7 +90,7 @@
                     {{-- BLOQUE DE INFORMACIÓN --}}
                     <div class="p-3">
                         <div class="form-group">
-                            <textarea class="form-control" style="height: 350px;" name="info" id="info">{{ $data['incident'][0]['informacion'] }}</textarea>
+                            <textarea class="form-control" style="height: 350px;" name="info" id="info">{{ $data['incident'][0]->informacion }}</textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success mt-3">Actualizar</button>

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('sgTelefonoResp')->nullable();
             $table->string('email', 50);
             $table->mediumText('alergias')->nullable();
+            $table->boolean('expulsado')->default(false);
             $table->boolean('deshabilitado')->default(false);
             $table->timestamps();
         });

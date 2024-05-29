@@ -185,7 +185,7 @@
                         {{-- BLOQUE ACCIONADORES --}}
                         <div class="col-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
-                                formaction="{{ route('incident.partner.filter') }}">
+                                formaction="{{ route('incident.partner.filter', $data['partner'][0]['idSocio']) }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
                                     alt="searchICO">
                             </button>
@@ -206,7 +206,7 @@
             {{-- TABLA DE DATOS --}}
             @if (!isset($data['incidents'][0]))
                 <div class="m-2 p-3 info">
-                    <p>No hay recursos en el centro, añade uno!</p>
+                    <p>El socio no tiene incidencias!</p>
                 </div>
             @else
                 <table class="w-100 listTable">
@@ -227,7 +227,7 @@
                             <td class="col-3">{{ $elem->fechaFinExp }}</td>
                             <td class="col-1 p-0">
                                 <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                    <form class="w-100 h-100 m-0 d-flex justify-content-between"
                                         action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
                                         @csrf
                                         <button class="listFormButton">

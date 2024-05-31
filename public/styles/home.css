@@ -1,0 +1,42 @@
+.listTitle {
+    background-color: var(--sg-bg-color);
+    color: var(--font-color);
+    border: 1px solid var(--hov-color);
+    border-bottom: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.list {
+    min-height: 300px;
+    border: 1px solid var(--hov-color);
+    border-top: none;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: white;
+}
+
+.listElem:has(img) {
+    display: flex;
+    align-items: center;
+}
+
+.listElem {
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.elem {
+    border: 1px solid var(--hov-color);
+    border-radius: 5px;
+    background: linear-gradient(to right, #d4da1e 50%, rgba(255,255,255,0) 50%);
+    background-size: 200% 100%;
+    background-position: right;
+    transition: background-position 0.5s ease-in-out;
+}
+
+.elem:hover {
+    background-position: left;
+}

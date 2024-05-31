@@ -1,36 +1,53 @@
-:root{
+@font-face {
+    font-family: 'Cocogoose';
+    src: url('../fonts/AgenorNeue-Regular.otf');
+    font-style: 'normal';
+    font-weight: lighter;
+}
+
+:root {
     --pr-bg-color: #349e97;
     --sg-bg-color: #38918b;
-    --br-color: black; /*c8ce13*/
-    --hov-color:#D4DA1E;
-    --del-color:#D4DA1E;
+    --br-color: black;
+    /*c8ce13*/
+    --hov-color: #D4DA1E;
+    --del-color: #D4DA1E;
     --font-color: white;
+    --font: Cocogoose;
 }
-body{
+
+body {
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
+    font-family: Helvetica;
 }
 
-.del{
+.del {
     height: 2px;
     background-color: var(--del-color);
     border: 1px solid var(--del-color);
     border-radius: 5px;
     opacity: 1;
 }
-.error, .success, .info{
-    color:white;
+
+.error,
+.success,
+.info {
+    color: white;
     border-radius: 5px;
     animation: slideOut 1s cubic-bezier(0, 0, 1, 1) 1;
 }
-.error{
+
+.error {
     background-color: #be5656;
 }
-.success{
+
+.success {
     background-color: #56beb8;
 }
-.info{
+
+.info {
     background-color: #56a7bb;
 }
 
@@ -39,15 +56,16 @@ body{
     background-color: var(--sg-bg-color);
 }
 
-.titleBlock h2{
+.titleBlock h2 {
     color: var(--font-color);
 }
 
 @keyframes slideOut {
-    from{
+    from {
         opacity: 0;
     }
-    to{
+
+    to {
         opacity: 1;
     }
 }

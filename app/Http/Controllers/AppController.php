@@ -11,6 +11,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AppController extends Controller
 {
@@ -41,7 +42,7 @@ class AppController extends Controller
             $nwPrts = Partner::whereIn('idSocio', $prtIds)->get();
 
             // Recoge las nuevas incidencias en los ultimos 15 dias .-
-            $incs = Incident::where([['fechaInc', '>=', $date], ['deshabilitado', false], ['idUsuario', Auth::user()->id]])->get();
+            $incs = DB::table('V_PartnersIncidents')->where([['fechaInc', '>=', $date], ['deshabilitado', false], ['idUsuario', Auth::user()->id]])->get();
             
             // Se almacena todo en una variable .-
             $data = [

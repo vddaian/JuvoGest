@@ -19,7 +19,7 @@
 
 </head>
 
-<body class="d-flex flex-column" style="background-color: #f9fafa">
+<body class="d-flex flex-column" style="background-color: #f9fafa; font-family:Helvetica;">
     @auth
         <header class="w-100 position-fixed">
             <div class=" w-100 d-flex justify-content-between p-2 navBlock"
@@ -58,7 +58,7 @@
             <nav class="nav h-100 position-fixed" id='nav' hidden>
                 <ul class="navList p-5">
                     <li>
-                        <a onclick="charge()" class="nav-link" href="{{ route('app.show') }}">Inicio</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('app.index') }}">Inicio</a>
                     </li>
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('partner.index') }}">Socios</a>

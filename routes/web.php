@@ -91,6 +91,9 @@ Route::controller(EventController::class)->group(function () {
 });
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {
-    Route::get('/home', 'show')->name('app.show');
-    Route::get('/', 'index')->name('app.index');
+    Route::get('/home', 'index')->name('app.index');
+});
+
+Route::get('/', function () {
+    return redirect()->route('app.index');
 });

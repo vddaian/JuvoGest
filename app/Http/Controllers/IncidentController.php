@@ -180,16 +180,15 @@ class IncidentController extends Controller
         ];
         try {
             // Cambia el estado del socio a expulsado .-
-            Partner::where('idSocio', $req->socio)->update(['expulsado' => true]);
+            PartnerUser::where('idSocio', $req->socio)->update(['expulsado' => true]);
 
             Incident::create($data);
             return redirect()->back()->with('info', ['message' => 'Incidencia creada con exito!']);
         } catch (Exception $err) {
-            echo $err;
-            /* return redirect()->back()->with('info', [
+            return redirect()->back()->with('info', [
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
-            ]); */
+            ]);
         }
     }
 

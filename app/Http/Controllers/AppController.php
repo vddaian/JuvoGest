@@ -38,7 +38,7 @@ class AppController extends Controller
             $date = now();
             date_sub($date, date_interval_create_from_date_string("15 days"));
             
-            $prtIds = PartnerUser::where([['idUsuario', Auth::user()->id], ['fechaAlta', '>=', $date]], ['deshabilitado', false])->get(['idSocio']);
+            $prtIds = PartnerUser::where([['idUsuario', Auth::user()->id], ['fechaAlta', '>=', $date], ['deshabilitado', false]])->get(['idSocio']);
             $nwPrts = Partner::whereIn('idSocio', $prtIds)->get();
 
             // Recoge las nuevas incidencias en los ultimos 15 dias .-

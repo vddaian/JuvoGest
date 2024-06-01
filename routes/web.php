@@ -6,6 +6,7 @@ use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,6 +90,9 @@ Route::controller(EventController::class)->group(function () {
     Route::put('/event/disable/{id}', 'disable')->name('event.disable');
     Route::put('/event/udpate', 'update')->name('event.update');
 });
+
+/* Rutas para las estadisticas */
+Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {
     Route::get('/home', 'index')->name('app.index');

@@ -126,9 +126,8 @@ class PartnerController extends Controller
             // Comprueba si hay una relación entre el centro y el socio y si esta deshabilitado .-
             if ($this->userRelationIsDisabled($id)) {
                 $this->activeUserRelation($id);
-                return redirect()->back()->with('info', [
-                    'message' => 'Socio creado con exito!'
-                ]);
+                $this->updateFromStore($req, $id);
+                return redirect()->back()->with('info', ['message' => 'Socio creado con exito!']);
 
                 // Comprueba si hay una relación entre el centro y el socio .-
             } else if ($this->userRelationExists($id)) {
@@ -142,9 +141,9 @@ class PartnerController extends Controller
                     'idSocio' => $id,
                     'fechaAlta' => date('Y-m-d')
                 ]);
-                return redirect()->back()->with('info', [
-                    'message' => 'Socio creado con exito!'
-                ]);
+                $this->updateFromStore($req, $id);
+                return redirect()->back()->with('info', ['message' => 'Socio creado con exito!']);
+                
             }
         } else {
 
@@ -248,11 +247,55 @@ class PartnerController extends Controller
 
                 return redirect()->back()->with('info', ['message' => 'Socio actualizado con exito!']);
             } catch (Exception $err) {
-                echo $err;
-                /* return redirect()->back()->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
-                ]); */
+                ]);
+            }
+        }
+    }
+
+    /* Función que realiza la actualización del socio ya creado con los nuevos datos*/
+    public function updateFromStore($req, $id)
+    {
+        // Valida los datos numericos .-
+        if ($this->checkNumeric($req->cp, $req->tel, $req->prTelResp, $req->sgTelResp)) {
+            try {
+                // Valida los demas campos .-
+                $val = $this->validateOthers($req);
+
+                // Comprueba si el campo de la imagen ha sido rellenada .-
+                if ($req->file('foto')) {
+                    $photo = base64_encode(file_get_contents($req->file('foto')));
+
+                } else {
+                    $photo = $this->getPartnerPhoto($id);
+
+                }
+
+                // Almacenamos toda la información del socio .-
+                $data = [
+                    'prNombre' => $req->prNombre,
+                    'sgNombre' => $req->sgNombre,
+                    'prApellido' => $req->prApellido,
+                    'sgApellido' => $req->sgApellido,
+                    'fechaNacimiento' => $req->fechaNacimiento,
+                    'direccion' => $req->direccion,
+                    'localidad' => $req->localidad,
+                    'cp' => $req->cp,
+                    'telefono' => $req->tel,
+                    'prTelefonoResp' => $req->prTelResp,
+                    'sgTelefonoResp' => $req->sgTelResp,
+                    'email' => $req->email,
+                    'alergias' => $req->alergias,
+                    'foto' => $photo
+                ];
+
+
+                // Realiza la actualización del socio .-
+                Partner::where('idSocio', $id)->update($data);
+            } catch (Exception $err) {
+                echo $err;
             }
         }
     }

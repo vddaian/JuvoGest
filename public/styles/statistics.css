@@ -1,0 +1,5 @@
+.statisticBlock{
+    width: 75%;
+    position: absolute;
+    z-index: -1;
+}

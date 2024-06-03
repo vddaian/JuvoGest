@@ -15,13 +15,24 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{{ asset('js/global.js') }}"></script>
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            var historyTraversal = event.persisted ||
+                (typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2);
+            if (historyTraversal) {
+                // Handle page restore.
+                window.location.reload();
+            }
+        });
+    </script>
     @yield('head')
 
 </head>
 
 <body class="d-flex flex-column" style="background-color: #f9fafa; font-family:Helvetica;">
     @auth
-        <header class="w-100 position-fixed">
+        <header class="w-100 position-fixed" style="z-index: 1;">
             <div class=" w-100 d-flex justify-content-between p-2 navBlock"
                 style="background-image:url({{ asset('media/img/nav.png') }});">
                 <div class="navHam">
@@ -76,7 +87,7 @@
                         <a onclick="charge()" class="nav-link" href="{{ route('event.index') }}">Eventos</a>
                     </li>
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Estadisticas</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('statistics.index') }}">Estadisticas</a>
                     </li>
                     <hr class="del">
                     <li>
@@ -84,7 +95,10 @@
                     </li>
                     <hr class="del">
                     <li>
-                        <a onclick="charge()" class="nav-link" href="#">Crear usuario</a>
+                        <a onclick="charge()" class="nav-link" href="{{ route('user.index') }}">Usuarios</a>
+                    </li>
+                    <li>
+                        <a onclick="charge()" class="nav-link" href="{{ route('admin.partners.index') }}">Socios</a>
                     </li>
                 </ul>
             </nav>

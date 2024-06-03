@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\IncidentController;
@@ -23,11 +24,14 @@ use Illuminate\Support\Facades\Route;
 
 /* Rutas de inicio, registro, desconexion y vista del usuario  */
 Route::controller(UserController::class)->group(function () {
-    Route::post('/login', 'verify')->name('login.verify');
+    Route::get('/users', 'index')->name('user.index');
+    Route::get('/user/view/{id}', 'viewIndex')->name('user.view');
+    Route::get('/user/edit/{id}', 'editIndex')->name('user.edit');
+    Route::get('/user/create', 'createIndex')->name('user.create');
     Route::get('/login', 'loginIndex')->name('login.index');
-    Route::post('/register', 'store')->name('register.store');
-    Route::get('/register', 'registerIndex')->name('register.index');
     Route::get('/logout', 'logout')->name('user.logout');
+    Route::post('/login', 'verify')->name('login.verify');
+    Route::post('/user/create', 'store')->name('user.store');
 });
 
 /* Rutas para socios */
@@ -43,7 +47,7 @@ Route::controller(PartnerController::class)->group(function () {
 });
 
 /* Rutas para salas */
-Route::controller(RoomController::class)->group(function () { // Estado, Tipo [ P = 15, M =50 , G = 120, MG = 250]
+Route::controller(RoomController::class)->group(function () { 
     Route::get('/rooms', 'index')->name('room.index');
     Route::get('/room/create', 'createIndex')->name('room.create');
     Route::get('/room/edit/{id}', 'editIndex')->name('room.edit');
@@ -93,6 +97,14 @@ Route::controller(EventController::class)->group(function () {
 
 /* Rutas para las estadisticas */
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+
+/* Rutas del admin */
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/admin/partners', 'partnersIndex')->name('admin.partners.index');
+    Route::get('/admin/users', 'usersIndex')->name('admin.users.index');
+    Route::put('/admin/partner/delete', 'deletePartnerInfo')->name('admin.partner.info.delete');
+});
+
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {
     Route::get('/home', 'index')->name('app.index');

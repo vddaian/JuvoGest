@@ -315,13 +315,13 @@ class PartnerController extends Controller
         return redirect()->back()->with('info', ['message' => 'Socio eliminado con exito!']);
     }
 
-    /* Función que devuelve el id del usuario */
+    /* Función que devuelve el id del socio */
     public function getPartnerId($dni)
     {
         return Partner::where('dni', $dni)->get(['idSocio'])[0]['idSocio'];
     }
 
-    /* Función que devuelve el id del usuario */
+    /* Función que devuelve la foto del socio */
     public function getPartnerPhoto($id)
     {
         return Partner::where('idSocio', $id)->get(['foto'])[0]['foto'];

@@ -32,17 +32,17 @@ class AppController extends Controller
 
             // Recoge los proximos eventos .-
             $rmsIds = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);
-            $evs = Event::whereIn('idSala', $rmsIds )->where('deshabilitado', false)->get();
+            $evs = Event::whereIn('idSala', $rmsIds )->where('deshabilitado', false)->orderBy('fechaEvento')->get();
 
             // Recoge los socios nuevos en los ultimos 15 dias .-
             $date = now();
             date_sub($date, date_interval_create_from_date_string("15 days"));
             
-            $prtIds = PartnerUser::where([['idUsuario', Auth::user()->id], ['fechaAlta', '>=', $date], ['deshabilitado', false]])->get(['idSocio']);
+            $prtIds = PartnerUser::where([['idUsuario', Auth::user()->id], ['fechaAlta', '>=', $date], ['deshabilitado', false]])->orderByDesc('fechaAlta')->get(['idSocio']);
             $nwPrts = Partner::whereIn('idSocio', $prtIds)->get();
 
             // Recoge las nuevas incidencias en los ultimos 15 dias .-
-            $incs = DB::table('V_PartnersIncidents')->where([['fechaInc', '>=', $date], ['deshabilitado', false], ['idUsuario', Auth::user()->id]])->get();
+            $incs = DB::table('V_PartnersIncidents')->where([['fechaInc', '>=', $date], ['deshabilitado', false], ['idUsuario', Auth::user()->id]])->orderBy('fechaInc')->get();
             
             // Se almacena todo en una variable .-
             $data = [

@@ -34,27 +34,24 @@
                     {{-- BLOQUE FILTROS --}}
                     <form action="" method="post" class="d-flex col-10" style="float: left">
                         @csrf
-                        <div class="form-group col-2 p-1">
-                            <input type="text" class="form-control" name="dni" id="dni" placeholder="DNI">
+
+                        <div class="form-group col-3 p-1">
+                            <input type="text" class="form-control" name="entidad" id="entidad" placeholder="Entidad">
                         </div>
 
                         <div class="form-group col-3 p-1">
-                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+                            <input type="text" class="form-control" name="usuario" id="usuario"
+                                placeholder="Usuario">
                         </div>
 
                         <div class="form-group col-3 p-1">
-                            <input type="text" class="form-control" name="apellido" id="apellido"
-                                placeholder="Apellido">
-                        </div>
-
-                        <div class="form-group col-2 p-1">
-                            <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
+                            <input type="text" class="form-control" name="localidad" id="localidad" placeholder="Localidad">
                         </div>
 
                         {{-- BLOQUE ACCIONADORES --}}
                         <div class="col-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
-                                formaction="{{ route('partner.filter') }}">
+                                formaction="{{ route('user.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
                                     alt="searchICO">
                             </button>
@@ -97,7 +94,7 @@
                                     alt=""></td>
                             <td class="col-1">{{ $elem->id }}</td>
                             <td class="col-3">{{ $elem->nombreEntidad }}</td>
-                            <td class="col-1">{{ $elem->nombreUsuario }}</td>
+                            <td class="col-1">{{ $elem->username }}</td>
                             <td class="col-1">{{ $elem->cp }}</td>
                             <td class="col-1">{{ $elem->localidad }}</td>
                             <td class="col-2">{{ $elem->email }}</td>

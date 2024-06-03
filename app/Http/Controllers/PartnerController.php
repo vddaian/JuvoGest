@@ -52,17 +52,17 @@ class PartnerController extends Controller
 
                 // Comprueba si los campos se han rellenado y añade las condiciones .-
                 if ($req->filled('dni')) {
-                    $query->where('dni', $req->dni);
+                    $query->where('dni', 'like', '%' . $req->dni . '%');
                 }
 
                 if ($req->filled('nombre')) {
                     $query->where('prNombre', 'like', '%' . $req->nombre . '%');
-                    $query->where('SgNombre', 'like', '%' . $req->nombre . '%');
+                    $query->orWhere('sgNombre', 'like', '%' . $req->nombre . '%');
                 }
 
                 if ($req->filled('apellido')) {
                     $query->where('prApellido', 'like', '%' . $req->apellido . '%');
-                    $query->where('sgApellido', 'like', '%' . $req->apellido . '%');
+                    $query->orWhere('sgApellido', 'like', '%' . $req->apellido . '%');
                 }
 
                 if ($req->filled('fecha')) {

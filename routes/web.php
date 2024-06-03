@@ -30,8 +30,10 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/user/create', 'createIndex')->name('user.create');
     Route::get('/login', 'loginIndex')->name('login.index');
     Route::get('/logout', 'logout')->name('user.logout');
+    Route::post('/users', 'filter')->name('user.filter');
     Route::post('/login', 'verify')->name('login.verify');
     Route::post('/user/create', 'store')->name('user.store');
+    Route::put('/user/update', 'update')->name('user.update');
 });
 
 /* Rutas para socios */
@@ -101,8 +103,8 @@ Route::get('/statistics', [StatisticsController::class, 'index'])->name('statist
 /* Rutas del admin */
 Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/partners', 'partnersIndex')->name('admin.partners.index');
-    Route::get('/admin/users', 'usersIndex')->name('admin.users.index');
     Route::put('/admin/partner/delete', 'deletePartnerInfo')->name('admin.partner.info.delete');
+    Route::post('/admin/partners', 'partnersfilter')->name('admin.partners.filter');
 });
 
 /* Rutas principales */

@@ -54,7 +54,7 @@
                         {{-- BLOQUE ACCIONADORES --}}
                         <div class="col-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
-                                formaction="{{ route('partner.filter') }}">
+                                formaction="{{ route('admin.partners.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
                                     alt="searchICO">
                             </button>

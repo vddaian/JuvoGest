@@ -19,6 +19,51 @@ class AdminController extends Controller
         return view('admin.partners')->with('data', $prts);
     }
 
+    /* Función que envia a la lista de socios filtrada */
+    public function partnersFilter(Request $req)
+    {
+        // Comprueba si alguno de los campos ha sido rellenado .-
+        if (!$req->filled('dni') && !$req->filled('nombre') && !$req->filled('apellido') && !$req->filled('fecha')) {
+            return redirect()->route('admin.partners.index');
+        } else {
+            try {
+                $query = Partner::query();
+
+                // Comprueba si los campos se han rellenado y añade las condiciones .-
+                if ($req->filled('dni')) {
+                    $query->where('dni', 'like', '%' . $req->dni . '%');
+                }
+
+                if ($req->filled('nombre')) {
+                    $query->where('prNombre', 'like', '%' . $req->nombre . '%');
+                    $query->orWhere('sgNombre', 'like', '%' . $req->nombre . '%');
+                }
+
+                if ($req->filled('apellido')) {
+                    $query->where('prApellido', 'like', '%' . $req->apellido . '%');
+                    $query->orWhere('sgApellido', 'like', '%' . $req->apellido . '%');
+                }
+
+                if ($req->filled('fecha')) {
+                    $query->where('fechaNacimiento', $req->fecha);
+                }
+
+                // Recoge los socios del centro .-
+                $query->where('deshabilitado', false);
+
+                $objs = $query->paginate(25);
+                return view('admin.partners')->with('data', $objs);
+            } catch (Exception $err) {
+                echo $err;
+                return redirect()->route('app.show')->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]);
+            }
+        }
+    }
+
+
     /* Función que deshabilita y elimina todos los datos del socio */
     public function deletePartnerInfo( Request $req)
     {

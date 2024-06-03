@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Register')
+@section('head')
+<script src="{{asset('js/validaciones.js')}}"></script>
+@endsection
 @section('content')
     <div class="titleBlock">
         <h2 class="mt-5 p-4">CREAR USUARIO</h2>
@@ -20,7 +23,7 @@
                     @endisset
                 @endisset
             @endif
-            <form action="{{ route('user.store') }}" method="post">
+            <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data" onsubmit="return validateUserForm(this);">
                 @csrf
                 {{-- BLOQUE DATOS PERSONALES --}}
                 <div>

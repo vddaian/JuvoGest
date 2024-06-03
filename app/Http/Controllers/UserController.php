@@ -46,6 +46,45 @@ class UserController extends Controller
         return view('auth.login');
     }
 
+    /* Función que envia a la lista de usuarios filtrada */
+    public function filter(Request $req)
+    {
+        // Comprueba si alguno de los campos ha sido rellenado .-
+        if (!$req->filled('entidad') && !$req->filled('usuario') && !$req->filled('localidad')) {
+            return redirect()->route('user.index');
+        } else {
+            try {
+                $query = User::query();
+
+                // Comprueba si los campos se han rellenado y añade las condiciones .-
+                if ($req->filled('entidad')) {
+                    $query->where('nombreEntidad', 'like', '%' . $req->entidad . '%');
+                }
+
+                if ($req->filled('usuario')) {
+                    $query->where('username', 'like', '%' . $req->usuario . '%');
+                }
+
+                if ($req->filled('localidad')) {
+                    $query->where('localidad', 'like', '%' . $req->localidad . '%');
+                }
+
+                // Recoge los socios del centro .-
+                $query->where([['deshabilitado', false],['id','!=', Auth::user()->id]]);
+
+                $objs = $query->paginate(25);
+                return view('admin.users.list')->with('data', $objs);
+            } catch (Exception $err) {
+                echo $err;
+                return redirect()->route('app.show')->with('info', [
+                    'error' => $err,
+                    'message' => 'Algo no ha ido bien!'
+                ]);
+            }
+        }
+    }
+
+
     /* Funcion que realiza el registro del usuario */
     public function store(Request $req)
     {
@@ -61,14 +100,22 @@ class UserController extends Controller
             }
             if ($val) {
                 // Validación de los atributos restantes .-
-                $this->validateOthers($req);
-                dd($req);
+                $val = $req->validate([
+                    'nombreEntidad' => 'max:30',
+                    'username' => 'required|unique:users|max:20',
+                    'password' => 'required',
+                    'direccion' => 'required|max:50',
+                    'localidad' => 'required|max:20',
+                    'email' => 'required|email|max:50',
+                    'foto' => 'image|dimensions:max_width=400,max_height=400'
+                ]);
+
                 if ($req->file('foto')) {
                     $photo = base64_encode(file_get_contents($req->file('foto')));
                 } else {
                     $photo = base64_encode(FacadesFile::get(public_path('media/img/user-default.png')));
                 }
-                echo 'AAA';
+
                 $data = [
                     'id' => Str::uuid(),
                     'nombreEntidad' => $req->nombreEntidad,
@@ -83,7 +130,7 @@ class UserController extends Controller
                     'foto' => $photo
                 ];
 
-                /* // Creación del usuario 
+                // Creación del usuario 
                 try {
                     User::create($data);
                     Room::create([
@@ -92,14 +139,14 @@ class UserController extends Controller
                         'tipo' => 'MEDIANA',
                         'informacion' => 'Sala donde se almacenan todos los recursos que se den de alta o se eliminen de una sala.'
                     ]);
-                    return redirect()->back()->with('data', 'Cuenta creada con exito!');
+                    return redirect()->back()->with('info', ['message' => 'Cuenta creada con exito!']);
                 } catch (Exception $err) {
                     echo $err;
-                    return redirect()->back()->with('data', [
+                    return redirect()->back()->with('info', [
                         'error' => $err,
                         'message' => 'Algo no ha ido bien!',
                     ]);
-                }*/
+                }
             }
         }
     }
@@ -119,7 +166,24 @@ class UserController extends Controller
             }
             if ($val) {
                 /* Validación de los atributos restantes */
-                $this->validateOthers($req);
+                if (!$req->username == $this->getUsername($req->id)) {
+                    $val = $req->validate([
+                        'nombreEntidad' => 'max:30',
+                        'username' => 'required|unique:users|max:20',
+                        'direccion' => 'required|max:50',
+                        'localidad' => 'required|max:20',
+                        'email' => 'required|email|max:50',
+                        'foto' => 'image|dimensions:max_width=400,max_height=400'
+                    ]);
+                } else {
+                    $val = $req->validate([
+                        'nombreEntidad' => 'max:30',
+                        'direccion' => 'required|max:50',
+                        'localidad' => 'required|max:20',
+                        'email' => 'required|email|max:50',
+                        'foto' => 'image|dimensions:max_width=400,max_height=400'
+                    ]);
+                }
 
                 if ($req->file('foto')) {
                     $photo = base64_encode(file_get_contents($req->file('foto')));
@@ -128,7 +192,6 @@ class UserController extends Controller
                 }
 
                 $data = [
-                    'id' => Str::uuid(),
                     'nombreEntidad' => $req->nombreEntidad,
                     'username' => $req->username,
                     'direccion' => $req->direccion,
@@ -140,7 +203,7 @@ class UserController extends Controller
                     'foto' => $photo
                 ];
 
-                /* Actualización del usuario */
+                // Actualización del usuario .-
                 try {
                     User::where('id', $req->id)->update($data);
 
@@ -148,10 +211,10 @@ class UserController extends Controller
                         User::where('id', $req->id)->update(['password' => Hash::make($req->password)]);
                     }
 
-                    return redirect()->back()->with('data', 'Cuenta actualizada con exito!');
+                    return redirect()->back()->with('info', ['message' => 'Cuenta actualizada con exito!']);
                 } catch (Exception $err) {
                     echo $err;
-                    return redirect()->back()->with('data', [
+                    return redirect()->back()->with('info', [
                         'error' => $err,
                         'message' => 'Algo no ha ido bien!',
                     ]);
@@ -176,6 +239,7 @@ class UserController extends Controller
             session()->put('user', Auth::user()->username);
             session()->put('rol', Auth::user()->rol);
             session()->put('foto', Auth::user()->foto);
+            session()->put('id', Auth::user()->id);
             return redirect()->route('app.index');
         } else {
             return redirect()->back()->with('info', 'Credenciales incorrectas!');
@@ -188,6 +252,7 @@ class UserController extends Controller
         Auth::logout();
         session(['rol' => null]);
         session(['user' => null]);
+        session(['id' => null]);
         session(['foto' => null]);
         return redirect()->route('login.index');
     }
@@ -198,17 +263,9 @@ class UserController extends Controller
         return User::where('id', $id)->get(['foto'])[0]['foto'];
     }
 
-    /* Metodo que valida los campos no numericos */
-    public function validateOthers($req)
+    /* Función que devuelve el id del usuario */
+    public function getUsername($id)
     {
-        $val = $req->validate([
-            'nombreEntidad' => 'max:30',
-            'username' => 'required|unique:users|max:20',
-            'password' => 'required',
-            'direccion' => 'required|max:50',
-            'localidad' => 'required|max:20',
-            'email' => 'required|email|max:50',
-            'foto' => 'image|dimensions:max_width=400,max_height=400'
-        ]);
+        return User::where('id', $id)->get(['username'])[0]['username'];
     }
 }

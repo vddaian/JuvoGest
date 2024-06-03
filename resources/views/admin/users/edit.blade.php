@@ -28,7 +28,10 @@
                     @endisset
                 @endisset
             @endif
-            <form action="">
+            <form action="{{route('user.update')}}" method="post" enctype="multipart/form-data">
+                @method('put')
+                @csrf
+                <input type="hidden" name="id" id="id" value="{{$data[0]['id']}}">
                 {{-- BLOQUE DATOS PERSONALES --}}
                 <div>
                     <h3>Datos Generales</h3>

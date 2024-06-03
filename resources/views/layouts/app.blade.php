@@ -59,7 +59,7 @@
             <nav class="position-fixed navUserBlock" id="userNav" hidden>
                 <ul class="navList p-3">
                     <li class="mb-2">
-                        <a class="nav-link" href="#">Ver Perfil</a>
+                        <a class="nav-link" href="{{ route('user.edit', session()->get('id')) }}">Ver Perfil</a>
                     </li>
                     <li>
                         <a class="nav-link" href="{{ route('user.logout') }}">Desconectarse</a>

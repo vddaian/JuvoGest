@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\File as FacadesFile;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -28,6 +29,20 @@ return new class extends Migration
         });
 
         DB::statement("ALTER TABLE users ADD foto LONGBLOB");
+
+        User::create([
+            'id' => Str::uuid(),
+            'nombreEntidad' => 'Admin',
+            'username' => 'admin',
+            'password' => Hash::make('admin'),
+            'direccion' => 'X',
+            'localidad' => 'X',
+            'rol' => 'Admin',
+            'cp' => 99999,
+            'telefono' => 999999999,
+            'email' => 'admin@juvogest.com',
+            'foto' => base64_encode(FacadesFile::get(public_path('media/img/user-default.png')))
+        ]);
     }
 
     /**

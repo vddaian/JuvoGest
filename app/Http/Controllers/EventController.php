@@ -76,11 +76,10 @@ class EventController extends Controller
                 ];
                 return view('events.list')->with('data', $data);
             } catch (Exception $err) {
-                echo $err;
-                /* return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
-                ]); */
+                ]);
             }
         }
     }

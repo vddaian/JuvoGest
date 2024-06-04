@@ -73,7 +73,7 @@
             {{-- TABLA DE DATOS --}}
             @if (!isset($data[0]))
                 <div class="m-2 p-3 info">
-                    <p>No hay socios!</p>
+                    <p>No hay usuarios!</p>
                 </div>
             @else
                 <table class="w-100 listTable">
@@ -116,7 +116,7 @@
                                         </button>
                                     </form>
                                     <form class="w-100 h-100 m-0  d-flex justify-content-between"
-                                        action="{{ route('admin.partner.info.delete') }}" method="post">
+                                        action="{{ route('admin.user.info.delete') }}" method="post">
                                         @method('put')
                                         @csrf
                                         <input type="hidden" value="{{ $elem->id }}" name="id" id="id">

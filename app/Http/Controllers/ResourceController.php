@@ -140,7 +140,7 @@ class ResourceController extends Controller
 
                 return view('resources.list')->with('data', $data);
             } catch (Exception $err) {
-                return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
                 ]);
@@ -199,7 +199,7 @@ class ResourceController extends Controller
 
                 return view('rooms.view')->with('data', $data);
             } catch (Exception $err) {
-                return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
                 ]);

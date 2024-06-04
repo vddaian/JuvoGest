@@ -104,12 +104,14 @@ Route::get('/statistics', [StatisticsController::class, 'index'])->name('statist
 Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/partners', 'partnersIndex')->name('admin.partners.index');
     Route::put('/admin/partner/delete', 'deletePartnerInfo')->name('admin.partner.info.delete');
+    Route::put('/user/delete', 'deleteCenterInfo')->name('admin.user.info.delete');
     Route::post('/admin/partners', 'partnersfilter')->name('admin.partners.filter');
 });
 
 /* Rutas principales */
 Route::controller(AppController::class)->group(function () {
     Route::get('/home', 'index')->name('app.index');
+    Route::get('/info', 'infoIndex')->name('app.info');
 });
 
 Route::get('/', function () {

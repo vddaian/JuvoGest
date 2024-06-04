@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Incident;
 use App\Models\Partner;
 use App\Models\PartnerUser;
+use App\Models\Resource;
+use App\Models\Room;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -54,8 +57,7 @@ class AdminController extends Controller
                 $objs = $query->paginate(25);
                 return view('admin.partners')->with('data', $objs);
             } catch (Exception $err) {
-                echo $err;
-                return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
                 ]);
@@ -95,6 +97,33 @@ class AdminController extends Controller
         return redirect()->back()->with('info', ['message' => 'Socio eliminado con exito!']);
     }
 
+     /* Función que deshabilita y elimina todos los datos del socio */
+     public function deleteCenterInfo( Request $req)
+     {
+ 
+         // Deshabilita todas las relaciones que tiene el socio con los centros o con alguna referencia .-
+         $this->disableAllUserRelations($req->id);
+ 
+         // Remplaza todos los datos del socio por '-'
+         $data = [
+            'nombreEntidad' => '-',
+            'username' => substr($req->id,0,20),
+            'password' => '-',
+            'direccion' => '-',
+            'localidad' => '-',
+            'rol' => 'User',
+            'cp' => 0,
+            'telefono' => 000000000,
+            'email' => '-',
+            'foto' => '-',
+            'deshabilitado' => true
+        ];
+ 
+         User::where('id', $req->id)->update($data);
+ 
+         return redirect()->back()->with('info', ['message' => 'Usuario eliminado con exito!']);
+     }
+
     /* Metodo que realiza toda la deshabilitacion de relaciones del socio */
     public function disableAllPartnerRelations($id)
     {
@@ -110,7 +139,68 @@ class AdminController extends Controller
             Incident::where('idSocio', $id)->update(['deshabilitado' => true]);
 
         } catch (Exception $err) {
-            return view('other.error')->with('data', $err);
+            return redirect()->back()->with('info', [
+                'error' => $err,
+                'message' => 'Algo no ha ido bien!'
+            ]);
+        }
+
+
+
+    }
+
+    /* Metodo que realiza toda la deshabilitacion de relaciones del usuario */
+    public function disableAllUserRelations($id)
+    {
+        try {
+
+            // Deshabilita la relacion con los centros .-
+            PartnerUser::where('idUsuario', $id)->update(['deshabilitado' => true]);
+            $rmIds = Room::where('idUsuario', $id)->get(['idSala']);
+
+            $data = [
+                'nombre' => '-',
+                'informacion' => '-',
+                'tipo' => 'PEQUEÑA',
+                'deshabilitado' => true
+            ];
+            // Deshabilita las salas .-
+            Room::where('idUsuario', $id)->update($data);
+
+            $data = [
+                'tipo' => 'LEVE',
+                'fechaInc' => date_create('01-01-1999'),
+                'fechaFinExp' => date_create('01-01-1999'),
+                'informacion' => '-',
+                'deshabilitado' => true
+            ];
+            // Deshabilita todos los incidentes que ha tenido .-
+            Incident::where('idUsuario', $id)->update($data);
+
+            $data = [
+                'nombre' => '-',
+                'tipo' => 'OTROS',
+                'deshabilitado' => true
+            ];
+            Resource::whereIn('idSala', $rmIds)->update($data);
+
+            $data = [
+                'titulo' => '-',
+                'entidadOrg' => '-',
+                'numeroAsistentes' => 0,
+                'fechaEvento' => date_create('01-01-1999'),
+                'horaEvento' => time(),
+                'informacion' => '-',
+                'deshabilitado' => true
+            ];
+            Event::whereIn('idSala', $rmIds)->update($data);
+
+
+        } catch (Exception $err) {
+            return redirect()->back()->with('info', [
+                'error' => $err,
+                'message' => 'Algo no ha ido bien!'
+            ]);
         }
 
 

@@ -27,7 +27,7 @@ class PartnerController extends Controller
 
             return view('partners.list')->with('data', $objs);
         } catch (Exception $err) {
-            return redirect()->route('app.show')->with('info', [
+            return redirect()->back()->with('info', [
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
             ]);
@@ -75,8 +75,7 @@ class PartnerController extends Controller
                 $objs = $query->paginate(25);
                 return view('partners.list')->with('data', $objs);
             } catch (Exception $err) {
-                echo $err;
-                return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
                 ]);

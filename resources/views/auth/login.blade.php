@@ -2,10 +2,11 @@
 @section('title', 'Login')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/login.css') }}">
+    <script src="{{asset('js/global.js')}}"></script>
 @endsection
 @section('content')
     <div class="loginBlock w-100 h-100 d-flex align-items-center justify-content-center">
-        <form action="{{ route('login.verify') }}" method="POST" class="loginForm w-25 bg-white p-4 rounded ">
+        <form action="{{ route('login.verify') }}" method="POST" class="loginForm bg-white p-4 rounded ">
             @csrf
             <div class="form-group mb-3">
                 <label for="username">Usuario:</label>
@@ -15,7 +16,11 @@
                 <label for="password">Contraseña:</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="*********">
             </div>
-            <button type="submit" class="btn btn-success">Iniciar Sesion</button>
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-success" onclick="charge()">Iniciar Sesion</button>
+                <a href="{{route('app.info')}}" onclick="charge()">Info</a>
+            </div>
+            
         </form>
     </div>
     <video src="{{ asset('media/videos/login-video.mp4') }}" class="loginVideo" autoplay="true" muted="true">

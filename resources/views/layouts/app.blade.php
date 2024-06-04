@@ -31,18 +31,19 @@
 </head>
 
 <body class="d-flex flex-column" style="background-color: #f9fafa; font-family:Helvetica;">
-    @auth
-        <header class="w-100 position-fixed" style="z-index: 1;">
-            <div class=" w-100 d-flex justify-content-between p-2 navBlock"
-                style="background-image:url({{ asset('media/img/nav.png') }});">
-                <div class="navHam">
-                    <div class="ham d-flex flex-column align-items-center justify-content-center h-100"
-                        onclick="changeNavState()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+    <header class="w-100 position-fixed" style="z-index: 1;">
+        <div class=" w-100 d-flex justify-content-between p-2 navBlock"
+            style="background-image:url({{ asset('media/img/nav.png') }});">
+            @auth
+            <div class="navHam">
+                <div class="ham d-flex flex-column align-items-center justify-content-center h-100"
+                    onclick="changeNavState()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+            </div>
+            
                 <div class="userInfo">
                     @if (session()->get('user'))
                         <strong class="mr-2">{{ session()->get('user') }}</strong>
@@ -51,11 +52,14 @@
                             onclick="changeUserNavState()">
                     @endif
                 </div>
-            </div>
-            <div class="w-100 position-fixed chargeBar">
-                <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar1"></span>
-                <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar2"></span>
-            </div>
+            @endauth
+        </div>
+        
+        <div class="w-100 position-fixed chargeBar">
+            <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar1"></span>
+            <span hidden class="h-100 w-25 chargeSubBar p-0 w-0" id="bar2"></span>
+        </div>
+        @auth
             <nav class="position-fixed navUserBlock" id="userNav" hidden>
                 <ul class="navList p-3">
                     <li class="mb-2">
@@ -66,8 +70,11 @@
                     </li>
                 </ul>
             </nav>
-            <nav class="nav h-100 position-fixed" id='nav' hidden>
-                <ul class="navList p-5">
+        @endauth
+
+        <nav class="nav h-100 position-fixed" id='nav' hidden>
+            <ul class="navList p-5">
+                @if (session()->get('rol') == 'User')
                     <li>
                         <a onclick="charge()" class="nav-link" href="{{ route('app.index') }}">Inicio</a>
                     </li>
@@ -90,21 +97,25 @@
                         <a onclick="charge()" class="nav-link" href="{{ route('statistics.index') }}">Estadisticas</a>
                     </li>
                     <hr class="del">
-                    <li>
-                        <a onclick="charge()" class="nav-link" href="#">Info App / Soporte</a>
-                    </li>
-                    <hr class="del">
-                    <li>
-                        <a onclick="charge()" class="nav-link" href="{{ route('user.index') }}">Usuarios</a>
-                    </li>
-                    <li>
-                        <a onclick="charge()" class="nav-link" href="{{ route('admin.partners.index') }}">Socios</a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    @endauth
-    @yield('content')
+                @else
+                    @if (session()->get('rol') == 'Admin')
+                        <li>
+                            <a onclick="charge()" class="nav-link" href="{{ route('user.index') }}">Usuarios</a>
+                        </li>
+                        <li>
+                            <a onclick="charge()" class="nav-link"
+                                href="{{ route('admin.partners.index') }}">Socios</a>
+                        </li>
+                        <hr class="del">
+                    @endif
+                @endif
+                <li>
+                    <a onclick="charge()" class="nav-link" href="#">Info App / Soporte</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+@yield('content')
 </body>
 
 </html>

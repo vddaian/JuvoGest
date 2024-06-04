@@ -26,7 +26,7 @@ class RoomController extends Controller
 
             return view('rooms.list')->with('data', $objs);
         } catch (Exception $err) {
-            return redirect()->route('app.show')->with('info', [
+            return redirect()->back()->with('info', [
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
             ]);
@@ -62,7 +62,7 @@ class RoomController extends Controller
                 $objs = $query->paginate(25);
                 return view('rooms.list')->with('data', $objs);
             } catch (Exception $err) {
-                return redirect()->route('app.show')->with('info', [
+                return redirect()->back()->with('info', [
                     'error' => $err,
                     'message' => 'Algo no ha ido bien!'
                 ]);

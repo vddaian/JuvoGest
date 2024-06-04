@@ -51,6 +51,10 @@ body {
     background-color: #56a7bb;
 }
 
+.fieldError{
+    border: 2px solid #be5656 ;
+}
+
 .titleBlock {
     height: fit-content;
     background-color: var(--sg-bg-color);

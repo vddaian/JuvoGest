@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\IncidentController;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 

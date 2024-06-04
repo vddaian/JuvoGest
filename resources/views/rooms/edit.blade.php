@@ -2,6 +2,7 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
+    <script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
 
@@ -25,7 +26,7 @@
                 @endisset
             @endif
 
-            <form action="{{ route('room.update', $data[0]['idSala']) }}" method="POST">
+            <form action="{{ route('room.update', $data[0]['idSala']) }}" method="POST" onsubmit="return validateRoomForm(this);">
                 @method('put')
                 @csrf
                 <div class="row mb-3">

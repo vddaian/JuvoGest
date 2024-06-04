@@ -2,6 +2,7 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
+    <script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
 
@@ -25,7 +26,7 @@
                 @endisset
             @endif
 
-            <form action="{{ route('partner.update', $data[0]['idSocio']) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('partner.update', $data[0]['idSocio']) }}" method="POST" enctype="multipart/form-data" onsubmit="return validatePartnerForm(this);">
                 @method('put')
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{$data[0]['idSocio']}}">

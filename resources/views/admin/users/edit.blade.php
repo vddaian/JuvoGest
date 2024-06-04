@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Socios')
 @section('head')
-    <link rel="stylesheet" href="{{ asset('styles/view.css') }}">
-
+    <script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
 
@@ -28,7 +27,7 @@
                     @endisset
                 @endisset
             @endif
-            <form action="{{route('user.update')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('user.update')}}" method="post" enctype="multipart/form-data" onsubmit="return validateUserForm(this);">
                 @method('put')
                 @csrf
                 <input type="hidden" name="id" id="id" value="{{$data[0]['id']}}">

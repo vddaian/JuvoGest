@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Incident;
 use App\Models\Partner;
 use App\Models\PartnerUser;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class IncidentController extends Controller
 {
@@ -242,5 +244,20 @@ class IncidentController extends Controller
         $val = $req->validate([
             'fechaFinExp' => 'required|date'
         ]);
+    }
+
+    /* Metodo que comprueba si hay socios que se les acaba la expulsión y luego les quita el estado de expulsion */
+    public static function checkOutDates()
+    {
+        $prts = Incident::where('deshabilitado', false)
+            ->whereDate('fechaFinExp', '=', now()->format('Y-m-d'))
+            ->groupBy('idSocio')
+            ->select('idSocio', DB::raw('MAX(fechaFinExp) as fechaFinExp'))
+            ->get();
+
+        foreach ($prts as $key => $value) {
+            Log::debug($value);
+        }
+        /* PartnerUser::whereIn('idSocio', $prts)->update(['expulsado', false]); */
     }
 }

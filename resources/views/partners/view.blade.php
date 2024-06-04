@@ -2,6 +2,7 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/view.css') }}">
 @endsection
 @section('content')
 
@@ -44,43 +45,37 @@
                     <div class="p-3">
                         {{-- BLOQUE OTROS CAMPOS --}}
                         <div class="row mb-2">
-                            <div class="form-group col-6">
-                                <label for="dni">DNI:</label>
-                                <input readonly type="text" class="form-control" name="dni" id="dni"
-                                    value="{{ $data['partner'][0]['dni'] }}" readonly>
+                            <div class="col-6">
+                                <p class="viewLabel">DNI:</p>
+                                <p class="viewField">{{ $data['partner'][0]['dni'] }}</p>
                             </div>
-                            <div class="form-group col-6">
-                                <label for="fechaNacimiento">Fecha nacimiento:</label>
-                                <input readonly type="date" class="form-control" name="fechaNacimiento"
-                                    id="fechaNacimiento" value="{{ $data['partner'][0]['fechaNacimiento'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Fecha nacimiento:</p>
+                                <p class="viewField">{{ $data['partner'][0]['fechaNacimiento'] }}</p>
                             </div>
                         </div>
 
                         {{-- BLOQUE NOMBRES --}}
                         <div class="row mb-2">
-                            <div class="form-group col-6">
-                                <label for="prNombre">Primer nombre:</label>
-                                <input readonly type="text" class="form-control" name="prNombre" id="prNombre"
-                                    value="{{ $data['partner'][0]['prNombre'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Primer nombre:</p>
+                                <p class="viewField">{{ $data['partner'][0]['prNombre'] }}</p>
                             </div>
-                            <div class="form-group col-6">
-                                <label for="sgNombre">Segundo nombre:</label>
-                                <input readonly type="sgNombre" class="form-control" name="sgNombre" id="sgNombre"
-                                    value="{{ $data['partner'][0]['sgNombre'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Segundo nombre:</p>
+                                <p class="viewField">{{ $data['partner'][0]['sgNombre'] }}</p>
                             </div>
                         </div>
 
                         {{-- BLOQUE APELLIDOS --}}
                         <div class="row mb-2">
-                            <div class="form-group col-6">
-                                <label for="prApellido">Primer apellido:</label>
-                                <input readonly type="text" class="form-control" name="prApellido" id="prApellido"
-                                    value="{{ $data['partner'][0]['prApellido'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Primer apellido:</p>
+                                <p class="viewField">{{ $data['partner'][0]['prApellido'] }}</p>
                             </div>
-                            <div class="form-group col-6">
-                                <label for="sgApellido">Segundo apellido:</label>
-                                <input readonly type="text" class="form-control" name="sgApellido" id="sgApellido"
-                                    value="{{ $data['partner'][0]['sgApellido'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Segundo apellido:</p>
+                                <p class="viewField">{{ $data['partner'][0]['sgApellido'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -95,21 +90,18 @@
                     <h3>Dirección</h3>
                     <hr class="del">
                     <div class="p-3">
-                        <div class="form-group mb-2">
-                            <label for="direccion">Direccion:</label>
-                            <input readonly type="text" class="form-control" name="direccion" id="direccion"
-                                value="{{ $data['partner'][0]['direccion'] }}">
+                        <div class="mb-2">
+                            <p class="viewLabel">Direccion:</p>
+                            <p class="viewField">{{ $data['partner'][0]['direccion'] }}</p>
                         </div>
                         <div class="row mb-2">
-                            <div class="form-group col-6">
-                                <label for="localidad">Localidad:</label>
-                                <input readonly type="text" class="form-control" name="localidad" id="localidad"
-                                    value="{{ $data['partner'][0]['localidad'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Localidad:</p>
+                                <p class="viewField">{{ $data['partner'][0]['localidad'] }}</p>
                             </div>
-                            <div class="form-group col-6">
-                                <label for="cp">Codigo postal:</label>
-                                <input readonly type="number" class="form-control" name="cp" id="cp"
-                                    value="{{ $data['partner'][0]['cp'] }}">
+                            <div class="col-6">
+                                <p class="viewLabel">Codigo postal:</p>
+                                <p class="viewField">{{ $data['partner'][0]['cp'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -121,26 +113,22 @@
                     <hr class="del">
                     <div class="p-3">
                         <div class="row mb-2">
-                            <div class="form-group col-4">
-                                <label for="tel">Telefono:</label>
-                                <input readonly type="number" class="form-control" name="tel" id="tel"
-                                    value="{{ $data['partner'][0]['telefono'] }}">
+                            <div class="col-4">
+                                <p class="viewLabel">Telefono:</p>
+                                <p class="viewField">{{ $data['partner'][0]['telefono'] }}</p>
                             </div>
-                            <div class="form-group col-4">
-                                <label for="prTelResp">1º Telefono responsable:</label>
-                                <input readonly type="number" class="form-control" name="prTelResp" id="prTelResp"
-                                    value="{{ $data['partner'][0]['prTelefonoResp'] }}">
+                            <div class="col-4">
+                                <p class="viewLabel">1º Telefono responsable:</p>
+                                <p class="viewField">{{ $data['partner'][0]['prTelefonoResp'] }}</p>
                             </div>
-                            <div class="form-group col-4">
-                                <label for="sgTelResp">2º Telefono responsable:</label>
-                                <input readonly type="number" class="form-control" name="sgTelResp" id="sgTelResp"
-                                    value="{{ $data['partner'][0]['sgTelefonoResp'] }}">
+                            <div class="col-4">
+                                <p class="viewLabel">2º Telefono responsable:</p>
+                                <p class="viewField">{{ $data['partner'][0]['sgTelefonoResp'] }}</p>
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <label for="email">Email:</label>
-                            <input readonly type="text" class="form-control" name="email" id="email"
-                                placeholder="example@example.com" value="{{ $data['partner'][0]['email'] }}">
+                        <div class="mb-2">
+                            <p class="viewLabel">Email:</p>
+                            <p class="viewField">{{ $data['partner'][0]['email'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -151,12 +139,8 @@
                 <h3>Alergias</h3>
                 <hr class="del">
                 <div class="p-3">
-                    <div class="form-group">
-                        <textarea class="form-control" name="alergias" id="alergias" style="height: 200px;"
-                            value="{{ $data['partner'][0]['alergias'] }}"></textarea>
-                    </div>
+                    <p class="viewField" style="height: 200px;">{{ $data['partner'][0]['alergias'] }}</p>
                 </div>
-
             </div>
 
             {{-- BLOQUE DE INCIDENCIAS --}}
@@ -178,8 +162,7 @@
                         </div>
 
                         <div class="form-group col-2 p-1">
-                            <input type="date" class="form-control" name="fecha" id="fecha"
-                                placeholder="Fecha">
+                            <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
                         </div>
 
                         {{-- BLOQUE ACCIONADORES --}}

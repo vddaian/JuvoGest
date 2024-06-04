@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Actualizar evento')
+@section('head')
+    <script src="{{asset('js/validations.js')}}"></script>
+@endsection
 @section('content')
 
     <div class="titleBlock">
@@ -25,7 +28,7 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('event.update') }}" method="POST">
+                <form action="{{ route('event.update') }}" method="POST" onsubmit="return validateEventForm(this);">
                     @method('put')
                     @csrf
                     <input type="hidden" name="idEvento" id="idEvento"  value="{{ $data['event'][0]['idEvento'] }}">

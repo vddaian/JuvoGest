@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Register')
 @section('head')
-<script src="{{asset('js/validaciones.js')}}"></script>
+<script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
     <div class="titleBlock">

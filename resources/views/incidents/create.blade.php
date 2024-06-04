@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Crear incidencia')
+@section('head')
+    <script src="{{asset('js/validations.js')}}"></script>
+@endsection
 @section('content')
 
     <div class="titleBlock">
@@ -25,7 +28,7 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('incident.store') }}" method="POST">
+                <form action="{{ route('incident.store') }}" method="POST" onsubmit="return validateIncidentForm(this);">
                     @csrf
                     <h3>Datos generales</h3>
                     <hr class="del">

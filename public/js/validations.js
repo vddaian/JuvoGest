@@ -2,10 +2,10 @@
   function validateLength(field, minLength, maxLength) {
     const value = field.value.trim();
     if (value.length < minLength || value.length > maxLength) {
-        field.classList.add("error");
+        field.style.border = '1px solid #be5656';
         return false;
     } else {
-        field.classList.remove("error");
+       field.style.border = '1px solid #dee2e6';
         return true;
     }
 }
@@ -14,10 +14,10 @@
 function validateNumber(field, length) {
     const pattern = new RegExp(`^\\d{${length}}$`);
     if (!pattern.test(field.value)) {
-        field.classList.add("error");
+        field.style.border = '1px solid #be5656';
         return false;
     } else {
-        field.classList.remove("error");
+       field.style.border = '1px solid #dee2e6';
         return true;
     }
 }
@@ -26,10 +26,10 @@ function validateNumber(field, length) {
 function validateEmail(field) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(field.value)) {
-        field.classList.add("error");
+        field.style.border = '1px solid #be5656';
         return false;
     } else {
-        field.classList.remove("error");
+        field.style.border = '1px solid #dee2e6';
         return true;
     }
 }
@@ -37,10 +37,10 @@ function validateEmail(field) {
 // Función para validar fechas
 function validateDate(field) {
     if (!field.value) {
-        field.classList.add("error");
+        field.style.border = '1px solid #be5656';
         return false;
     } else {
-        field.classList.remove("error");
+       field.style.border = '1px solid #dee2e6';
         return true;
     }
 }
@@ -49,10 +49,10 @@ function validateDate(field) {
 function validateTime(field) {
     const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
     if (!timePattern.test(field.value)) {
-        field.classList.add("error");
+        field.style.border = '1px solid #be5656';
         return false;
     } else {
-        field.classList.remove("error");
+       field.style.border = '1px solid #dee2e6';
         return true;
     }
 }
@@ -64,9 +64,9 @@ function validateImage(field) {
         img.src = URL.createObjectURL(field.files[0]);
         img.onload = function() {
             if (img.width > 400 || img.height > 400) {
-                field.classList.add("error");
+                field.style.border = '1px solid #be5656';
             } else {
-                field.classList.remove("error");
+               field.style.border = '1px solid #dee2e6';
             }
         }
     }
@@ -76,7 +76,7 @@ function validateUserForm(form) {
     let valid = true;
     valid = validateLength(form.nombreEntidad, 1, 30) && valid;
     valid = validateLength(form.username, 1, 20) && valid;
-    valid = validateLength(form.password, 1, 60) && valid;
+    valid = validateLength(form.password, 0, 60) && valid;
     valid = validateLength(form.direccion, 1, 50) && valid;
     valid = validateLength(form.localidad, 1, 20) && valid;
     valid = validateNumber(form.cp, 5) && valid;
@@ -90,24 +90,24 @@ function validatePartnerForm(form) {
     let valid = true;
     const dniPattern = /^[XYZ]?\d{5,8}[A-Z]$/;
     if (!dniPattern.test(form.dni.value)) {
-        form.dni.classList.add("error");
+        form.dni.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.dni.classList.remove("error");
+        form.dni.classList.remove("fieldError");
     }
     valid = validateLength(form.prNombre, 1, 20) && valid;
     if (form.sgNombre.value && form.sgNombre.value.trim().length > 20) {
-        form.sgNombre.classList.add("error");
+        form.sgNombre.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.sgNombre.classList.remove("error");
+        form.sgNombre.classList.remove("fieldError");
     }
     valid = validateLength(form.prApellido, 1, 20) && valid;
     if (form.sgApellido.value && form.sgApellido.value.trim().length > 20) {
-        form.sgApellido.classList.add("error");
+        form.sgApellido.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.sgApellido.classList.remove("error");
+        form.sgApellido.classList.remove("fieldError");
     }
     valid = validateDate(form.fechaNacimiento) && valid;
     valid = validateLength(form.direccion, 1, 50) && valid;
@@ -128,10 +128,10 @@ function validateRoomForm(form) {
     valid = validateLength(form.nombre, 1, 30) && valid;
     const validTypes = ['PEQUEÑA', 'MEDIANA', 'GRANDE', 'MUY GRANDE'];
     if (!validTypes.includes(form.tipo.value)) {
-        form.tipo.classList.add("error");
+        form.tipo.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.tipo.classList.remove("error");
+        form.tipo.classList.remove("fieldError");
     }
     return valid;
 }
@@ -139,17 +139,17 @@ function validateRoomForm(form) {
 function validateIncidentForm(form) {
     let valid = true;
     if (!form.socio.value) {
-        form.socio.classList.add("error");
+        form.socio.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.socio.classList.remove("error");
+        form.socio.classList.remove("fieldError");
     }
     const validTypes = ['LEVE', 'GRAVE', 'MUY GRAVE'];
     if (!validTypes.includes(form.tipo.value)) {
-        form.tipo.classList.add("error");
+        form.tipo.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.tipo.classList.remove("error");
+        form.tipo.classList.remove("fieldError");
     }
     valid = validateDate(form.fechaFinExp) && valid;
     return valid;
@@ -159,10 +159,10 @@ function validateEventForm(form) {
     let valid = true;
     valid = validateLength(form.titulo, 1, 30) && valid;
     if (!form.sala.value) {
-        form.sala.classList.add("error");
+        form.sala.style.border = '1px solid #be5656';
         valid = false;
     } else {
-        form.sala.classList.remove("error");
+        form.sala.classList.remove("fieldError");
     }
     valid = validateLength(form.entidad, 1, 30) && valid;
     valid = validateNumber(form.asistentes, 1) && valid;

@@ -2,6 +2,7 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
+    <script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
 
@@ -25,7 +26,7 @@
                 @endisset
             @endif
 
-            <form action="{{ route('room.store') }}" method="POST">
+            <form action="{{ route('room.store') }}" method="POST" onsubmit="return validateRoomForm(this);">
                 @csrf
                 <div class="row">
                     <div class="form-group col-10">

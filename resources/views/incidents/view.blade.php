@@ -33,19 +33,19 @@
 
                 {{-- BLOQUE DE DATOS GENERALES --}}
                 <div class="row p-3">
-                    <div class="form-group col-4">
+                    <div class="col-4">
                         <p class="viewLabel">Socio:</p>
                         <p class="viewField">{{$data[0]->socio}}</p>
                     </div>
-                    <div class="form-group col-2">
+                    <div class="col-2">
                         <p class="viewLabel">Tipo:</p>
                         <p class="viewField">{{$data[0]->tipo}}</p>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="col-3">
                         <p class="viewLabel">Fecha fin expulsion:</p>
                         <p class="viewField">{{$data[0]->fechaFinExp}}</p>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="col-3">
                         <p class="viewLabel">Fecha expulsion:</p>
                         <p class="viewField" >{{$data[0]->fechaInc}}</p>
                     </div>

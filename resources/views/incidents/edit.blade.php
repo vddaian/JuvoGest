@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Actualizar incidencia')
 @section('head')
+    <script src="{{asset('js/validations.js')}}"></script>
 @endsection
 @section('content')
 
@@ -27,7 +28,7 @@
 
             {{-- BLOQUE DE DATOS PRINCIPALES --}}
             <div class="w-100">
-                <form action="{{ route('incident.update', $data['incident'][0]->idIncidencia) }}" method="POST">
+                <form action="{{ route('incident.update', $data['incident'][0]->idIncidencia) }}" method="POST" onsubmit="return validateIncidentForm(this);">
                     @method('put')
                     @csrf
                     <h3>Datos generales</h3>

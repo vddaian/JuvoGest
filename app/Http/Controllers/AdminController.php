@@ -153,7 +153,7 @@ class AdminController extends Controller
     public function disableAllUserRelations($id)
     {
         try {
-
+            dd($id);
             // Deshabilita la relacion con los centros .-
             PartnerUser::where('idUsuario', $id)->update(['deshabilitado' => true]);
             $rmIds = Room::where('idUsuario', $id)->get(['idSala']);
@@ -189,7 +189,6 @@ class AdminController extends Controller
                 'entidadOrg' => '-',
                 'numeroAsistentes' => 0,
                 'fechaEvento' => date_create('01-01-1999'),
-                'horaEvento' => time(),
                 'informacion' => '-',
                 'deshabilitado' => true
             ];

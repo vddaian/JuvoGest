@@ -165,7 +165,6 @@ function validateEventForm(form) {
         form.sala.classList.remove("fieldError");
     }
     valid = validateLength(form.entidad, 1, 30) && valid;
-    valid = validateNumber(form.asistentes, 1) && valid;
     valid = validateDate(form.fecha) && valid;
     valid = validateTime(form.hora) && valid;
     return valid;

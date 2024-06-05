@@ -16,11 +16,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -28,7 +28,7 @@
             @endif
             <div class="w-100 px-2">
                 <div class="row p-3">
-                    <div class="col-4">
+                    <div class="col-xl-4 mb-2">
                         <h4 class="listTitle m-0 p-2">
                             SOCIOS EXPULSADOS
                         </h4>
@@ -44,7 +44,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="col-4 ">
+                    <div class="col-xl-4 mb-2">
                         <h4 class="listTitle m-0 p-2">
                             NUEVOS SOCIOS
                         </h4>
@@ -60,7 +60,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="col-4 ">
+                    <div class="col-xl-4 mb-2">
                         <h4 class="listTitle m-0 p-2">
                             PROXIMOS EVENTOS
                         </h4>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row p-3">
-                    <div class="col-4">
+                    <div class="col-xl-4">
                         <h4 class="listTitle m-0 p-2">
                             NUEVAS INCIDENCIAS
                         </h4>

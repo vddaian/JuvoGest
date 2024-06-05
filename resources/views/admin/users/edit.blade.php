@@ -17,11 +17,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -84,12 +84,12 @@
                                 <input type="text" class="form-control" name="direccion" id="direccion" value="{{$data[0]['direccion']}}">
                             </div>
                             <div class="row mb-2">
-                                <div class="form-group col-8">
+                                <div class="form-group col-lg-8">
                                     <label for="localidad">Localidad:</label>
                                     <input type="text" class="form-control" name="localidad" id="localidad"
                                         value="{{$data[0]['localidad']}}">
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-lg-4">
                                     <label for="cp">Codigo postal:</label>
                                     <input type="number" class="form-control" name="cp" id="cp" value="{{$data[0]['cp']}}">
                                 </div>
@@ -103,12 +103,12 @@
                         <hr class="del">
                         <div class="p-3">
                             <div class="row mb-2">
-                                <div class="form-group col-4">
+                                <div class="form-group col-lg-4">
                                     <label for="telefono">Telefono:</label>
                                     <input type="number" class="form-control" name="telefono" id="telefono"
                                         value="{{$data[0]['telefono']}}">
                                 </div>
-                                <div class="form-group col-8">
+                                <div class="form-group col-lg-8">
                                     <label for="email">Email:</label>
                                     <input type="text" class="form-control" name="email" id="email"
                                         placeholder="example@example.com" value="{{$data[0]['email']}}">

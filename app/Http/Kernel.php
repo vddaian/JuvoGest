@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AuthenticatedMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -56,6 +57,14 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+        'authenticated' => \App\Http\Middleware\AuthenticatedMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'user' => \App\Http\Middleware\UserMiddleware::class,
+        'partner' => \App\Http\Middleware\PartnerMiddleware::class,
+        'room' => \App\Http\Middleware\RoomMiddleware::class,
+        'resource' => \App\Http\Middleware\ResourceMiddleware::class,
+        'incident' => \App\Http\Middleware\IncidentMiddleware::class,
+        'event' => \App\Http\Middleware\EventMiddleware::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,

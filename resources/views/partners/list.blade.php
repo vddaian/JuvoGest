@@ -17,11 +17,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -32,27 +32,27 @@
                 <div class="w-100 listPanels col-12">
 
                     {{-- BLOQUE FILTROS --}}
-                    <form action="" method="post" class="d-flex col-9">
+                    <form action="" method="post" class="row col-lg-10" style="float: left;">
                         @csrf
-                        <div class="form-group col-2 p-1">
+                        <div class="form-group col-lg-1 p-1">
                             <input type="text" class="form-control" name="dni" id="dni" placeholder="DNI">
                         </div>
 
-                        <div class="form-group col-3 p-1">
+                        <div class="form-group col-lg-3 p-1">
                             <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
                         </div>
 
-                        <div class="form-group col-3 p-1">
+                        <div class="form-group col-lg-3 p-1">
                             <input type="text" class="form-control" name="apellido" id="apellido"
                                 placeholder="Apellido">
                         </div>
 
-                        <div class="form-group col-2 p-1">
+                        <div class="form-group col-lg-2 p-1">
                             <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
                         </div>
 
                         {{-- BLOQUE ACCIONADORES --}}
-                        <div class="col-3 p-1">
+                        <div class="col-lg-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
                                 formaction="{{ route('partner.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
@@ -67,7 +67,7 @@
                     </form>
 
                     {{-- BLOQUE PAGINADOR --}}
-                    <div class="col-2 d-flex align-items-center">
+                    <div class="col-lg-2 d-flex align-items-center" style="float: right;">
                         {{ $data->links('other.paginator') }}
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     <p>No hay socios en el centro, añade uno!</p>
                 </div>
             @else
-                <table class="w-100 listTable">
+                <table class="w-100 listTable noMobile">
                     <tr class="row mt-3 mx-3 listHead">
                         <th class="col-1"></th>
                         <th class="col-1">DNI</th>
@@ -131,6 +131,56 @@
                         </tr>
                     @endforeach
                 </table>
+                <div class="w-100 listBlock mobile">
+                    @foreach ($data as $elem)
+                        <div class="listElem">
+                            <div class="row p-3">
+                                <span class="col-lg-2"><img src="data:image/png;base64,{{ $elem->foto }}"
+                                        alt=""></span>
+                                <div class="col-lg-6 d-flex flex-column">
+                                    <span class="col-12"><strong>DNI/NIE:</strong> {{ $elem->dni }}</span>
+                                    <span class="col-12"><strong>Nombre completo:</strong>
+                                        {{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}</span>
+                                    <span class="col-12"><strong>Localidad:</strong> {{ $elem->localidad }}</span>
+
+                                </div>
+                                <div class="col-lg-4 d-flex flex-column">
+                                    <span class="col-12"><strong>Telefono:</strong> {{ $elem->telefono }}</span>
+                                    <span class="col-12"><strong>Email:</strong> {{ $elem->email }}</span>
+                                    <span class="col-12"><strong>F.Nacimiento:</strong>
+                                        {{ $elem->fechaNacimiento }}</span>
+                                </div>
+
+                            </div>
+
+                            <span class="p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('partner.view', $elem->idSocio) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('partner.edit', $elem->idSocio) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('partner.disable', $elem->idSocio) }}" method="post">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                        </button>
+                                    </form>
+                                </div>
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>

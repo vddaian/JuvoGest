@@ -2,7 +2,13 @@
 @section('title', 'Socios')
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/view.css') }}">
-
+    <style>
+        @media (max-width: 1400px){
+            .partnerImg{
+                display: none;
+            }
+        }
+    </style>
 @endsection
 @section('content')
 
@@ -18,11 +24,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -35,11 +41,11 @@
                 {{-- BLOQUE IMAGEN --}}
                 <div class="col-3">
                     <img src="data:image/png;base64,{{ $data[0]['foto'] }}" alt="partnerImage" width="300px" height="300px"
-                        class="rounded-circle">
+                        class="rounded-circle partnerImg">
                 </div>
 
                 {{-- BLOQUE DATOS PERSONALES --}}
-                <div class="col-9">
+                <div class="col-xxl-9">
                     <h3>Datos Generales</h3>
                     <hr class="del">
                     <div class="p-3">
@@ -78,11 +84,11 @@
                             <p class="viewField">{{ $data[0]['direccion'] }}</p>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-8">
+                            <div class="col-lg-8">
                                 <p class="viewLabel">Localidad:</p>
                                 <p class="viewField">{{ $data[0]['localidad'] }}</p>
                             </div>
-                            <div class="col-4">
+                            <div class="col-lg-4">
                                 <p class="viewLabel">Codigo Postal:</p>
                                 <p class="viewField">{{ $data[0]['cp'] }}</p>
                             </div>
@@ -96,11 +102,11 @@
                     <hr class="del">
                     <div class="p-3">
                         <div class="row mb-2">
-                            <div class="col-4">
+                            <div class="col-lg-4">
                                 <p class="viewLabel">Telefono:</p>
                                 <p class="viewField">{{ $data[0]['telefono'] }}</p>
                             </div>
-                            <div class="col-8">
+                            <div class="col-lg-8">
                                 <p class="viewLabel">Email:</p>
                                 <p class="viewField">{{ $data[0]['email'] }}</p>
                             </div>

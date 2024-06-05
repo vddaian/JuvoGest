@@ -14,11 +14,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -37,23 +37,23 @@
                 </div>
 
                 <div class="row p-3">
-                    <div class="col-3">
+                    <div class="col-lg-3">
                         <p class="viewLabel">Sala:</p>
                         <p class="viewField">{{ $data[0]->sala }}</p>
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3">
                         <p class="viewLabel">Entidad organizadora:</p>
                         <p class="viewField">{{ $data[0]->entidadOrg }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-2">
                         <p class="viewLabel">Numero asistentes:</p>
                         <p class="viewField">{{ $data[0]->numeroAsistentes }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-2">
                         <p class="viewLabel">Fecha evento:</p>
                         <p class="viewField">{{ $data[0]->fechaEvento }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-2">
                         <p class="viewLabel">Hora evento:</p>
                         <p class="viewField">{{ $data[0]->horaEvento }}</p>
                     </div>

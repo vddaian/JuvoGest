@@ -17,11 +17,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -32,24 +32,24 @@
                 <div class="w-100 listPanels col-12">
 
                     {{-- BLOQUE FILTROS --}}
-                    <form action="" method="post" class="d-flex col-10" style="float: left">
+                    <form action="" method="post" class="row col-lg-10">
                         @csrf
 
-                        <div class="form-group col-3 p-1">
+                        <div class="form-group col-lg-3 p-1">
                             <input type="text" class="form-control" name="entidad" id="entidad" placeholder="Entidad">
                         </div>
 
-                        <div class="form-group col-3 p-1">
-                            <input type="text" class="form-control" name="usuario" id="usuario"
-                                placeholder="Usuario">
+                        <div class="form-group col-lg-3 p-1">
+                            <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Usuario">
                         </div>
 
-                        <div class="form-group col-3 p-1">
-                            <input type="text" class="form-control" name="localidad" id="localidad" placeholder="Localidad">
+                        <div class="form-group col-lg-3 p-1">
+                            <input type="text" class="form-control" name="localidad" id="localidad"
+                                placeholder="Localidad">
                         </div>
 
                         {{-- BLOQUE ACCIONADORES --}}
-                        <div class="col-3 p-1">
+                        <div class="col-lg-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
                                 formaction="{{ route('user.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
@@ -64,7 +64,7 @@
                     </form>
 
                     {{-- BLOQUE PAGINADOR --}}
-                    <div class="col-2 d-flex align-items-center" style="float: right">
+                    <div class="col-lg-2 d-flex align-items-center" style="float: right;">
                         {{ $data->links('other.paginator') }}
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <p>No hay usuarios!</p>
                 </div>
             @else
-                <table class="w-100 listTable">
+                <table class="w-100 listTable noMobile">
                     <tr class="row mt-3 mx-3 listHead">
                         <th class="col-1"></th>
                         <th class="col-1">Id</th>
@@ -130,6 +130,59 @@
                         </tr>
                     @endforeach
                 </table>
+                <div class="w-100 listBlock mobile">
+                    @foreach ($data as $elem)
+                        <div class="listElem">
+                            <div class="row p-3">
+                                <span class="col-lg-2"><img src="data:image/png;base64,{{ $elem->foto }}"
+                                        alt=""></span>
+                                <div class="col-lg-6 d-flex flex-column">
+                                    <span class="col-12"><strong>Id:</strong> {{ $elem->id }}</span>
+                                    <span class="col-12"><strong>N.Entidad:</strong>
+                                        {{ $elem->nombreEntidad }}</span>
+                                    <span class="col-12"><strong>N.Usuario:</strong> {{ $elem->username }}</span>
+
+                                </div>
+                                <div class="col-lg-4 d-flex flex-column">
+                                    <span class="col-12"><strong>Codigo postal:</strong> {{ $elem->cp }}</span>
+                                    <span class="col-12"><strong>Localidad:</strong> {{ $elem->localidad }}</span>
+                                    <span class="col-12"><strong>Email:</strong> {{ $elem->email }}</span>
+                                    <span class="col-12"><strong>Rol:</strong>
+                                        {{ $elem->rol }}</span>
+                                </div>
+
+                            </div>
+
+                            <span class="p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('user.view', $elem->id) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('user.edit', $elem->id) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('admin.user.info.delete') }}" method="post">
+                                        @method('put')
+                                        @csrf
+                                        <input type="hidden" value="{{ $elem->id }}" name="id" id="id">
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                        </button>
+                                    </form>
+                                </div>
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>

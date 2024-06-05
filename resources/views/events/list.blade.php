@@ -17,11 +17,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -32,17 +32,17 @@
                 <div class="w-100 listPanels col-12">
 
                     {{-- BLOQUE FILTROS --}}
-                    <form action="" method="post" class="d-flex col-9">
+                    <form action="" method="post" class="row col-lg-10" style="float: left;">
                         @csrf
-                        <div class="form-group col-2 p-1">
+                        <div class="form-group col-lg-2 p-1">
                             <input type="text" class="form-control" name="id" id="id" placeholder="Id">
                         </div>
 
-                        <div class="form-group col-2 p-1">
+                        <div class="form-group col-lg-2 p-1">
                             <input type="text" class="form-control" name="entidad" id="entidad" placeholder="Entidad">
                         </div>
 
-                        <div class="form-group col-3 p-1">
+                        <div class="form-group col-lg-3 p-1">
                             <select name="sala" id="sala" class="form-select">
                                 <option value="-">-</option>
                                 @foreach ($data['rooms'] as $elem)
@@ -53,12 +53,12 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-2 p-1">
+                        <div class="form-group col-lg-2 p-1">
                             <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
                         </div>
 
                         {{-- BLOQUE ACCIONADORES --}}
-                        <div class="col-3 p-1">
+                        <div class="col-lg-3 p-1">
                             <button type="submit" class="btn border" onclick="charge()"
                                 formaction="{{ route('event.filter') }}">
                                 <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
@@ -73,7 +73,7 @@
                     </form>
 
                     {{-- BLOQUE PAGINADOR --}}
-                    <div class="col-2 d-flex align-items-center">
+                    <div class="col-lg-2 d-flex align-items-center" style="float: right;">
                         {{ $data['events']->links('other.paginator') }}
                     </div>
                 </div>
@@ -81,10 +81,10 @@
             {{-- TABLA DE DATOS --}}
             @if (!isset($data['events'][0]))
                 <div class="m-2 p-3 info">
-                    <p>No hay recursos en esta sala, añade uno!</p>
+                    <p>No hay eventos, añade uno!</p>
                 </div>
             @else
-                <table class="w-100 listTable">
+                <table class="w-100 listTable noMobile">
                     <tr class="row mt-3 mx-3 listHead">
                         <th class="col-1">Id</th>
                         <th class="col-2">Titulo</th>
@@ -136,6 +136,56 @@
                         </tr>
                     @endforeach
                 </table>
+                <div class="w-100 listBlock mobile">
+                    @foreach ($data['events'] as $elem)
+                        <div class="listElem">
+                            <div class="row p-3">
+                                <div class="col-lg-6 d-flex flex-column">
+                                    <span class="col-12"><strong>Id:</strong> {{ $elem->idEvento }}</span>
+                                    <span class="col-12"><strong>Titulo:</strong>
+                                        {{ $elem->titulo }}</span>
+                                    <span class="col-12"><strong>Sala:</strong> {{ $elem->sala }}</span>
+                                    <span class="col-12"><strong>Entidad:</strong> {{ $elem->entidadOrg }}</span>
+                                    <span class="col-12"><strong>F.Evento:</strong> {{ $elem->fechaEvento }}</span>
+                                    <span class="col-12"><strong>H.Evento:</strong> {{ $elem->horaEvento }}</span>
+
+                                </div>
+                                <div class="col-lg-6 d-flex flex-column">
+                                    <span class="col-12"><strong>Asistentens:</strong> {{ $elem->numeroAsistentes }}</span>
+                                    <span class="col-12"><strong>Informacion:</strong> {{ $elem->informacion }}</span>
+                                </div>
+
+                            </div>
+
+                            <td class="p-0">
+                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.view', $elem->idEvento) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.edit', $elem->idEvento) }}" method="get">
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                        </button>
+                                    </form>
+                                    <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                        action="{{ route('event.disable', $elem->idEvento) }}" method="post">
+                                        @method('put')
+                                        @csrf
+                                        <button class="listFormButton">
+                                            <img src="{{ asset('media/ico/delete.ico') }}" alt="Delete user button">
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>

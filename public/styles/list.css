@@ -54,6 +54,23 @@
     border-radius: 50%;
 }
 
+.listElem {
+    margin-bottom: 10px;
+    border: 1px solid var(--sg-bg-color);
+    border-radius: 5px;
+    background-color: white;
+}
+
+.listElem img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.listBlock{
+    padding: 10px;
+}
+
 .listFormButton {
     width: 100%;
     margin: 0;

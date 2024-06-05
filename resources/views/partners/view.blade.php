@@ -3,6 +3,13 @@
 @section('head')
     <link rel="stylesheet" href="{{ asset('styles/list.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/view.css') }}">
+    <style>
+        @media (max-width: 1400px){
+            .partnerImg{
+                display: none;
+            }
+        }
+    </style>
 @endsection
 @section('content')
 
@@ -18,11 +25,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -34,12 +41,12 @@
 
                 {{-- BLOQUE IMAGEN --}}
                 <div class="col-3">
-                    <img src="data:image/png;base64,{{ $data['partner'][0]['foto'] }}" alt="partnerImage" width="300px"
-                        height="300px" class="rounded-circle">
+                    <img src="data:image/png;base64,{{ $data['partner'][0]['foto'] }}" alt="partnerImage" width="250px"
+                        height="250px" class="rounded-circle partnerImg">
                 </div>
 
                 {{-- BLOQUE DATOS PERSONALES --}}
-                <div class="col-9">
+                <div class="col-xxl-9">
                     <h3>Datos personales</h3>
                     <hr class="del">
                     <div class="p-3">
@@ -147,82 +154,119 @@
             <div>
                 <h3>Incidencias</h3>
                 <hr class="del">
-                <div class="w-100 listPanels col-12">
+                <div class="d-flex justify-content-between w-100 px-2">
+                    <div class="w-100 listPanels col-12">
 
-                    {{-- BLOQUE FILTROS --}}
-                    <form action="" method="post" class="d-flex col-9">
-                        @csrf
-                        <div class="form-group col-2 p-1">
-                            <select name="tipo" id="tipo" class="form-select">
-                                <option value="-">-</option>
-                                <option value="LEVE">LEVE</option>
-                                <option value="GRAVE">GRAVE</option>
-                                <option value="MUY GRAVE">MUY GRAVE</option>
-                            </select>
+                        {{-- BLOQUE FILTROS --}}
+                        <form action="" method="post" class="row col-lg-10" style="float: left;">
+                            @csrf
+                            <div class="form-group col-lg-2 p-1">
+                                <select name="tipo" id="tipo" class="form-select">
+                                    <option value="-">-</option>
+                                    <option value="LEVE">LEVE</option>
+                                    <option value="GRAVE">GRAVE</option>
+                                    <option value="MUY GRAVE">MUY GRAVE</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-lg-2 p-1">
+                                <input type="date" class="form-control" name="fecha" id="fecha"
+                                    placeholder="Fecha">
+                            </div>
+
+                            {{-- BLOQUE ACCIONADORES --}}
+                            <div class="col-lg-3 p-1">
+                                <button type="submit" class="btn border" onclick="charge()"
+                                    formaction="{{ route('incident.partner.filter', $data['partner'][0]['idSocio']) }}">
+                                    <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
+                                        alt="searchICO">
+                                </button>
+                                <button type="reset" class="btn border">
+                                    <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px"
+                                        alt="cleanICO">
+                                </button>
+                            </div>
+
+                        </form>
+
+                        {{-- BLOQUE PAGINADOR --}}
+                        <div class="col-lg-2 d-flex align-items-center" style="float: right;">
+                            {{ $data['incidents']->links('other.paginator') }}
                         </div>
-
-                        <div class="form-group col-2 p-1">
-                            <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Fecha">
-                        </div>
-
-                        {{-- BLOQUE ACCIONADORES --}}
-                        <div class="col-3 p-1">
-                            <button type="submit" class="btn border" onclick="charge()"
-                                formaction="{{ route('incident.partner.filter', $data['partner'][0]['idSocio']) }}">
-                                <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
-                                    alt="searchICO">
-                            </button>
-                            <button type="reset" class="btn border">
-                                <img src="{{ asset('media/ico/clean.ico') }}" width="20px" height="20px"
-                                    alt="cleanICO">
-                            </button>
-                        </div>
-
-                    </form>
-
-                    {{-- BLOQUE PAGINADOR --}}
-                    <div class="col-2 d-flex align-items-center">
-                        {{ $data['incidents']->links('other.paginator') }}
                     </div>
                 </div>
-            </div>
-            {{-- TABLA DE DATOS --}}
-            @if (!isset($data['incidents'][0]))
-                <div class="m-2 p-3 info">
-                    <p>El socio no tiene incidencias!</p>
-                </div>
-            @else
-                <table class="w-100 listTable">
-                    <tr class="row mt-3 mx-3 listHead">
-                        <th class="col-1">Id</th>
-                        <th class="col-1">Tipo</th>
-                        <th class="col-3">Info</th>
-                        <th class="col-3">F.Incidencia</th>
-                        <th class="col-3">Exp.Fin</th>
-                        <th class="col-1"></th>
-                    </tr>
-                    @foreach ($data['incidents'] as $elem)
-                        <tr class="row mx-3 listRow">
-                            <td class="col-1">{{ $elem->idIncidencia }}</td>
-                            <td class="col-1">{{ $elem->tipo }}</td>
-                            <td class="col-3">{{ $elem->informacion }}</td>
-                            <td class="col-3">{{ $elem->fechaInc }}</td>
-                            <td class="col-3">{{ $elem->fechaFinExp }}</td>
-                            <td class="col-1 p-0">
-                                <div class="w-100 h-100 m-0 d-flex justify-content-between">
-                                    <form class="w-100 h-100 m-0 d-flex justify-content-between"
-                                        action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
-                                        @csrf
-                                        <button class="listFormButton">
-                                            <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+
+                {{-- TABLA DE DATOS --}}
+                @if (!isset($data['incidents'][0]))
+                    <div class="m-2 p-3 info">
+                        <p>El socio no tiene incidencias!</p>
+                    </div>
+                @else
+                    <table class="w-100 listTable noMobile">
+                        <tr class="row mt-3 mx-3 listHead">
+                            <th class="col-1">Id</th>
+                            <th class="col-1">Tipo</th>
+                            <th class="col-3">Info</th>
+                            <th class="col-3">F.Incidencia</th>
+                            <th class="col-3">Exp.Fin</th>
+                            <th class="col-1"></th>
                         </tr>
-                    @endforeach
-                </table>
-            @endif
+                        @foreach ($data['incidents'] as $elem)
+                            <tr class="row mx-3 listRow">
+                                <td class="col-1">{{ $elem->idIncidencia }}</td>
+                                <td class="col-1">{{ $elem->tipo }}</td>
+                                <td class="col-3">{{ $elem->informacion }}</td>
+                                <td class="col-3">{{ $elem->fechaInc }}</td>
+                                <td class="col-3">{{ $elem->fechaFinExp }}</td>
+                                <td class="col-1 p-0">
+                                    <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                        <form class="w-100 h-100 m-0 d-flex justify-content-between"
+                                            action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
+                                            @csrf
+                                            <button class="listFormButton">
+                                                <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                    <div class="w-100 listBlock mobile">
+                        @foreach ($data['incidents'] as $elem)
+                            <div class="listElem">
+                                <div class="row p-3">
+                                    <div class="col-lg-6 d-flex flex-column">
+                                        <span class="col-12"><strong>Id:</strong> {{ $elem->idIncidencia }}</span>
+                                        <span class="col-12"><strong>Socio:</strong>
+                                            {{ $elem->socio }}</span>
+                                        <span class="col-12"><strong>Tipo:</strong> {{ $elem->tipo }}</span>
+                                        <span class="col-12"><strong>F.Incidencia:</strong> {{ $elem->fechaInc }}</span>
+                                        <span class="col-12"><strong>F.Fin expulsion:</strong> {{ $elem->fechaFinExp }}</span>
+    
+                                    </div>
+                                    <div class="col-lg-6 d-flex flex-column">
+                                        <span class="col-12"><strong>Informacion:</strong> {{ $elem->informacion }}</span>
+                                    </div>
+    
+                                </div>
+    
+                                <td class="p-0">
+                                    <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                        <form class="w-100 h-100 m-0 d-flex justify-content-between"
+                                            action="{{ route('incident.view', $elem->idIncidencia) }}" method="get">
+                                            @csrf
+                                            <button class="listFormButton">
+                                                <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 

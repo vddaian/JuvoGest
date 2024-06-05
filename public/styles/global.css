@@ -64,6 +64,18 @@ body {
     color: var(--font-color);
 }
 
+@media only screen and (min-width: 1400px) {
+    [class~="mobile"] {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 1400px) {
+    [class~="noMobile"] {
+      display: none;
+    }
+  }
+
 @keyframes slideOut {
     from {
         opacity: 0;

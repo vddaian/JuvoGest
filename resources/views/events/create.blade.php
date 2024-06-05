@@ -15,11 +15,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row p-3">
-                        <div class="form-group col-3">
+                        <div class="form-group col-lg-3">
                             <label for="sala">Sala:</label>
                             <select name="sala" id="sala" class="form-select">
                                 @foreach ($data as $elem)
@@ -50,19 +50,19 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-lg-3">
                             <label for="entidad">Entidad organizadora:</label>
                             <input type="text" id="entidad" class="form-control" name="entidad">
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-lg-2">
                             <label for="asistentes">Numero asistentes:</label>
                             <input type="number" id="asistentes" class="form-control" name="asistentes">
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-lg-2">
                             <label for="fecha">Fecha evento:</label>
                             <input type="date" id="fecha" class="form-control" name="fecha">
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-lg-2">
                             <label for="hora">Hora evento:</label>
                             <input type="time" id="hora" class="form-control" name="hora">
                         </div>

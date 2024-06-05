@@ -354,6 +354,7 @@ class PartnerController extends Controller
             PartnerUser::where([
                 ['idSocio', $id],
                 ['idUsuario', Auth::user()->id],
+                ['deshabilitado', false]
             ])->exists()
         ) {
             return true;

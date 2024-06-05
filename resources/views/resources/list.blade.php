@@ -18,11 +18,11 @@
             @if (Session::has('info'))
                 @isset(Session::get('info')['message'])
                     @isset(Session::get('info')['error'])
-                        <div class="w-100 mb-1 p-2 error">
+                        <div class="w-100 mb-3 p-2 error">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @else
-                        <div class="w-100 mb-1 p-2 success">
+                        <div class="w-100 mb-3 p-2 success">
                             <p>{{ Session::get('info')['message'] }}</p>
                         </div>
                     @endisset
@@ -32,7 +32,7 @@
             <div class="row p-3">
 
                 {{-- BLOQUE DE CREACIÓN --}}
-                <div class="col-2" id="createForm">
+                <div class="col-md-2 mb-2" id="createForm">
                     <h4>Crear</h4>
                     <hr class="del">
                     <form method="post" action="{{ route('resource.store') }}">
@@ -57,7 +57,7 @@
                 </div>
 
                 {{-- BLOQUE DE ACTUALIZACIÓN --}}
-                <div class="col-2" id="updateForm" hidden>
+                <div class="col-md-2 mb-2" id="updateForm" hidden>
                     <h4>Actualizar</h4>
                     <hr class="del">
                     <form method="post" action="{{ route('resource.update') }}">
@@ -92,23 +92,23 @@
                 </div>
 
                 {{-- BLOQUE DE LISTA --}}
-                <div class="col-10">
+                <div class="col-md-10">
                     <div class="d-flex justify-content-between w-100 px-2">
                         <div class="w-100 listPanels col-12">
 
                             {{-- BLOQUE DE FILTROS --}}
-                            <form action="" method="post" class="d-flex col-9">
+                            <form action="" method="post" class="row col-lg-10" style="float: left;">
                                 @csrf
-                                <div class="form-group col-2 p-1">
+                                <div class="form-group col-lg-2 p-1">
                                     <input type="text" class="form-control" name="id" id="id"
                                         placeholder="Id">
                                 </div>
 
-                                <div class="form-group col-3 p-1">
+                                <div class="form-group col-lg-3 p-1">
                                     <input type="text" class="form-control" name="nombre" id="nombre"
                                         placeholder="Nombre">
                                 </div>
-                                <div class="form-group col-2 p-1">
+                                <div class="form-group col-lg-2 p-1">
                                     <select name="tipo" id="tipo" class="form-select">
                                         <option value="-">-</option>
                                         <option value="JUEGOS">JUEGOS</option>
@@ -119,7 +119,7 @@
                                 </div>
 
                                 {{-- BLOQUE ACCIONADORES --}}
-                                <div class="col-3 p-1">
+                                <div class="col-lg-3 p-1">
                                     <button type="submit" class="btn border" onclick="charge()"
                                         formaction="{{ route('resource.filter') }}">
                                         <img src="{{ asset('media/ico/search.ico') }}" width="20px" height="20px"
@@ -135,7 +135,7 @@
                             </form>
 
                             {{-- BLOQUE PAGINADOR --}}
-                            <div class="col-2 d-flex align-items-center">
+                            <div class="col-lg-2 d-flex align-items-center">
                                 {{ $data['resources']->links('other.paginator') }}
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                             <p>No hay recursos en esta sala, añade uno!</p>
                         </div>
                     @else
-                        <table class="w-100 listTable">
+                        <table class="w-100 listTable noMobile">
                             <tr class="row mt-3 mx-3 listHead">
                                 <th class="col-1">IdRecurso</th>
                                 <th class="col-1">IdSala</th>
@@ -181,6 +181,41 @@
                                 </tr>
                             @endforeach
                         </table>
+                        <div class="w-100 listBlock mobile">
+                            @foreach ($data['resources'] as $elem)
+                                <div class="listElem">
+                                    <div class="row p-3">
+                                        <div class="col-lg-6 d-flex flex-column">
+                                            <span class="col-12"><strong>Id:</strong> {{ $elem->idRecurso }}</span>
+                                            <span class="col-12"><strong>Nombre:</strong>
+                                                {{ $elem->nombre }}</span>
+                                            <span class="col-12"><strong>Tipo:</strong> {{ $elem->tipo }}</span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <td class="p-0">
+                                        <div class="w-100 h-100 m-0 d-flex justify-content-between">
+                                            <button class="listFormButton"
+                                                onclick="changeToUpdateForm('{{ $elem->idRecurso }}','{{ $elem->idSala }}', '{{ $elem->nombre }}' , '{{ $elem->tipo }}')">
+                                                <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
+                                            </button>
+                                            <form class="w-100 h-100 m-0  d-flex justify-content-between"
+                                                action="{{ route('resource.disable') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" id="id"
+                                                    value="{{ $elem->idRecurso }}">
+                                                <button type="submit" class="listFormButton">
+                                                    <img src="{{ asset('media/ico/delete.ico') }}"
+                                                        alt="Delete user button">
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             </div>

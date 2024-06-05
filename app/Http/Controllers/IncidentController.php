@@ -249,15 +249,13 @@ class IncidentController extends Controller
     /* Metodo que comprueba si hay socios que se les acaba la expulsión y luego les quita el estado de expulsion */
     public static function checkOutDates()
     {
-        $prts = Incident::where('deshabilitado', false)
-            ->whereDate('fechaFinExp', '=', now()->format('Y-m-d'))
-            ->groupBy('idSocio')
-            ->select('idSocio', DB::raw('MAX(fechaFinExp) as fechaFinExp'))
-            ->get();
+        $prts = DB::table('V_OutPartnersEndDate')->where('fechaFinExp', date('Y-m-d'))->get(['idSocio']);
 
+        
+        Log::debug($prts);
         foreach ($prts as $key => $value) {
-            Log::debug($value);
+            PartnerUser::where('idSocio', $value->idSocio)->update(['expulsado'=> false]);
         }
-        /* PartnerUser::whereIn('idSocio', $prts)->update(['expulsado', false]); */
+        
     }
 }

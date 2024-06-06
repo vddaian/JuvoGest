@@ -143,8 +143,8 @@ class IncidentController extends Controller
     public function editIndex($id)
     {
         // Recoge todos los socios que tiene el centro .-
-        $ptnsIds = PartnerUser::where('idUsuario', Auth::user()->id)->get(['idSocio']);
-        $ptns = Partner::whereIn('idSocio', $ptnsIds)->where('deshabilitado', false)->get();
+        $ptnsIds = PartnerUser::where('idUsuario', Auth::user()->id)->where('deshabilitado', false)->get(['idSocio']);
+        $ptns = Partner::whereIn('idSocio', $ptnsIds)->get();
 
         // Recoge la información de la incidencia .-
         $inc = $this->getIncidentInfo($id);
@@ -222,7 +222,11 @@ class IncidentController extends Controller
     public function disable($id)
     {
         try {
+            $prt =  Incident::where('idIncidencia', $id)->get(['idSocio'])[0]['idSocio'];
             Incident::where('idIncidencia', $id)->update(['deshabilitado' => true]);
+            if (!DB::table('V_OutPartnersEndDate')->where([['idSocio', $prt], ['fechaFinExp','>',date('Y-m-d')]])->exists()) {
+                PartnerUser::where([['idUsuario', Auth::user()->id],['idSocio', $prt]])->update(['expulsado', false]);
+            }
             return redirect()->back()->with('info', ['message' => 'Incidencia eliminada con exito!']);
         } catch (Exception $err) {
             return redirect()->back()->with('info', [
@@ -249,15 +253,9 @@ class IncidentController extends Controller
     /* Metodo que comprueba si hay socios que se les acaba la expulsión y luego les quita el estado de expulsion */
     public static function checkOutDates()
     {
-        $prts = Incident::where('deshabilitado', false)
-            ->whereDate('fechaFinExp', '=', now()->format('Y-m-d'))
-            ->groupBy('idSocio')
-            ->select('idSocio', DB::raw('MAX(fechaFinExp) as fechaFinExp'))
-            ->get();
-
+        $prts = DB::table('V_OutPartnersEndDate')->where('fechaFinExp', date('Y-m-d'))->get(['idSocio']);
         foreach ($prts as $key => $value) {
-            Log::debug($value);
+            PartnerUser::where('idSocio', $value->idSocio)->update(['expulsado' => false]);
         }
-        /* PartnerUser::whereIn('idSocio', $prts)->update(['expulsado', false]); */
     }
 }

@@ -23,6 +23,11 @@ body {
     font-family: Helvetica;
 }
 
+textarea{
+    overflow-y:scroll;
+    text-wrap: nowrap;
+    resize: none;
+}
 .del {
     height: 2px;
     background-color: var(--del-color);

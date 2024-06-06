@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Socios')
 @section('head')
-    <script src="{{asset('js/validations.js')}}"></script>
+    <script src="{{ asset('js/validations.js') }}"></script>
 @endsection
 @section('content')
 
@@ -27,10 +27,11 @@
                     @endisset
                 @endisset
             @endif
-            <form action="{{route('user.update')}}" method="post" enctype="multipart/form-data" onsubmit="return validateUserForm(this);">
+            <form action="{{ route('user.update') }}" method="post" enctype="multipart/form-data"
+                onsubmit="return validateUserForm(this);">
                 @method('put')
                 @csrf
-                <input type="hidden" name="id" id="id" value="{{$data[0]['id']}}">
+                <input type="hidden" name="id" id="id" value="{{ $data[0]['id'] }}">
                 {{-- BLOQUE DATOS PERSONALES --}}
                 <div>
                     <h3>Datos Generales</h3>
@@ -40,11 +41,12 @@
                             <div class="form-group col-8">
                                 <label for="nombreEntidad">Nombre entidad:</label>
                                 <input type="text" class="form-control" name="nombreEntidad" id="nombreEntidad"
-                                    value="{{$data[0]['nombreEntidad']}}">
+                                    value="{{ $data[0]['nombreEntidad'] }}">
                             </div>
                             <div class="form-group col-4">
                                 <label for="username">Usuario:</label>
-                                <input type="text" class="form-control" name="username" id="username" value="{{$data[0]['username']}}">
+                                <input type="text" class="form-control" name="username" id="username"
+                                    value="{{ $data[0]['username'] }}">
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -54,17 +56,21 @@
                                     placeholder="*********">
                             </div>
                             <div class="form-group col-4">
-                                <label for="password">Rol:</label>
-                                <select class="form-select" name="rol" id="rol">
-                                    @if ($data[0]['rol'] == 'Admin')
-                                        <option value="Admin" selected>Admin</option>
-                                        <option value="User">User</option>
-                                    @else
-                                        <option value="Admin">Admin</option>
-                                        <option value="User" selected>User</option>
-                                    @endif
+                                @if (session()->get('rol') == 'Admin')
+                                    <label for="password">Rol:</label>
+                                    <select class="form-select" name="rol" id="rol">
+                                        @if ($data[0]['rol'] == 'Admin')
+                                            <option value="Admin" selected>Admin</option>
+                                            <option value="User">User</option>
+                                        @else
+                                            <option value="Admin">Admin</option>
+                                            <option value="User" selected>User</option>
+                                        @endif
 
-                                </select>
+                                    </select>
+                                @else
+                                    <input type="hidden" name="rol" id="rol" value="{{ $data[0]['rol'] }}">
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -81,17 +87,19 @@
                         <div class="p-3">
                             <div class="form-group">
                                 <label for="direccion">Direccion:</label>
-                                <input type="text" class="form-control" name="direccion" id="direccion" value="{{$data[0]['direccion']}}">
+                                <input type="text" class="form-control" name="direccion" id="direccion"
+                                    value="{{ $data[0]['direccion'] }}">
                             </div>
                             <div class="row mb-2">
                                 <div class="form-group col-lg-8">
                                     <label for="localidad">Localidad:</label>
                                     <input type="text" class="form-control" name="localidad" id="localidad"
-                                        value="{{$data[0]['localidad']}}">
+                                        value="{{ $data[0]['localidad'] }}">
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label for="cp">Codigo postal:</label>
-                                    <input type="number" class="form-control" name="cp" id="cp" value="{{$data[0]['cp']}}">
+                                    <input type="number" class="form-control" name="cp" id="cp"
+                                        value="{{ $data[0]['cp'] }}">
                                 </div>
                             </div>
                         </div>
@@ -106,12 +114,12 @@
                                 <div class="form-group col-lg-4">
                                     <label for="telefono">Telefono:</label>
                                     <input type="number" class="form-control" name="telefono" id="telefono"
-                                        value="{{$data[0]['telefono']}}">
+                                        value="{{ $data[0]['telefono'] }}">
                                 </div>
                                 <div class="form-group col-lg-8">
                                     <label for="email">Email:</label>
                                     <input type="text" class="form-control" name="email" id="email"
-                                        placeholder="example@example.com" value="{{$data[0]['email']}}">
+                                        placeholder="example@example.com" value="{{ $data[0]['email'] }}">
                                 </div>
                             </div>
                         </div>
@@ -123,7 +131,7 @@
                 <div class="form-group mb-2">
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-success">Actualizar</button>
+                <button type="submit" class="btn btn-success" onclick="charge()">Actualizar</button>
             </form>
         </div>
     </div>

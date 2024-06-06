@@ -70,7 +70,7 @@ class UserController extends Controller
                 }
 
                 // Recoge los socios del centro .-
-                $query->where([['deshabilitado', false],['id','!=', Auth::user()->id]]);
+                $query->where([['deshabilitado', false], ['id', '!=', Auth::user()->id]]);
 
                 $objs = $query->paginate(25);
                 return view('admin.users.list')->with('data', $objs);
@@ -242,7 +242,10 @@ class UserController extends Controller
             session()->put('id', Auth::user()->id);
             return redirect()->route('app.index');
         } else {
-            return redirect()->back()->with('info', 'Credenciales incorrectas!');
+            return redirect()->back()->with('info', [
+                'error' => true,
+                'message' => 'Credenciales erroneas, revisa y prueba de nuevo!',
+            ]);
         }
     }
 

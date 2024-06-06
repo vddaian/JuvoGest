@@ -109,7 +109,7 @@
                 <div class="form-group mb-2">
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-success">Crear</button>
+                <button type="submit" class="btn btn-success" onclick="charge()">Crear</button>
             </form>
         </div>
     </div>

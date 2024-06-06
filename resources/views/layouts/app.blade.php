@@ -110,7 +110,10 @@
                     @endif
                 @endif
                 <li>
-                    <a onclick="charge()" class="nav-link" href="#">Info App / Soporte</a>
+                    <a onclick="charge()" class="nav-link" href="{{ route('app.info') }}">Info App / Soporte</a>
+                </li>
+                <li class="mt-4 d-flex align-items-center justify-content-center">
+                    <img src="{{asset('media/img/JV.png')}}" alt="logo" class="rounded-circle" style="height:100px; width:100px;">
                 </li>
             </ul>
         </nav>

@@ -13,5 +13,7 @@ class PartnerUser extends Model
         'idSocio',
         'idUsuario',
         'fechaAlta',
+        'expulsado',
+        'deshabilitado'
     ];
 }

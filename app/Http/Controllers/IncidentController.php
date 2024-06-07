@@ -223,16 +223,18 @@ class IncidentController extends Controller
     {
         try {
             $prt =  Incident::where('idIncidencia', $id)->get(['idSocio'])[0]['idSocio'];
+	echo $prt;
             Incident::where('idIncidencia', $id)->update(['deshabilitado' => true]);
-            if (!DB::table('V_OutPartnersEndDate')->where([['idSocio', $prt], ['fechaFinExp','>',date('Y-m-d')]])->exists()) {
-                PartnerUser::where([['idUsuario', Auth::user()->id],['idSocio', $prt]])->update(['expulsado', false]);
+            if (!DB::table('V_OutPartnersEndDate')->where([['idSocio', $prt], ['idUsuario', Auth::user()->id]])->exists()) {
+                PartnerUser::where([['idUsuario', Auth::user()->id],['idSocio', $prt]])->update(['expulsado', false]); 
             }
-            return redirect()->back()->with('info', ['message' => 'Incidencia eliminada con exito!']);
+           return redirect()->back()->with('info', ['message' => 'Incidencia eliminada con exito!']);
         } catch (Exception $err) {
-            return redirect()->back()->with('info', [
+		echo $err;
+            /* return redirect()->back()->with('info', [
                 'error' => $err,
                 'message' => 'Algo no ha ido bien!'
-            ]);
+            ]); */
         }
     }
 

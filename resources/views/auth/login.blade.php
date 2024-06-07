@@ -25,12 +25,11 @@
                 @csrf
                 <div class="form-group mb-3">
                     <label for="username">Usuario:</label>
-                    <input type="text" class="form-control" name="username" id="username"
-                        placeholder="example@example.com">
+                    <input type="text" class="form-control" name="username" id="username" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="password">Contraseña:</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="*********">
+                    <input type="password" class="form-control" name="password" id="password" required placeholder="*********">
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <button type="submit" class="btn btn-success" onclick="charge()">Iniciar Sesion</button>

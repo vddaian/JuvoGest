@@ -63,7 +63,7 @@
                     <form method="post" action="{{ route('resource.update') }}">
                         @method('put')
                         @csrf
-                        <input type="hidden" name="idRecurso" id="upRecurso">
+                        <input type="hidden" name="id" id="upRecurso">
                         <div class="form-group mb-2">
                             <label for="sala">Sala:</label>
                             <select name="sala" id="upSala" class="form-select">
@@ -81,7 +81,7 @@
                             <select name="tipo" id="upTipo" class="form-select">
                                 <option value="JUEGOS">JUEGOS</option>
                                 <option value="OFICINA">OFICINA</option>
-                                <option value="OFICINA">DEPORTE</option>
+                                <option value="DEPORTE">DEPORTE</option>
                                 <option value="OTROS">OTROS</option>
                             </select>
                         </div>

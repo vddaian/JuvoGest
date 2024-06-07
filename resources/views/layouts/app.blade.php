@@ -46,7 +46,7 @@
             
                 <div class="userInfo">
                     @if (session()->get('user'))
-                        <strong class="mr-2">{{ session()->get('user') }}</strong>
+                        <strong class="mr-2">{{ session()->get('name') }}</strong>
                         <img src="data:image/png;base64,{{ session()->get('foto') }}" class="rounded-circle ml-4"
                             style="cursor:pointer;" height="35px" width="35px" alt="userPhoto"
                             onclick="changeUserNavState()">

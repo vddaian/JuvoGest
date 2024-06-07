@@ -153,7 +153,6 @@ class AdminController extends Controller
     public function disableAllUserRelations($id)
     {
         try {
-            dd($id);
             // Deshabilita la relacion con los centros .-
             PartnerUser::where('idUsuario', $id)->update(['deshabilitado' => true]);
             $rmIds = Room::where('idUsuario', $id)->get(['idSala']);

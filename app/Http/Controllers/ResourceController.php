@@ -77,7 +77,7 @@ class ResourceController extends Controller
 
         // Se realiza la inserción de los datos .-
         try {
-            Resource::where('idRecurso', $req->idRecurso)->update($data);
+            Resource::where('idRecurso', $req->id)->update($data);
             return redirect()->back()->with('info', ['message' => 'Recurso actualizado con exito!']);
         } catch (Exception $err) {
             return redirect()->back()->with('info', [

@@ -22,7 +22,14 @@ class RoomMiddleware
             ['idUsuario', Auth::user()->id],
             ['deshabilitado', false],
         ])->exists()) {
+            if($request->id != session()->get('storage')[0]['idSala']){
             return $next($request);
+            } else {
+            	return redirect()->back()->with('info', [
+                	'error' => true,
+                	'message' => 'No puedes modificar el almacen principal!'
+            	]);
+            }
         } else{
             return redirect()->back()->with('info', [
                 'error' => true,

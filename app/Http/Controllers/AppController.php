@@ -17,15 +17,7 @@ class AppController extends Controller
         if (Auth::check()) {
             if (Auth::user()->rol == 'User') {
                 // Recoge los socios expulsados .-
-                $prtIds = PartnerUser::where([
-                    ['expulsado', true],
-                    ['idUsuario', Auth::user()->id],
-                    ['deshabilitado', false],
-                ])->get(['idSocio']);
-
-                $oPrts = Partner::whereIn('idSocio', $prtIds)->where([
-                    ['deshabilitado', false],
-                ])->get();
+                $oPrts = DB::table('V_OutPartnersEndDate')->where('idUsuario', Auth::user()->id)->get();
 
                 // Recoge los proximos eventos .-
                 $rmsIds = Room::where('idUsuario', Auth::user()->id)->get(['idSala']);

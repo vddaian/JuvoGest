@@ -192,7 +192,7 @@ class RoomController extends Controller
     }
 
     /* Función que devuelve el id del alamacen principal del centro */
-    public function getStorageId()
+    public static function getStorageId()
     {
         return Room::where([['idUsuario', Auth::user()->id], ['nombre', 'Almacen']])->get(['idSala']);
     }

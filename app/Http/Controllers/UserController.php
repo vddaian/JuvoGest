@@ -238,6 +238,8 @@ class UserController extends Controller
         if (Auth::attempt($data)) {
             session()->put('user', Auth::user()->username);
             session()->put('rol', Auth::user()->rol);
+            session()->put('name', Auth::user()->nombreEntidad);
+            session()->put('storage',RoomController::getStorageId());
             session()->put('foto', Auth::user()->foto);
             session()->put('id', Auth::user()->id);
             return redirect()->route('app.index');
@@ -255,6 +257,8 @@ class UserController extends Controller
         Auth::logout();
         session(['rol' => null]);
         session(['user' => null]);
+        session(['storage' => null]);
+	session(['name' => null]);
         session(['id' => null]);
         session(['foto' => null]);
         return redirect()->route('login.index');

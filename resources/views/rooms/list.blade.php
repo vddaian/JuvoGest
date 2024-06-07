@@ -102,6 +102,7 @@
                                             <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
                                         </button>
                                     </form>
+				    @if($elem->idSala != session()->get('storage')[0]['idSala'])
                                     <form class="w-100 h-100 m-0  d-flex justify-content-between"
                                         action="{{ route('room.edit', $elem->idSala) }}" method="get">
                                         @csrf
@@ -109,6 +110,7 @@
                                             <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
                                         </button>
                                     </form>
+                                   @endif
                                 </div>
                             </td>
                         </tr>
@@ -140,6 +142,7 @@
                                             <img src="{{ asset('media/ico/view.ico') }}" alt="View user button">
                                         </button>
                                     </form>
+                                    @if ($elem->idSala != session()->get('storage')[0]['idSala'])
                                     <form class="w-100 h-100 m-0  d-flex justify-content-between"
                                         action="{{ route('room.edit', $elem->idSala) }}" method="get">
                                         @csrf
@@ -147,6 +150,7 @@
                                             <img src="{{ asset('media/ico/edit.ico') }}" alt="Edit user button">
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </span>
                         </div>

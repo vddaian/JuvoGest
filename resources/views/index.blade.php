@@ -37,9 +37,10 @@
                                 <div class="listElem p-2 elem" onclick="window.location.href = '{{route('partner.view', $elem->idSocio)}}'; charge();">
                                     <img width="40px" height="40px" style="margin-right:10px" class="rounded-circle"
                                         src="data:image/png;base64,{{ $elem->foto }}" alt="outImage{{ $elem->idSocio }}">
-                                    <div>
-                                        <p><strong>{{ $elem->prNombre . ' ' . $elem->sgNombre . ' ' . $elem->prApellido . ' ' . $elem->sgApellido }}</strong></p>
-                                    </div>
+                                    <span class="w-100 d-flex justify-content-between">
+                                        <p><strong>{{ $elem->nombre }}</strong></p>
+                                        <p>{{ $elem->fechaFinExp }}</p>
+                                    </span>
                                 </div>
                             @endforeach
                         </div>
@@ -66,7 +67,7 @@
                         </h4>
                         <div class="list p-3">
                             @foreach ($data['events'] as $elem)
-                                <div class="listElem p-2 elem d-flex justify-content-between" onclick="window.location.href = '{{route('event.view', $elem->idEvento)}}' charge();">
+                                <div class="listElem p-2 elem d-flex justify-content-between" onclick="window.location.href = '{{route('event.view', $elem->idEvento)}}'; charge();">
                                     <p><strong>{{ $elem->titulo }}</strong></p>
                                     <p>{{ $elem->fechaEvento . ' ' . $elem->horaEvento }}</p>
                                 </div>
